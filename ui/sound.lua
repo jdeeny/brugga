@@ -9,19 +9,35 @@ function SoundManager:initialize()
   self.tags = {
     music = ripple.newTag(),
     sfx = ripple.newTag(),
+    drink = ripple.newTag(),
+    angry = ripple.newTag(),
+    male = ripple.newTag(),
   }
   --for m in gameWorld.assets.music do
   --  self.music[m] = ripple.newSound({source = m, volume = gameWorld.options.musicVolume, tags = { 'music' }})
   --end
   print(gameWorld.assets.music.sonata)
   self.music['test'] = ripple.newSound({source = gameWorld.assets.music.sonata, tags = { self.tags.music, self.tags.sound }})
+  for _, t in ipairs(self:scanTags('music/drink_male.ogg')) do
+    print(t)
+  end
   self.music['test']:setLooping(true)
 
   self.musicPlaying = false
 end
 
+function SoundManager:scanTags(path)
+  local tags = {}
+  for tag, _ in pairs(self.tags) do
+    if string.find(path, tag) then
+      table.insert(tags, tag)
+    end
+  end
+  return tags
+end
+
+
 function SoundManager:playMusic()
-  print(self.musicPlaying)
   self.musicPlaying = 'test'
   self.music[self.musicPlaying]:play()
 
