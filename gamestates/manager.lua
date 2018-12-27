@@ -19,7 +19,6 @@ function GamestateManager:initialize()
     credits = credits:new('credits'),
     pause = pause:new('pause'),
   }
-  pretty.dump(self.states)
   self.current = { }
   self:setState('splash')
 end

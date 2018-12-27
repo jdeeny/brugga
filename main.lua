@@ -28,16 +28,17 @@ function love.load()
     joystick = love.joystick.getJoysticks()[1],
   }
 
-  gameWorld.gamestate = require('gamestates.manager'):new()
+  gameWorld.gameState = require('gamestates.manager'):new()
+  gameWorld.playerScore = 0
 end
 
 function love.update(dt)
   gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
-  gameWorld.gamestate:update(dt)
+  gameWorld.gameState:update(dt)
 end
 
 function love.draw()
-  gameWorld.gamestate:draw()
+  gameWorld.gameState:draw()
 end
 
 function love.quit()

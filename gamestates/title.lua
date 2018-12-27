@@ -17,7 +17,7 @@ end
 function Title:update()
   if gameWorld.playerInput:pressed 'ok' then
     print("exit title")
-    gameWorld.gamestate:setState('gameplay')
+    gameWorld.gameState:setState('gameplay')
   end
 end
 

@@ -11,7 +11,7 @@ end
 function Pause:update(dt)
   if gameWorld.playerInput:pressed('pause') then
     print("exit pause")
-    gameWorld.gamestate:exitState()
+    gameWorld.gameState:exitState()
   end
 end
 
