@@ -3,7 +3,8 @@ local baton = require 'lib.baton'
 
 local Gamestate = class('Gamestate')
 
-function Gamestate:initialize()
+function Gamestate:initialize(name)
+  self.name = name
 end
 
 -- Subclasses should replace these

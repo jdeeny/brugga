@@ -1,9 +1,10 @@
 local class = require 'lib.middleclass'
+local Gamestate = require 'gamestates.gamestate'
 
 local Splash = class('Splash', Gamestate)
 
-function Splash:initialize()
-  self.super.initialize(self)
+function Splash:initialize(name)
+  Gamestate.initialize(self, name)
 
   print("Inside splash init")
 end

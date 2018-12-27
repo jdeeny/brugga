@@ -1,5 +1,5 @@
 local class = require 'lib.middleclass'
-local pl = require 'lib.pl'
+
 
 local splash = require 'gamestates.splash'
 local title = require 'gamestates.title'
@@ -12,37 +12,39 @@ local GamestateManager = class('GamestateManager')
 
 function GamestateManager:initialize()
   self.states = {
-    ["splash"] = splash,
-    ["title"] = title,
-    ["gameplay"] = gameplay,
-    ["ending"] = ending,
-    ["credits"] = credits,
-    ["pause"] = pause,
+    splash = splash:new('splash'),
+    title = title:new('title'),
+    gameplay = gameplay:new('gameplay'),
+    ending = ending:new('ending'),
+    credits = credits:new('credits'),
+    pause = pause:new('pause'),
   }
+  pretty.dump(self.states)
+  self.current = { }
   self:setState('splash')
 end
 
 -- Sets the state, dropping any in the stack
 function GamestateManager:setState(state)
-  self.current = { state, }
-  if state.enter then st:enter() end
+  self.current = { }
+  self:pushState(state)
 end
 
 -- Enter a state by pushing it on the stack
 function GamestateManager:pushState(state)
-  self.current[#(self.current)] = state
+  self.current[#self.current + 1] = state
+  local st = self:getState()
+  st:enter()
 end
 
 -- Leave a state by popping from the stack
 function GamestateManager:exitState()
   local st = self:getState()
-  if st.exit then st:exit() end
-  if #self.current > 1 then
-    table.remove(self.current, #self.current)
-  end
+  st:exit()
+  self.current[#self.current] = nil
 
   st = self:getState()
-  if st.returnTo then st:returnTo() end
+  returnTo()
 end
 
 function GamestateManager:getCurrent()
@@ -50,10 +52,14 @@ function GamestateManager:getCurrent()
 end
 
 function GamestateManager:getState()
+  print("current = " .. self:getCurrent())
+  pretty.dump(self.states)
   return self.states[self:getCurrent()]
 end
 
 function GamestateManager:update(dt)
+  print(self:getCurrent())
+  print(self:getState())
   local st = self:getState()
   if st.update then st:update() end
 end

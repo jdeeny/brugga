@@ -3,7 +3,7 @@ local bump = require 'lib.bump'
 local rect = require 'physics.rect'
 local cargo = require 'lib.cargo'
 local baton = require 'lib.baton'
-
+require 'lib.pl'
 
 -- Should be the only global
 gameWorld = {}
