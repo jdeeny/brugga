@@ -17,7 +17,7 @@ function love.load()
       ok = { 'key:return' },
     },
     pairs = {
-      movemove = { 'left', 'right', 'up', 'down' },
+      move = { 'left', 'right', 'up', 'down' },
     },
     joystick = love.joystick.getJoysticks()[1],
   }
