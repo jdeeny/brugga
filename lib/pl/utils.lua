@@ -6,7 +6,7 @@
 --
 -- @module pl.utils
 local format = string.format
-local compat = require 'pl.compat'
+local compat = require 'lib.pl.compat'
 local stdout = io.stdout
 local append = table.insert
 local _unpack = table.unpack  -- always injected by 'compat'
@@ -606,5 +606,3 @@ function utils.bind2 (fn,p)
 end
 
 return utils
-
-
