@@ -3,7 +3,6 @@ local bump = require 'lib.bump'
 local rect = require 'physics.rect'
 local cargo = require 'lib.cargo'
 local baton = require 'lib.baton'
-local sound = require 'sound'
 
 
 -- Should be the only global
@@ -12,9 +11,7 @@ gameWorld = {}
 function love.load()
   gameWorld.assets = cargo.init('assets')
 
-  gameWorld.sound = sound:new()
-
-  print(gameWorld.sound)
+  gameWorld.sound = require('ui.sound'):new()
 
   gameWorld.playerInput = baton.new {
     controls = {
