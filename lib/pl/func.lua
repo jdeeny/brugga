@@ -2,7 +2,7 @@
 -- Placeholder expressions are useful for short anonymous functions, and were
 -- inspired by the Boost Lambda library.
 --
---    > utils.import 'pl.func'
+--    > utils.import 'lib.pl.func'
 --    > ls = List{10,20,30}
 --    > = ls:map(_1+1)
 --    {11,21,31}
@@ -20,9 +20,9 @@
 local type,setmetatable,getmetatable,rawset = type,setmetatable,getmetatable,rawset
 local concat,append = table.concat,table.insert
 local tostring = tostring
-local utils = require 'pl.utils'
+local utils = require 'lib.pl.utils'
 local pairs,rawget,unpack,pack = pairs,rawget,utils.unpack,utils.pack
-local tablex = require 'pl.tablex'
+local tablex = require 'lib.pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
 local assert_arg = utils.assert_arg

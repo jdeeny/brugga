@@ -6,9 +6,9 @@
 -- Dependencies: `pl.utils`, `pl.dir`, `pl.path`
 -- @module pl.file
 local os = os
-local utils = require 'pl.utils'
-local dir = require 'pl.dir'
-local path = require 'pl.path'
+local utils = require 'lib.pl.utils'
+local dir = require 'lib.pl.dir'
+local path = require 'lib.pl.path'
 
 local file = {}
 

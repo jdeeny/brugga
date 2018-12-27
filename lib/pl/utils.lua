@@ -208,7 +208,7 @@ function utils.function_arg (idx,f,msg)
     if tp == 'function' then return f end  -- no worries!
     -- ok, a string can correspond to an operator (like '==')
     if tp == 'string' then
-        if not operators then operators = require 'pl.operator'.optable end
+        if not operators then operators = require 'lib.pl.operator'.optable end
         local fn = operators[f]
         if fn then return fn end
         local fn, err = utils.string_lambda(f)
@@ -392,9 +392,9 @@ end
 -- local options = utils.quote_arg {
 --     "-lluacov",
 --     "-e",
---     "utils = print(require('pl.utils')._VERSION",
+--     "utils = print(require('lib.pl.utils')._VERSION",
 -- }
--- -- returns: -lluacov -e 'utils = print(require('\''pl.utils'\'')._VERSION'
+-- -- returns: -lluacov -e 'utils = print(require('\''lib.pl.utils'\'')._VERSION'
 function utils.quote_arg(argument)
     if type(argument) == "table" then
         -- encode an entire table

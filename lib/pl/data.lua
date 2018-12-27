@@ -17,7 +17,7 @@
 -- Dependencies: `pl.utils`, `pl.array2d` (fallback methods)
 -- @module pl.data
 
-local utils = require 'pl.utils'
+local utils = require 'lib.pl.utils'
 local _DEBUG = rawget(_G,'_DEBUG')
 
 local patterns,function_arg,usplit,array_tostring = utils.patterns,utils.function_arg,utils.split,utils.array_tostring
@@ -42,7 +42,7 @@ end
 -- This gives `l` the standard List metatable,
 -- pulling in the List module.
 local function makelist(l)
-    return setmetatable(l, require('pl.List'))
+    return setmetatable(l, require('lib.pl.List'))
 end
 
 local function map(fun,t)
@@ -118,7 +118,7 @@ DataMT.__index = function(self,name)
     local f = DataMT[name]
     if f then return f end
     if not array2d then
-        array2d = require 'pl.array2d'
+        array2d = require 'lib.pl.array2d'
     end
     return array2d[name]
 end

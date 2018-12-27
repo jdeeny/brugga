@@ -64,7 +64,7 @@ return function(env)
         -- either way, we load the required module and make it globally available.
         if found then
             -- e..g pretty.dump causes pl.pretty to become available as 'pretty'
-            rawset(env,name,require('pl.'..name))
+            rawset(env,name,require('lib.pl.'..name))
             return env[name]
         else
             local res

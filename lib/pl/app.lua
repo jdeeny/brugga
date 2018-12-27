@@ -5,8 +5,8 @@
 -- @module pl.app
 
 local io,package,require = _G.io, _G.package, _G.require
-local utils = require 'pl.utils'
-local path = require 'pl.path'
+local utils = require 'lib.pl.utils'
+local path = require 'lib.pl.path'
 
 local app = {}
 
@@ -61,7 +61,7 @@ end
 -- @return cannot create directory error
 -- @usage
 -- -- when run from a script called 'testapp' (on Windows):
--- local app = require 'pl.app'
+-- local app = require 'lib.pl.app'
 -- print(app.appfile 'test.txt')
 -- -- C:\Documents and Settings\steve\.testapp\test.txt
 function app.appfile(file)

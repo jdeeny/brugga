@@ -8,7 +8,7 @@
 --
 -- Dependencies: `pl.utils`
 -- @module pl.stringx
-local utils = require 'pl.utils'
+local utils = require 'lib.pl.utils'
 local string = string
 local find = string.find
 local type,setmetatable,ipairs = type,setmetatable,ipairs
@@ -37,7 +37,7 @@ local function assert_nonempty_string(n,s)
 end
 
 local function makelist(l)
-    return setmetatable(l, require('pl.List'))
+    return setmetatable(l, require('lib.pl.List'))
 end
 
 local stringx = {}
