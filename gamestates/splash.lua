@@ -9,7 +9,7 @@ function Splash:initialize()
 end
 
 function Splash:draw()
-    love.graphics.rectangle('fill', 30, 20, 80, 40)
+    love.graphics.draw(gameWorld.assets.splash.splash)
 end
 
 function Splash:update()
