@@ -10,13 +10,14 @@ function Splash:initialize(name)
 end
 
 function Splash:draw()
-    love.graphics.draw(gameWorld.assets.splash.splash)
+  love.graphics.setColor(gameWorld.colors.white)
+  love.graphics.draw(gameWorld.assets.splash.splash)
 end
 
 function Splash:update()
   if gameWorld.playerInput:pressed('ok') then
     print("exit splash")
-    gameWorld.gamestates:setState('title')
+    gameWorld.gamestate:setState('title')
   end
   if gameWorld.playerInput:pressed('left') then
     gameWorld.sound:playMusic()

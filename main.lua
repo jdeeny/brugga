@@ -10,7 +10,7 @@ gameWorld = {}
 
 function love.load()
   gameWorld.assets = cargo.init('assets')
-
+  gameWorld.colors = require 'ui.colors'
   gameWorld.sound = require('ui.sound'):new()
 
   gameWorld.playerInput = baton.new {
@@ -20,6 +20,7 @@ function love.load()
       up = {'key:up', 'key:w', 'axis:lefty-', 'button:dpup'},
       down = {'key:down', 'key:s', 'axis:lefty+', 'button:dpdown'},
       ok = { 'key:return' },
+      pause = { 'key:p' },
     },
     pairs = {
       move = { 'left', 'right', 'up', 'down' },
@@ -27,17 +28,16 @@ function love.load()
     joystick = love.joystick.getJoysticks()[1],
   }
 
-  gameWorld.gamestates = require('gamestates.manager'):new()
+  gameWorld.gamestate = require('gamestates.manager'):new()
 end
 
 function love.update(dt)
   gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
-  gameWorld.gamestates:update(dt)
+  gameWorld.gamestate:update(dt)
 end
 
 function love.draw()
-  gameWorld.gamestates:draw()
-  love.graphics.rectangle('fill', 300, 220, 680, 40)
+  gameWorld.gamestate:draw()
 end
 
 function love.quit()

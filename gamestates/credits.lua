@@ -6,7 +6,7 @@ local Credits = class('Credits', Gamestate)
 function Credits:initialize(name)
   Gamestate.initialize(self, name)
 
-  self.text = love.graphics.newText(gameWorld.assets.fonts.credits(16),
+  self.text = love.graphics.newText(gameWorld.assets.fonts.generic(16),
 [[Game Name
 
 Dec 25 - Jan 31

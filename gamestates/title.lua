@@ -10,13 +10,14 @@ function Title:initialize(name)
 end
 
 function Title:draw()
-    love.graphics.rectangle('fill', 20, 10, 60, 20)
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
+  love.graphics.rectangle('fill', 20, 10, 60, 20)
 end
 
 function Title:update()
   if gameWorld.playerInput:pressed 'ok' then
     print("exit title")
-    gameWorld.gamestates:setState('credits')
+    gameWorld.gamestate:setState('gameplay')
   end
 end
 

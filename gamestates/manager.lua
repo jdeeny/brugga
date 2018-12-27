@@ -39,12 +39,9 @@ end
 
 -- Leave a state by popping from the stack
 function GamestateManager:exitState()
-  local st = self:getState()
-  st:exit()
+  self:getState():exit()
   self.current[#self.current] = nil
-
-  st = self:getState()
-  returnTo()
+  self:getState():returnTo()
 end
 
 function GamestateManager:getCurrent()
@@ -52,21 +49,21 @@ function GamestateManager:getCurrent()
 end
 
 function GamestateManager:getState()
-  print("current = " .. self:getCurrent())
-  pretty.dump(self.states)
   return self.states[self:getCurrent()]
 end
 
 function GamestateManager:update(dt)
-  print(self:getCurrent())
-  print(self:getState())
-  local st = self:getState()
-  if st.update then st:update() end
+  self:getState():update(dt)
 end
 
+-- Here we draw all states in the stack, so pause overlays the main game
 function GamestateManager:draw()
-  local st = self:getState()
-  if st.draw then st:draw() end
+  for _, state in ipairs(self.current) do
+    self.states[state]:draw()
+  end
+
+  love.graphics.setColor(0.0,1.0,0.0,0.8)
+  love.graphics.draw(love.graphics.newText(gameWorld.assets.fonts.generic(16), self:getCurrent()), 1280 - 150, 10)
 end
 
 return GamestateManager
