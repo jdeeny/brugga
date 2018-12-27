@@ -17,6 +17,13 @@ function Splash:update()
     print("exit splash")
     gameWorld.gamestates:setState('title')
   end
+  if gameWorld.playerInput:pressed('left') then
+    gameWorld.sound:playMusic()
+  end
+  if gameWorld.playerInput:pressed('right') then
+    gameWorld.sound:stopMusic()
+  end
+
 end
 
 return Splash
