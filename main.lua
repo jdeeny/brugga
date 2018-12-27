@@ -5,51 +5,33 @@ local dude = require 'entities.dude'
 local enemy = require 'entities.enemy'
 local baton = require 'lib.baton'
 
-local world = {}
-local gamestates = {}
-local playerInput = {}
+gameWorld = {}
 
 function love.load()
-  playerInput = baton.new { controls = { ok = { 'key:enter' } }, }
-  gamestates = require('gamestates.manager'):new(playerInput)
+  gameWorld.playerInput = baton.new {
+    controls = {
+      left = {'key:left', 'key:a', 'axis:leftx-', 'button:dpleft'},
+      right = {'key:right', 'key:d', 'axis:leftx+', 'button:dpright'},
+      up = {'key:up', 'key:w', 'axis:lefty-', 'button:dpup'},
+      down = {'key:down', 'key:s', 'axis:lefty+', 'button:dpdown'},
+      ok = { 'key:return' },
+    },
+    pairs = {
+      movemove = { 'left', 'right', 'up', 'down' },
+    },
+    joystick = love.joystick.getJoysticks()[1],
+  }
+
+  gameWorld.gamestates = require('gamestates.manager'):new()
 end
 
-
---[[
-function love.keypressed(key, scancode, isrepeat)
-  if (key == "w") then
-    Dude:moveUp()
-  end
-  if (key == "s") then
-    Dude:moveDown()
-  end
-end
-
-function love.keyreleased(key)
-  if (key == "w") then
-    if (love.keyboard.isDown("s")) then
-      Dude:moveDown()
-    else
-      Dude:moveNone()
-    end
-  end
-  if (key == "s") then
-    if (love.keyboard.isDown("w")) then
-      Dude:moveDown()
-    else
-      Dude:moveNone()
-    end
-  end
-end
-]]
 function love.update(dt)
-  playerInput:update()  -- update the input immediately so everything else can use the up to date info
-  gamestates:update(dt)
+  gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
+  gameWorld.gamestates:update(dt)
 end
 
 function love.draw()
-  gamestates:draw()
-
+  gameWorld.gamestates:draw()
   love.graphics.rectangle('fill', 300, 220, 680, 40)
 end
 

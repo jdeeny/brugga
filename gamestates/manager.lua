@@ -10,7 +10,7 @@ local pause = require 'gamestates.pause'
 
 local GamestateManager = class('GamestateManager')
 
-function GamestateManager:initialize(input)
+function GamestateManager:initialize()
   self.states = {
     ["splash"] = splash,
     ["title"] = title,
@@ -19,17 +19,13 @@ function GamestateManager:initialize(input)
     ["credits"] = credits,
     ["pause"] = pause,
   }
-  self.input = input
-
   self:setState('splash')
-
 end
 
 -- Sets the state, dropping any in the stack
 function GamestateManager:setState(state)
   self.current = { state, }
   if state.enter then st:enter() end
-  if state.controls then self.input.controls = pl.tablex.copy(self.controls) end
 end
 
 -- Enter a state by pushing it on the stack
