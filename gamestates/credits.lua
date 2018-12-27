@@ -33,6 +33,7 @@ function Credits:exit()
 end
 
 function Credits:update(dt)
+  if gameWorld.playerInput:pressed('ok') then gameWorld.gameState:setState('title') end
 end
 
 function Credits:draw()
