@@ -11,7 +11,7 @@ function Enemy:initialize()
 
   self.drinkMix = { a = false, b = false, c = false, d = false } -- Desired drink
   self.state = "advance"  -- Current operational state
-  self.hitDelay = 2       -- Hit state duration
+  self.hitDelay = 1.5       -- Hit state duration
   self.drinkDelay = .5    -- Drinking state duration
   -- Set properties
   self.props.isEnemy = true          -- Is an enemy
@@ -77,6 +77,10 @@ function Enemy:matchDrink(drinkMix)
   return true
 end
 
+function Enemy:reachedEnd()
+  self:deactivate()
+end
+
 function Enemy:exited()
   self.drink:deactivate() -- Drink is no longer active
   self:deactivate()
@@ -93,7 +97,7 @@ function Enemy:update(dt)
   if self.isActive then
     -- Advance towards the player
     if self.state == "advance" then
-      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (20 * dt), self.rect.y, self:collisionFilter())
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (25 * dt), self.rect.y, self:collisionFilter())
       self.rect.x = actualX -- Move forwards
       self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
       -- Check collisions

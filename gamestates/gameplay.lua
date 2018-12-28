@@ -3,6 +3,7 @@ local bump = require 'lib.bump'
 local Dude = require 'entities.dude'
 local Enemy = require 'entities.enemy'
 local Drink = require 'entities.drink'
+local Zone = require 'entities.zone'
 local Gamestate = require 'gamestates.gamestate'
 
 local Gameplay = class('Gameplay', Gamestate)
@@ -14,11 +15,17 @@ local patronA = Enemy:new()
 local patronB = Enemy:new()
 local drink = Drink:new()
 local brugga = Dude:new()
+local startZones = {}
+local endZones = {}
 
 function Gameplay:initialize(name)
   Gamestate.initialize(self, name)
 
-  print("Adding patron")
+  self.rewardTime = 0.5
+  self.nextReward = self.rewardTime
+end
+
+function Gameplay:enter()
   brugga:addToWorld(bumpWorld)
   brugga:spawn()
   patronA:addToWorld(bumpWorld)
@@ -28,8 +35,10 @@ function Gameplay:initialize(name)
   drink:addToWorld(bumpWorld)
   drink.row = 1
 
-  self.rewardTime = 0.5
-  self.nextReward = self.rewardTime
+  for i=1,4 do
+    table.insert(startZones, Zone:new(i, "start", bumpWorld))
+    table.insert(endZones, Zone:new(i, "end", bumpWorld))
+  end
 end
 
 function  Gameplay:update(dt)
@@ -50,6 +59,9 @@ function  Gameplay:update(dt)
 
   -- Spawn drink if player presses throw
   if gameWorld.playerInput:pressed('throw') then
+    if bumpWorld:hasItem(drink.rect) == false then
+      drink:addToWorld(bumpWorld)
+    end
     drink.isActive = true
     drink.row = brugga.row
     drink:sendLeft()
@@ -69,6 +81,12 @@ function  Gameplay:update(dt)
 end
 
 function Gameplay:draw()
+  -- Zones
+  for i=1,4 do
+    startZones[i]:draw()
+    endZones[i]:draw()
+  end
+
   -- Debug bar boxes
   love.graphics.setColor(.6, .2, .1, 100)
   love.graphics.rectangle('fill', 300, 220, 680, 40)
