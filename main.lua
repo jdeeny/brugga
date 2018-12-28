@@ -9,6 +9,10 @@ require 'lib.pl'
 gameWorld = {}
 
 function love.load()
+  gameWorld.settings = require('ui.settings'):new()
+  gameWorld.settings:load()
+  gameWorld.settings:save()
+
   gameWorld.assets = cargo.init('assets')
   gameWorld.colors = require('ui.colors')
   gameWorld.sound = require('ui.sound'):new()

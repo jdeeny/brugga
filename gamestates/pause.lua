@@ -31,6 +31,10 @@ function Pause:draw()
   self.menu:drawAt(self.x, self.y)
 end
 
+function Pause:exit()
+  gameWorld.settings:save()
+end
+
 function Pause:update(dt)
   self.menu:update(dt)
   if gameWorld.playerInput:pressed('pause') then
