@@ -10,10 +10,12 @@ function Enemy:initialize(data)
   Entity.initialize(self)  -- Run base class init
 
   -- Read enemy data
-  self.tags = data.tags
+  self.tagsets = data.tagsets
   self.speed = data.speed
   self.row = data.row
   self.drinkMix = data.drink -- Desired drink
+
+  self.animation_test = tablex.copy(data.kind.sitting)
 
   -- Set properties
   self.isActive = true
@@ -140,6 +142,10 @@ function Enemy:update(dt)
     end
 
   end
+  if self.animation_test then
+    self.animation_test[2]:update(dt)
+  end
+
 end
 
 ---- DRAW ----

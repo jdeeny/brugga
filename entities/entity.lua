@@ -24,6 +24,9 @@ function Entity:addToWorld(bumpWorld)
   self.bumpWorld:add(self.rect, self.rect.x, self.rect.y, self.rect.w, self.rect.h)
 end
 
+function Entity:update(dt)
+end
+
 function Entity:draw()
   -- If no color specified, draw with all color values max
   if (self.drawColor == nil) then
@@ -32,7 +35,14 @@ function Entity:draw()
     love.graphics.setColor(self.drawColor)
   end
   -- Draw rectangle
-  love.graphics.rectangle(self.drawStyle, self.rect.x, self.rect.y, self.rect.w, self.rect.h)
+  if self.animation_test then
+    pretty.dump(self.animation_test)
+    local image = self.animation_test[1]
+    local anim = self.animation_test[2]
+    anim:draw(image, self.rect.x, self.rect.y)
+  else
+    love.graphics.rectangle(self.drawStyle, self.rect.x, self.rect.y, self.rect.w, self.rect.h)
+  end
 end
 
 return Entity
