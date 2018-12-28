@@ -22,6 +22,10 @@ function Title:initialize(name)
 
 end
 
+function Title:enter()
+  gameWorld.sound:playMusic()
+end
+
 function Title:draw()
   love.graphics.clear(1.0,1.0,1.0,1.0)
   love.graphics.setColor(0.0,0.0,0.0,1.0)
