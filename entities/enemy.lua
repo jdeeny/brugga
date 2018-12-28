@@ -1,23 +1,23 @@
 local class = require 'lib.middleclass'
-local entity = require 'entities.entity'
+local Entity = require 'entities.entity'
 local rect = require 'physics.rect'
 
 ---- INIT ----
 
-local Enemy = class('Enemy', entityClass())
+local Enemy = class('Enemy', Entity)
 
 function Enemy:initialize()
-  entityClass().initialize(self)  -- Run base class init
+  Entity.initialize(self)  -- Run base class init
 
-  self.drinkMix = { a = false, b = false, c = false, d = false} -- Desired drink
+  self.drinkMix = { a = false, b = false, c = false, d = false } -- Desired drink
   self.state = "advance"  -- Current operational state
   self.hitDelay = 2       -- Hit state duration
   self.drinkDelay = .5    -- Drinking state duration
   -- Set properties
-  self.props.isEnemy = true;          -- Is an enemy
-
+  self.props.isEnemy = true          -- Is an enemy
   -- Create collision rectangle
   self.rect:set(300, 156, 64, 64)        -- Set position/size
+  self.drawColor = { 0.2, 1.0, 0.2, 1.0 }
 
   ---- Drink properties
   self.drink = nil
@@ -30,6 +30,7 @@ function Enemy:initialize()
   self.drinkAttachPoint = function()
     return self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y
   end
+
 end
 
 ---- SPAWN ----
@@ -46,6 +47,7 @@ end
 function Enemy:drinkHit(drink)
     self.drink = drink  -- Store drink that collided
     self.state = "hit"  -- Set hit state
+    print("[enemy] now in hit state")
     self.drink:patronHold()   -- Set drink's drinking state
     self.drinkOffset = self.drinkHoldOffset -- Set the drink position offset
 end
@@ -54,20 +56,30 @@ function Enemy:startDrinking()
   self.hitDelay = 2     -- Reset hit timer
   self.state = "drink"  -- Set drinking state
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
-  self.drink:startDrinking(self.drinkAttachPoint)    -- Apply drinking position to drink
+  self.drink:startDrinking(self.rect.x + self.drinkDrinkingOffset.x, self.rect.y + self.drinkDrinkingOffset.y)    -- Apply drinking position to drink
 end
 
 function Enemy:stopDrinking()
-  self.drinkDelay = .5    -- Reset drink timer
+  self.drinkDelay = .8    -- Reset drink timer
   self.state = "advance"  -- Set advance state
   self.drink:sendRight(self.rect.x + self.rect.w) -- Slide drink back from end of patron
   self.drink = nil        -- Customer no longer holding drink
 end
 
 ---- BAR ACTIONS ----
+function Enemy:matchDrink(drinkMix)
+  if self.drinkMix.a ~= drinkMix.a
+  or self.drinkMix.b ~= drinkMix.b
+  or self.drinkMix.c ~= drinkMix.c
+  or self.drinkMix.d ~= drinkMix.d
+  then return false end
+
+  return true
+end
+
 function Enemy:exited()
-  self.isActive = false   -- Patron is no longer active
   self.drink:deactivate() -- Drink is no longer active
+  self:deactivate()
 end
 
 function Enemy:deactivate()
@@ -78,24 +90,37 @@ end
 ---- UPDATE ----
 
 function Enemy:update(dt)
-  if (self.isActive) then
+  if self.isActive then
     -- Advance towards the player
-    if (self.state == "advance") then
-      self.rect.x = self.rect.x + (20 * dt) -- Move forwards
-
+    if self.state == "advance" then
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (20 * dt), self.rect.y, self:collisionFilter())
+      self.rect.x = actualX -- Move forwards
+      self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
+      -- Check collisions
+      if len > 0 then self:checkDrinkCollision(cols) end
+      if len > 0 then self:checkEndCollision(cols) end
     -- Fly backwards when hit by drink
-    elseif (self.state == "hit") then
-      if (self.hitDelay > 0) then
-        self.rect.x = self.rect.x - (100 * dt)        -- Move backwards
+    elseif self.state == "hit" then
+      if self.hitDelay > 0 then
         self.hitDelay = self.hitDelay - dt            -- Advance hold timer
-        self.drink.rect:setPos(self.drinkAttachPoint) -- Set drink position
+
+        -- Move backwards
+        local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (125 * dt), self.rect.y, self:collisionFilter())
+        self.rect.x = actualX
+        self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
+
+        -- Set held drink position
+        self.drink.rect:setPos(self.rect.x + self.drinkHoldOffset.x, self.rect.y + self.drinkHoldOffset.y) -- Set drink position
+
+        -- Check collisions
+        if len > 0 then self:checkStartCollision(cols) end
       else
         self:startDrinking()  -- Start drinking state when hold timer ends
       end
 
     -- Pause and drink after being hit
-    elseif (self.state == "drink") then
-      if (self.drinkDelay > 0) then
+    elseif self.state == "drink" then
+      if self.drinkDelay > 0 then
         self.drinkDelay = self.drinkDelay - dt  -- Advance drink timer
       else
         self:stopDrinking()   -- Start advancing state when done drinking
@@ -108,9 +133,8 @@ end
 ---- DRAW ----
 
 function Enemy:draw()
-  if (self.isActive) then
-    love.graphics:setColor(.2, 1, .2, 1)
-    entityClass().draw(self)
+  if self.isActive then
+    Entity.draw(self)
   end
 end
 
@@ -118,17 +142,19 @@ end
 
 function Enemy:collisionFilter()
   local filter = function(item, other)
-    -- Detected drink going out
+    -- Detected matching drink going out
     if other.props.isDrink and self.state == "advance" then
-      return self:checkDrinkCollision(other)
+      if other.props.state == "toCustomer" and self:matchDrink(other.props.drinkMix) then
+        return 'touch'
+      end
 
     -- Reached end of bar
     elseif other.props.isEnd and self.state == "advance" then
-      return self:endCollision(other)
+      return 'touch'
 
     -- Reached beginning of bar in hit state
     elseif other.props.isStart and self.state == "hit" then
-      return self:startCollision()
+      return 'touch'
     end
 
     -- Ignore all other collisions
@@ -139,34 +165,41 @@ function Enemy:collisionFilter()
 end
 
 -- Collision with drink
-function Enemy:checkDrinkCollision(drink)
-  -- If drink is heading out and matches patron's mix, register collision
-  if drink.state == "toCustomer" and self.drinkMix == drink.drinkMix then
-    print("bam")
-    self:drinkHit(drink)
-    return 'cross'
+function Enemy:checkDrinkCollision(cols)
+  for i,col in ipairs(cols) do
+    local other = col.other
+    if other.props.isDrink then
+      -- If drink is heading out and matches patron's mix, register collision
+      self:drinkHit(other.props.ref)
+      do return end
+    end
   end
-
-  return nil
 end
 
 -- Collision with end of bar
-function Enemy:endCollision(endZone)
-  print("ay bartender")
-  endZone:patronReachedEnd()
-  self:reachedEnd()
-  return 'cross'
+function Enemy:checkEndCollision(cols)
+  for i,col in ipairs(cols) do
+    local other = col.other
+    if other.props.isEnd and self.state == "advance" then
+      --endZone:patronReachedEnd()
+      self:reachedEnd()
+      do return end
+    end
+  end
 end
 
 -- Collision with start of bar
-function Enemy:startCollision()
-  print("i'm outs")
-  self:exited()
-  return 'cross'
+function Enemy:checkStartCollision(cols)
+  for i,col in ipairs(cols) do
+    local other = col.other
+    if other.props.isStart and self.state == "hit" then
+      --startZone:patronReachedEnd()
+      self:exited()
+      do return end
+    end
+  end
 end
 
 ---- NEW OBJECT ----
 
-function newEnemy()
-  return Enemy:new()
-end
+return Enemy
