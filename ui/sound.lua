@@ -71,7 +71,6 @@ end
 
 function SoundManager:playUi(name)
   print("PlayUI: " .. name)
-  pretty.dump(self.ui)
   if self.ui[name] then self.ui[name]:play() end
 end
 
