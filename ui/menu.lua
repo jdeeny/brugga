@@ -37,28 +37,39 @@ function Menu:initialize(entries, w, h)
 end
 
 function Menu:update(dt)
+    local current_entry = self.entries[self.selected]
   if gameWorld.playerInput:pressed('ok') then
-    if self.entries[self.selected].kind == 'text' then
+    if current_entry.kind == 'text' then
       gameWorld.sound:playUi('menuSelect')
-      self.entries[self.selected].func()
+      current_entry.func()
     end
   elseif gameWorld.playerInput:pressed('down') then
+    gameWorld.sound:playUi('menuSwitch')
     self.selected = self.selected + 1
     if self.selected > #self.entries then self.selected = 1 end
-    gameWorld.sound:playUi('menuSwitch')
   elseif gameWorld.playerInput:pressed('up') then
+    gameWorld.sound:playUi('menuSwitch')
     self.selected = self.selected - 1
     if self.selected == 0 then self.selected = #self.entries end
-    gameWorld.sound:playUi('menuSwitch')
   elseif gameWorld.playerInput:pressed('left') then
-    if self.entries[self.selected].slider then
-      self.entries[self.selected].slider:lower()
-      self.entries[self.selected].set(self.entries[self.selected].slider.value)
+    if current_entry.slider then
+      if current_entry.label == 'Music' then
+        gameWorld.sound:playUi('musicDecrease')
+      else
+        gameWorld.sound:playUi('volumeDecrease')
+      end
+      current_entry.slider:lower()
+      current_entry.set(current_entry.slider.value)
     end
   elseif gameWorld.playerInput:pressed('right') then
-    if self.entries[self.selected].slider then
-      self.entries[self.selected].slider:raise()
-      self.entries[self.selected].set(self.entries[self.selected].slider.value)
+    if current_entry.slider then
+      if current_entry.label == 'Music' then
+        gameWorld.sound:playUi('musicIncrease')
+      else
+        gameWorld.sound:playUi('volumeIncrease')
+      end
+      current_entry.slider:raise()
+      current_entry.set(current_entry.slider.value)
     end
   end
 end
