@@ -9,7 +9,6 @@ function SoundManager:initialize()
   self.ui = {}
   self.sfx = {}
 
-
   -- Some tags are used to control volume (music)
   -- Some tags are used to categorize sounds (male)
   self.tags = {
@@ -20,18 +19,6 @@ function SoundManager:initialize()
     angry = ripple.newTag(),
     male = ripple.newTag(),
   }
-
-  --[[assets = cargo.init({
-    dir = 'my_assets',
-    loaders = {
-      jpg = love.graphics.newImage
-    },
-    processors = {
-      ['images/'] = function(image, filename)
-        image:setFilter('nearest', 'nearest')
-      end
-    }
-  })]]
 
 
   self.ui.assets = cargo.init('assets')
@@ -57,6 +44,10 @@ function SoundManager:initialize()
   self.music['test']:setLooping(true)
 
   self.musicPlaying = false
+
+
+  if gameWorld.settings.config.sfx_volume then self:setSfxVolume(gameWorld.settings.config.sfx_volume) print("1") end
+  if gameWorld.settings.config.music_volume then self:setMusicVolume(gameWorld.settings.config.music_volume) print("2") end
 end
 
 function SoundManager:scanTags(path)
@@ -83,14 +74,12 @@ end
 
 function SoundManager:setMusicVolume(vol)
   self.tags.music.volume = vol
+  gameWorld.settings.config.music_volume = vol
 end
 
-function SoundManager:setSfxVolume()
+function SoundManager:setSfxVolume(vol)
   self.tags.sfx.volume = vol
-end
-
-function SoundManager:mute()
-  self.tags.sound.volume = 0.0
+  gameWorld.settings.config.sfx_volume = vol
 end
 
 function SoundManager:stopMusic()

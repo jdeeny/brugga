@@ -17,6 +17,9 @@ function Gameplay:initialize(name)
 end
 
 function Gameplay:enter()
+  -- reset score
+  gameWorld.playerData:reset()
+
   -- Collision world
   self.bumpWorld = bump.newWorld(50)
   ---- Entity Creation
@@ -45,7 +48,7 @@ function  Gameplay:update(dt)
   self.generator:update(dt)
   local gen = self.generator:generate()
   if gen then
-    pretty.dump(gen)
+    --pretty.dump(gen)
     local newPatron = Enemy:new(gen)      -- Create new patron
     newPatron:addToWorld(self.bumpWorld)       -- Add to bump world
     table.insert(self.patrons, newPatron) -- Put in master patron table
@@ -53,7 +56,7 @@ function  Gameplay:update(dt)
 
   if gameWorld.playerInput:pressed('pause') then
     gameWorld.gameState:pushState('pause')
-  elseif gameWorld.playerInput:pressed 'ok' then
+  elseif gameWorld.playerInput:pressed 'jumptoend' then  -- TODO: Quit on death or through menu only
     print("exit gameplay")
     gameWorld.gameState:setState('ending')
   end
@@ -67,7 +70,7 @@ function  Gameplay:update(dt)
   end
 
   -- Spawn drink if player presses throw
-  if gameWorld.playerInput:pressed('throw') then
+  if gameWorld.playerInput:pressed('action') then
     if self.bumpWorld:hasItem(self.drink.rect) == false then
       self.drink:addToWorld(self.bumpWorld)
     end
@@ -91,7 +94,7 @@ function  Gameplay:update(dt)
   self.nextReward = self.nextReward - dt
   if self.nextReward <= 0.0 then
     self.nextReward = self.rewardTime
-    gameWorld.playerScore = gameWorld.playerScore + 1
+    gameWorld.playerData:scoreIncrease(1)
   end
 end
 

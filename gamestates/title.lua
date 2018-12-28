@@ -15,9 +15,9 @@ function Title:initialize(name)
   self.menu = Menu:new({
     { kind='text', label='Credits', func=function() gameWorld.gameState:setState('credits') end },
     { kind='text', label='Play Game', func=function() gameWorld.gameState:setState('gameplay') end },
-    { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) print("set "..value) gameWorld.sound.tags.sfx.volume = value end },
-    { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound.tags.music.volume = value end },
-    { kind='text', label='Exit to Desktop', func=function() love.event.push('quit') end },
+    { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound:setSfxVolume(value) end },
+    { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound:setMusicVolume(value) end },
+    { kind='text', label='Exit to Desktop', func=function() gameWorld.settings:save() love.event.push('quit') end },
   }, self.menuWidth, self.menuHeight)
 
 end
@@ -34,13 +34,12 @@ function Title:draw()
   self.menu:drawAt((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
 end
 
+function Title:exit()
+  gameWorld.settings:save()
+end
+
 function Title:update()
   self.menu:update(dt)
-
---[[  if gameWorld.playerInput:pressed 'ok' then
-    print("exit title")
-    gameWorld.gameState:setState('gameplay')
-  end]]
 end
 
 

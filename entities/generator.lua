@@ -3,6 +3,7 @@ local class = require 'lib.middleclass'
 local Generator = class('Generator')
 
 function Generator:initialize()
+  self.archetypes = require('entities.archetypes'):new()
   self.threatRate = .5
   self.patronScale = 0.1
   self.scalePower = 1.1
@@ -16,13 +17,48 @@ function Generator:initialize()
   self.attempsRemaining = 0.8
 end
 
+function shuffle(tbl)
+  for i = #tbl, 2, -1 do
+    local j = math.random(i)
+    tbl[i], tbl[j] = tbl[j], tbl[i]
+  end
+  return tbl
+end
+
 function Generator:generate()
   if self.attempsRemaining < 1.0 then return nil end
 
   self.attempsRemaining = self.attempsRemaining - 1
   self.patronsGenerated = self.patronsGenerated + 1
 
-  return { tags={ 'elf', 'female', 'angry' }, appearance=reference_to_sprite_stuff_tbd, drink={'a', 'c'}, speed=1, row=math.random(4) }
+  local archetype = self.archetypes:getRandom()
+
+  -- pretty.dump(archetype)
+
+  local drink_complexity = 1
+  if love.math.random(50) < self.threat then drink_complexity = drink_complexity + 1 end
+  if love.math.random(100) < self.threat then drink_complexity = drink_complexity + 1 end
+
+  local ingredients = { 'a', 'b', 'c' }
+  ingredients = shuffle(ingredients)
+  local drink = {}
+  for i=1, drink_complexity do
+    drink[#drink+1] = ingredients[i]
+  end
+
+  pretty.dump(drink)
+
+  local speed = 1 + math.random(self.threat) / 100
+
+  print(speed)
+
+  local threat = speed * drink_complexity
+
+  self.threat = self.threat - threat
+
+  print("Threat: " .. threat .. " " .. self.threat)
+
+  return { kind=archetype, drink=drink, speed=speed, row=math.random(4), threat = threat }
 end
 
 function Generator:update(dt)

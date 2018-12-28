@@ -5,8 +5,6 @@ local Splash = class('Splash', Gamestate)
 
 function Splash:initialize(name)
   Gamestate.initialize(self, name)
-
-  print("Inside splash init")
 end
 
 function Splash:draw()
@@ -15,17 +13,9 @@ function Splash:draw()
 end
 
 function Splash:update()
-  if gameWorld.playerInput:pressed('ok') then
-    print("exit splash")
+  if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour') then
     gameWorld.gameState:setState('title')
   end
-  if gameWorld.playerInput:pressed('left') then
-    gameWorld.sound:playMusic()
-  end
-  if gameWorld.playerInput:pressed('right') then
-    gameWorld.sound:stopMusic()
-  end
-
 end
 
 return Splash
