@@ -9,14 +9,6 @@ local Gamestate = require 'gamestates.gamestate'
 
 local Gameplay = class('Gameplay', Gamestate)
 
--- Collision world
-local bumpWorld = bump.newWorld(50)
--- Entities
-local drink = Drink:new()
-local brugga = Dude:new()
-local startZones = {}
-local endZones = {}
-
 function Gameplay:initialize(name)
   Gamestate.initialize(self, name)
 
@@ -25,18 +17,26 @@ function Gameplay:initialize(name)
 end
 
 function Gameplay:enter()
+  -- Collision world
+  self.bumpWorld = bump.newWorld(50)
+  ---- Entity Creation
+  -- Patrons
   self.generator = Generator:new()
   self.patrons = {}
-
-  brugga:addToWorld(bumpWorld)
-  brugga:spawn()
-
-  drink:addToWorld(bumpWorld)
-  drink.row = 1
-
+  -- Brugga
+  self.brugga = Dude:new()
+  self.brugga:addToWorld(self.bumpWorld)
+  self.brugga:spawn()
+  -- Static drink
+  self.drink = Drink:new()
+  self.drink:addToWorld(self.bumpWorld)
+  self.drink.row = 1
+  -- Zones
+  self.startZones = {}
+  self.endZones = {}
   for i=1,4 do
-    table.insert(startZones, Zone:new(i, "start", bumpWorld))
-    table.insert(endZones, Zone:new(i, "end", bumpWorld))
+    table.insert(self.startZones, Zone:new(i, "start", self.bumpWorld))
+    table.insert(self.endZones, Zone:new(i, "end", self.bumpWorld))
   end
 end
 
@@ -47,7 +47,7 @@ function  Gameplay:update(dt)
   if gen then
     pretty.dump(gen)
     local newPatron = Enemy:new(gen)      -- Create new patron
-    newPatron:addToWorld(bumpWorld)       -- Add to bump world
+    newPatron:addToWorld(self.bumpWorld)       -- Add to bump world
     table.insert(self.patrons, newPatron) -- Put in master patron table
   end
 
@@ -59,26 +59,26 @@ function  Gameplay:update(dt)
   end
 
   if gameWorld.playerInput:released('up') or gameWorld.playerInput:released('down') then
-    brugga:moveNone()
+    self.brugga:moveNone()
   elseif gameWorld.playerInput:pressed('up') then
-    brugga:moveUp()
+    self.brugga:moveUp()
   elseif gameWorld.playerInput:pressed('down') then
-    brugga:moveDown()
+    self.brugga:moveDown()
   end
 
   -- Spawn drink if player presses throw
   if gameWorld.playerInput:pressed('throw') then
-    if bumpWorld:hasItem(drink.rect) == false then
-      drink:addToWorld(bumpWorld)
+    if self.bumpWorld:hasItem(self.drink.rect) == false then
+      self.drink:addToWorld(self.bumpWorld)
     end
-    drink.isActive = true
-    drink.row = brugga.row
-    drink:sendLeft()
+    self.drink.isActive = true
+    self.drink.row = self.brugga.row
+    self.drink:sendLeft()
   end
 
   -- Update entities
-  if brugga.isActive then brugga:update(dt) end
-  if drink.isActive then drink:update(dt) end
+  if self.brugga.isActive then self.brugga:update(dt) end
+  if self.drink.isActive then self.drink:update(dt) end
 
   -- Update patrons
   local patronSize = table.getn(self.patrons)
@@ -98,8 +98,8 @@ end
 function Gameplay:draw()
   -- Zones
   for i=1,4 do
-    startZones[i]:draw()
-    endZones[i]:draw()
+    self.startZones[i]:draw()
+    self.endZones[i]:draw()
   end
 
   -- Debug bar boxes
@@ -109,7 +109,7 @@ function Gameplay:draw()
   love.graphics.rectangle('fill', 260, 420, 760, 40)
   love.graphics.rectangle('fill', 240, 520, 800, 40)
 
-  brugga:draw() -- Draw brugga
+  self.brugga:draw() -- Draw brugga
 
   -- Draw patrons
   local patronSize = table.getn(self.patrons)
@@ -119,7 +119,7 @@ function Gameplay:draw()
     end
   end
 
-  drink:draw()  -- Draw drink
+  self.drink:draw()  -- Draw drink
 end
 
 return Gameplay
