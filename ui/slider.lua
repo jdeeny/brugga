@@ -39,9 +39,10 @@ end
 function Slider:draw(x, y)
   -- draw text
   -- draw segments
-  for seg=0, self.segments do
+  local discrete_value = math.floor(self.value / self.persegment + 0.5)
+  for seg=0, self.segments - 1 do
     local spr = self.empty
-    if self.value >= seg * self.persegment - self.persegment * 0.1 then
+    if seg < discrete_value then
       spr = self.filled
     end
     love.graphics.draw(spr, x + seg * self.segmentWidth, y)
