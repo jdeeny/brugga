@@ -48,7 +48,7 @@ function  Gameplay:update(dt)
   self.generator:update(dt)
   local gen = self.generator:generate()
   if gen then
-    pretty.dump(gen)
+    --pretty.dump(gen)
     local newPatron = Enemy:new(gen)      -- Create new patron
     newPatron:addToWorld(self.bumpWorld)       -- Add to bump world
     table.insert(self.patrons, newPatron) -- Put in master patron table
