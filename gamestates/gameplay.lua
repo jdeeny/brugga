@@ -80,15 +80,13 @@ function  Gameplay:update(dt)
   end
 
   -- Update entities
+
   if self.brugga.isActive then self.brugga:update(dt) end
   if self.drink.isActive then self.drink:update(dt) end
 
   -- Update patrons
-  local patronSize = table.getn(self.patrons)
-  if patronSize > 0 then
-    for i=1,patronSize do
-      self.patrons[i]:update(dt)
-    end
+  for _, p in ipairs(self.patrons) do
+    p:update(dt)
   end
 
   self.nextReward = self.nextReward - dt
