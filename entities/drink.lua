@@ -1,19 +1,23 @@
 local class = require 'lib.middleclass'
-local entity = require 'entities.entity'
+local Entity = require 'entities.entity'
 local rect = require 'physics.rect'
 
-local Drink = class('Drink', entityClass())
+local Drink = class('Drink', Entity)
 
 function Drink:initialize()
-  entityClass().initialize(self)
+  Entity.initialize(self)
 
-  self.drinkMix = { a = false, b = false, c = false, d = false}
-  self.state = "none"
+  self.drinkMix = { a = true, b = false, c = false, d = false}
+
   -- Set properties
   self.props.isDrink = true;          -- Is a drink
+  self.props.drinkMix = self.drinkMix
+  self.props.state = "none"
+  self.props.ref = self
 
   -- Create collision rectangle
   self.rect:set(0, 0, 24, 24)        -- Set position/size
+  self.drawColor = { 1.0, 0.2, 0.2, 1.0 }
 end
 
 ---- STATES ----
@@ -27,24 +31,26 @@ end
 
 -- Send drink to the left on the bar
 function Drink:sendLeft()
-  self.state = "toCustomer" -- Set toCustomer state
+  self.props.state = "toCustomer" -- Set toCustomer state
   self.rect:setPos(950 + (self.row * 20), 80 + (self.row * 100))  -- Set position on row
 end
 
 -- Set drinking state when hitting patron
 function Drink:patronHold()
-  self.state = "drinking"
+  print("[drink] held, changing to drinking state")
+  self.props.state = "drinking"
 end
 
 -- Set position while customer drinks
 function Drink:startDrinking(x, y)
+  print("[drink] starting drinking")
   self.rect:setPos(x, y)
 end
 
 -- Send drink to the right on the bar
 function Drink:sendRight(x)
   self.rect:setPos(x, 80 + (self.row * 100))
-  self.state = "toBartender"
+  self.props.state = "toBartender"
 end
 
 ---- BAR ACTIONS --
@@ -62,24 +68,35 @@ end
 
 function Drink:update(dt)
   if self.isActive then
-    if self.state == "held" then
+    if self.props.state == "held" then
       -- Nothing here
-    elseif self.state == "toCustomer" then
-      self.x = self.x - (100 * dt)
-    elseif self.state == "drinking" then
+    elseif self.props.state == "toCustomer" then
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (175 * dt), self.rect.y, self:collisionFilter())
+      self.rect.x = actualX
+      self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
+
+      if len > 0 then self:checkEndCollision(cols) end
+
+    elseif self.props.state == "drinking" then
       -- Nothing here
-    elseif self.state == "toBartender" then
-      self.x = self.x + (75 * dt)
+    elseif self.props.state == "toBartender" then
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (100 * dt), self.rect.y, self:collisionFilter())
+      self.rect.x = actualX
+
+      self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
+
+      if len > 0 then self:checkStartCollision(cols) end
     end
+
+
   end
 end
 
 ---- DRAW ----
 
 function Drink:draw()
-  if (self.isActive) then
-    love.graphics:setColor(1, .2, .2, 1)
-    entityClass().draw(self)
+  if self.isActive then
+    Entity.draw(self)
   end
 end
 
@@ -88,12 +105,12 @@ end
 function Drink:collisionFilter()
   local filter = function(item, other)
     -- Empty drink hits bar end by bartender
-    if other.props.isEnd and self.state == "toBartender" then
-      return self:endCollision(other)
+    if other.props.isEnd and self.props.state == "toBartender" then
+      return 'touch'
 
     -- Drink hits bar end by entrance
-    elseif other.props.isStart and self.state == "toCustomer" then
-      return self:startCollision(other)
+    elseif other.props.isStart and self.props.state == "toCustomer" then
+      return 'touch'
     end
 
     return nil
@@ -103,21 +120,29 @@ function Drink:collisionFilter()
 end
 
 -- Collision with bartender bar end
-function Drink:endCollision(endZone)
-  print("empty drink, booo")
-  endZone:drinkReachedEnd()
-  self:slideOffBar()
-  return 'touch'
+function Drink:endCollision(cols)
+  for i,col in ipairs(cols) do
+    local other = col.other
+    if other.props.isEnd and self.state == "advance" then
+      --endZone:drinkReachedEnd()
+      self:slideOffBar()
+      do return end
+    end
+  end
 end
 
 -- Collision with entrance bar end
-function Drink:startCollision(startZone)
-  print("no one ordered this")
-  startZone:drinkReachedEnd()
-  self:slideOffBar()
-  return 'touch'
+function Drink:startCollision(cols)
+  for i,col in ipairs(cols) do
+    local other = col.other
+    if other.props.isEnd and self.state == "advance" then
+      --startZone:drinkReachedEnd()
+      self:slideOffBar()
+      do return end
+    end
+  end
 end
 
-function newDrink()
-  return Drink:new()
-end
+---- NEW OBJECT ----
+
+return Drink

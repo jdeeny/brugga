@@ -20,6 +20,7 @@ function love.load()
       up = {'key:up', 'key:w', 'axis:lefty-', 'button:dpup'},
       down = {'key:down', 'key:s', 'axis:lefty+', 'button:dpdown'},
       ok = { 'key:return' },
+      throw = { 'key:space' },
       pause = { 'key:p' },
     },
     pairs = {

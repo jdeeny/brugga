@@ -1,11 +1,11 @@
 local class = require 'lib.middleclass'
-local entity = require 'entities.entity'
+local Entity = require 'entities.entity'
 local rect = require 'physics.rect'
 
-local Dude = class('Dude', entityClass())
+local Dude = class('Dude', Entity)
 
 function Dude:initialize()
-  entityClass().initialize(self)
+  Entity.initialize(self)
   self.props.isPlayer = true
   self.row = 1
   self.moveDir = "none"
@@ -69,6 +69,6 @@ function Dude:collisionFilter()
   return filter
 end
 
-function newDude()
-  return Dude:new()
-end
+---- NEW OBJECT ----
+
+return Dude
