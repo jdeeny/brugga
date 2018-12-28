@@ -1,5 +1,6 @@
 local class = require 'lib.middleclass'
 local colors = require 'ui.colors'
+local text = require 'ui.text'
 
 
 local Menu = class('Menu')
@@ -22,8 +23,9 @@ function Menu:initialize(entries)
   self.width = 0
 
   for _, entry in ipairs(_entries) do
+    entry.text = text:new(entry.label, { halign='center' }) --, font=self.font })
     pretty.dump(entry)
-    entry.text = love.graphics.newText(self.font, entry.label)
+
     if entry.kind == 'text' then
       entry.width = entry.text:getWidth()
     elseif entry.kind == 'slider' then
@@ -51,18 +53,18 @@ function Menu:update(dt)
   end
 end
 
-function Menu:drawAt(x, y)
+function Menu:drawAt(x, y, w, h)
   love.graphics.setColor(colors.lightblue)
   for i, entry in ipairs(self.entries) do
     local y = i * 30 + y
     if entry.kind == 'text' then
-      love.graphics.draw(entry.text, x + self.sprites.left:getWidth() + self.hpad, y)
+      entry.text:draw(x + self.sprites.left:getWidth() + self.hpad, y, w, h)
       if i == self.selected then
         love.graphics.draw(self.sprites.left, x, y)
         love.graphics.draw(self.sprites.right, x + self.width - self.sprites.right:getWidth(), y)
       end
     elseif entry.kind == 'slider' then
-      love.graphics.draw(entry.text, x + 0, y)
+      entry.text:draw(x + self.sprites.left:getWidth() + self.hpad, y, w, h)
       if i == self.selected then
         love.graphics.draw(self.sprites.slideLeft, x, y)
         love.graphics.draw(self.sprites.slideRight, x + self.width - self.sprites.right:getWidth(), y)
