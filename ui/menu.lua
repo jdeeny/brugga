@@ -23,7 +23,6 @@ function Menu:initialize(entries)
 
   for _, entry in ipairs(_entries) do
     entry.text = Text:new(entry.label, { halign='center' }) --, font=self.font })
-    pretty.dump(entry)
 
     if entry.kind == 'text' then
       entry.width = entry.text:getWidth()
@@ -39,14 +38,17 @@ end
 function Menu:update(dt)
   if gameWorld.playerInput:pressed('ok') then
     if self.entries[self.selected].kind == 'text' then
+      gameWorld.sound:playUi('menuSelect')
       self.entries[self.selected].func()
     end
   elseif gameWorld.playerInput:pressed('down') then
     self.selected = self.selected + 1
     if self.selected > #self.entries then self.selected = 1 end
+    gameWorld.sound:playUi('menuSwitch')
   elseif gameWorld.playerInput:pressed('up') then
     self.selected = self.selected - 1
     if self.selected == 0 then self.selected = #self.entries end
+    gameWorld.sound:playUi('menuSwitch')
   elseif gameWorld.playerInput:pressed('left') then
     if self.entries[self.selected].slider then
       self.entries[self.selected].slider:lower()
