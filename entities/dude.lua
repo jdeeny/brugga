@@ -12,7 +12,14 @@ function Dude:initialize()
   self.moveDelay = 0
 
   -- Create collision rectangle
-  self.rect:set(80, 10, 64, 64)
+  self.rect:set(0, 0, 64, 64)
+end
+
+---- SPAWN ----
+function Dude:spawn()
+  self.isActive = true
+  self.rect.x = 1000 + (self.row * 20)
+  self.rect.y = (self.row * 100) + 100
 end
 
 function Dude:update(dt)
