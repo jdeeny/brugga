@@ -11,8 +11,8 @@ function Pause:initialize(name)
   self.menu = Menu:new({
     { kind='text', label='Credits', func=function() gameWorld.gameState:setState('credits') end },
     { kind='text', label='Play Game', func=function() gameWorld.gameState:setState('gameplay') end },
-    { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx:getVolume() end, set=function(value) gameWorld.sound.tags.sfx.setVolume(value) end },
-    { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music:getVolume() end, set=function(value) gameWorld.sound.tags.music.setVolume(value) end },
+    { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound.tags.sfx.volume = value end },
+    { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound.tags.music.volume = value end },
     { kind='text', label='Exit to Desktop', func=function() love.event.push('quit') end },
   })
 
