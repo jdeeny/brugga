@@ -13,14 +13,14 @@ function DebugUi:update(dt)
 end
 
 function DebugUi:draw()
-  local st = love.timer.getTime()
+  local start_time = love.timer.getTime()
   love.graphics.setFont(self.font)
   love.graphics.setColor(self.color)
   love.graphics.print("FPS: "..love.timer.getFPS(), self.left, self.top)
   local dc = love.graphics.getStats()
   love.graphics.print("draws: "..dc.drawcalls, self.left, self.top + 20)
   love.graphics.print("switches: "..dc.canvasswitches.." / "..dc.shaderswitches, self.left, self.top + 40)
-  love.graphics.print(math.floor((love.timer.getTime() - st) * 1000000) / 1000 .. " ms", self.left, self.top + 60)
+  love.graphics.print(math.floor((love.timer.getTime() - start_time) * 1000000) / 1000 .. " ms", self.left, self.top + 60)
   love.graphics.setColor(255, 255, 255, 255)
 end
 
