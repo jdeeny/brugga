@@ -56,7 +56,7 @@ function  Gameplay:update(dt)
 
   if gameWorld.playerInput:pressed('pause') then
     gameWorld.gameState:pushState('pause')
-  elseif gameWorld.playerInput:pressed 'ok' then
+  elseif gameWorld.playerInput:pressed 'jumptoend' then  -- TODO: Quit on death or through menu only
     print("exit gameplay")
     gameWorld.gameState:setState('ending')
   end
@@ -70,7 +70,7 @@ function  Gameplay:update(dt)
   end
 
   -- Spawn drink if player presses throw
-  if gameWorld.playerInput:pressed('throw') then
+  if gameWorld.playerInput:pressed('action') then
     if self.bumpWorld:hasItem(self.drink.rect) == false then
       self.drink:addToWorld(self.bumpWorld)
     end

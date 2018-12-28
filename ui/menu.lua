@@ -38,7 +38,7 @@ end
 
 function Menu:update(dt)
     local current_entry = self.entries[self.selected]
-  if gameWorld.playerInput:pressed('ok') then
+  if gameWorld.playerInput:pressed('action') then
     if current_entry.kind == 'text' then
       gameWorld.sound:playUi('menuSelect')
       current_entry.func()

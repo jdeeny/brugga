@@ -12,7 +12,7 @@ function Ending:enter()
 end
 
 function Ending:update(dt)
-  if gameWorld.playerInput:pressed 'ok' then
+  if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour') then
     print("exit ending")
     gameWorld.gameState:setState('credits')
   end

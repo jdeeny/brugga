@@ -40,11 +40,6 @@ end
 
 function Title:update()
   self.menu:update(dt)
-
---[[  if gameWorld.playerInput:pressed 'ok' then
-    print("exit title")
-    gameWorld.gameState:setState('gameplay')
-  end]]
 end
 
 

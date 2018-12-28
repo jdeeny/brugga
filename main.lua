@@ -2,7 +2,6 @@ local class = require 'lib.middleclass'
 local bump = require 'lib.bump'
 local rect = require 'physics.rect'
 local cargo = require 'lib.cargo'
-local baton = require 'lib.baton'
 require 'lib.pl'    -- provides on-demand lading on the penlight sublibraries
 
 -- Should be the only global
@@ -20,21 +19,7 @@ function love.load()
   -- Comment this out to disable debug print
   gameWorld.debug = require('ui.debug'):new()
 
-  gameWorld.playerInput = baton.new {
-    controls = {
-      left = {'key:left', 'key:a', 'axis:leftx-', 'button:dpleft'},
-      right = {'key:right', 'key:d', 'axis:leftx+', 'button:dpright'},
-      up = {'key:up', 'key:w', 'axis:lefty-', 'button:dpup'},
-      down = {'key:down', 'key:s', 'axis:lefty+', 'button:dpdown'},
-      ok = { 'key:return' },
-      throw = { 'key:space' },
-      pause = { 'key:p' },
-    },
-    pairs = {
-      move = { 'left', 'right', 'up', 'down' },
-    },
-    joystick = love.joystick.getJoysticks()[1],
-  }
+  gameWorld.playerInput = require('player.controls')
 
   gameWorld.gameState = require('gamestates.manager'):new()
   gameWorld.playerData = require('player.playerdata'):new()
