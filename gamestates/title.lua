@@ -20,7 +20,7 @@ end
 function Title:draw()
   love.graphics.setColor(1.0,1.0,1.0,1.0)
   love.graphics.rectangle('fill', 20, 10, 60, 20)
-  self.menu:drawAt(100, 100, 300, 500)
+  self.menu:drawAt(1280 / 2 - 150, 720 / 2 - 250, 300, 500)
 end
 
 function Title:update()
