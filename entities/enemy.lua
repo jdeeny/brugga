@@ -6,15 +6,22 @@ local rect = require 'physics.rect'
 
 local Enemy = class('Enemy', Entity)
 
-function Enemy:initialize()
+function Enemy:initialize(data)
   Entity.initialize(self)  -- Run base class init
 
-  self.drinkMix = { a = false, b = false, c = false, d = false } -- Desired drink
-  self.state = "advance"  -- Current operational state
-  self.hitDelay = 2       -- Hit state duration
-  self.drinkDelay = .5    -- Drinking state duration
+  -- Read enemy data
+  self.tags = data.tags
+  self.speed = data.speed
+  self.row = data.row
+  self.drinkMix = data.drink -- Desired drink
+
   -- Set properties
+  self.isActive = true
+  self.state = "advance"  -- Current operational state
+  self.hitDelay = 1.5       -- Hit state duration
+  self.drinkDelay = .5    -- Drinking state duration
   self.props.isEnemy = true          -- Is an enemy
+
   -- Create collision rectangle
   self.rect:set(300, 156, 64, 64)        -- Set position/size
   self.drawColor = { 0.2, 1.0, 0.2, 1.0 }
@@ -31,6 +38,7 @@ function Enemy:initialize()
     return self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y
   end
 
+  self.rect:setPos(320 - (20 * self.row), 120 + (100 * self.row) - self.rect.h) -- set at start of specific row
 end
 
 ---- SPAWN ----
@@ -68,13 +76,17 @@ end
 
 ---- BAR ACTIONS ----
 function Enemy:matchDrink(drinkMix)
-  if self.drinkMix.a ~= drinkMix.a
-  or self.drinkMix.b ~= drinkMix.b
-  or self.drinkMix.c ~= drinkMix.c
-  or self.drinkMix.d ~= drinkMix.d
+  if self.drinkMix['a'] ~= drinkMix['a']
+  or self.drinkMix['b'] ~= drinkMix['b']
+  or self.drinkMix['c'] ~= drinkMix['c']
+  or self.drinkMix['d'] ~= drinkMix['d']
   then return false end
 
   return true
+end
+
+function Enemy:reachedEnd()
+  self:deactivate()
 end
 
 function Enemy:exited()
@@ -93,7 +105,7 @@ function Enemy:update(dt)
   if self.isActive then
     -- Advance towards the player
     if self.state == "advance" then
-      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (20 * dt), self.rect.y, self:collisionFilter())
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (self.speed * 25 * dt), self.rect.y, self:collisionFilter())
       self.rect.x = actualX -- Move forwards
       self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
       -- Check collisions

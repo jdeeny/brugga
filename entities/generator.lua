@@ -22,7 +22,7 @@ function Generator:generate()
   self.attempsRemaining = self.attempsRemaining - 1
   self.patronsGenerated = self.patronsGenerated + 1
 
-  return { tags={ 'elf', 'female', 'angry' }, appearance=reference_to_sprite_stuff_tbd, drink={'a', 'c'}, speed=1 }
+  return { tags={ 'elf', 'female', 'angry' }, appearance=reference_to_sprite_stuff_tbd, drink={'a', 'c'}, speed=1, row=math.random(4) }
 end
 
 function Generator:update(dt)

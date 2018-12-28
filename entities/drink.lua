@@ -7,7 +7,7 @@ local Drink = class('Drink', Entity)
 function Drink:initialize()
   Entity.initialize(self)
 
-  self.drinkMix = { a = true, b = false, c = false, d = false}
+  self.drinkMix = { 'a', 'c' }
 
   -- Set properties
   self.props.isDrink = true;          -- Is a drink
@@ -75,7 +75,7 @@ function Drink:update(dt)
       self.rect.x = actualX
       self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
 
-      if len > 0 then self:checkEndCollision(cols) end
+      if len > 0 then self:startCollision(cols) end
 
     elseif self.props.state == "drinking" then
       -- Nothing here
@@ -85,7 +85,7 @@ function Drink:update(dt)
 
       self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
 
-      if len > 0 then self:checkStartCollision(cols) end
+      if len > 0 then self:endCollision(cols) end
     end
 
 
@@ -123,7 +123,7 @@ end
 function Drink:endCollision(cols)
   for i,col in ipairs(cols) do
     local other = col.other
-    if other.props.isEnd and self.state == "advance" then
+    if other.props.isEnd and self.props.state == "toBartender" then
       --endZone:drinkReachedEnd()
       self:slideOffBar()
       do return end
@@ -135,8 +135,9 @@ end
 function Drink:startCollision(cols)
   for i,col in ipairs(cols) do
     local other = col.other
-    if other.props.isEnd and self.state == "advance" then
+    if other.props.isStart and self.props.state == "toCustomer" then
       --startZone:drinkReachedEnd()
+      print("this is the end")
       self:slideOffBar()
       do return end
     end
