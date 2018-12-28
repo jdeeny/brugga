@@ -27,7 +27,7 @@ function Title:draw()
   love.graphics.setColor(0.0,0.0,0.0,1.0)
   love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
-  self.menu:drawAt((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 200 )
+  self.menu:drawAt((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
 end
 
 function Title:update()

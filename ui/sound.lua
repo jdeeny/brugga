@@ -16,9 +16,26 @@ function SoundManager:initialize()
     male = ripple.newTag(),
   }
 
---  for name, sound in pairs(gameWorld.assets.audio.ui) do
+  assets = cargo.init({
+    dir = 'my_assets',
+    loaders = {
+      jpg = love.graphics.newImage
+    },
+    processors = {
+      ['images/'] = function(image, filename)
+        image:setFilter('nearest', 'nearest')
+      end
+    }
+  })
+
+
+  self.ui.assets = cargo.init('assets')
+
+  for name, sound in pairs(gameWorld.assets.audio.ui) do
 --    self.ui[name] = ripple.newSound({source = sound, tags = { self.tags.sfx }})
---  end
+  print(name)
+  print("!")
+  end
   self.ui['menuSelect'] = ripple.newSound({source = gameWorld.assets.audio.ui.menuSelect, tags = { self.tags.sfx, }})
   self.ui['menuSwitch'] = ripple.newSound({source = gameWorld.assets.audio.ui.menuSwitch, tags = { self.tags.sfx, }})
 
