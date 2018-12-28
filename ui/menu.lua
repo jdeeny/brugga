@@ -5,12 +5,15 @@ local Slider = require 'ui.slider'
 
 local Menu = class('Menu')
 
-function Menu:initialize(entries)
+function Menu:initialize(entries, w, h)
   local _entries = entries
+  self.w = w or 500
+  self.h = h or 300
   self.selected = 1
-  self.font = gameWorld.assets.fonts.generic(16)
-  self.vpad = 30
-  self.hpad = 15
+  self.font = gameWorld.assets.fonts.generic(42)
+  self.vsize = self.h / #_entries
+  self.vpad = 50
+  self.hpad = 25
   self.segments = 10
   self.sprites = {
     left = gameWorld.assets.sprites.ui.selectorLeft,
@@ -19,16 +22,14 @@ function Menu:initialize(entries)
     slideRight = gameWorld.assets.sprites.ui.sliderRight,
   }
 
-  self.width = 500
-
   for _, entry in ipairs(_entries) do
-    entry.text = Text:new(entry.label, { halign='center' }) --, font=self.font })
-
     if entry.kind == 'text' then
+      entry.text = Text:new(entry.label, { halign='center', valign='center', font=self.font })
       entry.width = entry.text:getWidth()
     elseif entry.kind == 'slider' then
-      entry.slider = Slider:new(entry.text, 0, 1.0, 10, entry.get())
-      entry.width = entry.slider:getWidth()
+      entry.text = Text:new(entry.label, { halign='left', valign='center', font=self.font })
+      entry.slider = Slider:new(0, 1.0, 10, entry.get())
+      entry.width = entry.slider:getWidth() + self.hpad + entry.text:getWidth()
     end
   end
   self.entries = _entries
@@ -52,29 +53,38 @@ function Menu:update(dt)
   elseif gameWorld.playerInput:pressed('left') then
     if self.entries[self.selected].slider then
       self.entries[self.selected].slider:lower()
+      self.entries[self.selected].set(self.entries[self.selected].slider.value)
     end
   elseif gameWorld.playerInput:pressed('right') then
     if self.entries[self.selected].slider then
       self.entries[self.selected].slider:raise()
+      self.entries[self.selected].set(self.entries[self.selected].slider.value)
     end
   end
 end
 
-function Menu:drawAt(x, y, w, h)
+function Menu:drawAt(x, y)
   love.graphics.setColor(colors.lightblue)
   for i, entry in ipairs(self.entries) do
-    local y = i * 30 + y
+    local _y = (i - 1) * self.vsize + y
     if entry.kind == 'text' then
-      entry.text:draw(x + self.sprites.left:getWidth() + self.hpad, y, w, h)
+      entry.text:draw(x, _y, self.w, self.h)
       if i == self.selected then
-        love.graphics.draw(self.sprites.left, x, y)
-        love.graphics.draw(self.sprites.right, x + self.width - self.sprites.right:getWidth(), y)
+        local c = x + self.w / 2
+        local l = c - entry.width / 2 - self.hpad - self.sprites.left:getWidth()
+        local r = c + entry.width / 2 + self.hpad
+        love.graphics.draw(self.sprites.left, l, _y + self.vsize / 2 - self.sprites.left:getHeight() / 2)
+        love.graphics.draw(self.sprites.right, r, _y + self.vsize / 2 - self.sprites.right:getHeight() / 2)
       end
     elseif entry.kind == 'slider' then
-      entry.slider:draw(x + self.sprites.left:getWidth() + self.hpad, y)
+      entry.text:draw(x + self.w / 2 - entry.width / 2, _y, entry.text:getWidth(), self.h)
+      entry.slider:draw(x + self.w / 2 + entry.width / 2 - entry.slider:getWidth(), _y + self.vsize / 2 - entry.slider:getHeight() / 2)
       if i == self.selected then
-        love.graphics.draw(self.sprites.slideLeft, x, y)
-        love.graphics.draw(self.sprites.slideRight, x + self.width - self.sprites.right:getWidth(), y)
+        local c = x + self.w / 2
+        local l = c - entry.width / 2 - self.hpad - self.sprites.slideLeft:getWidth()
+        local r = c + entry.width / 2 + self.hpad
+        love.graphics.draw(self.sprites.slideLeft, l, _y + self.vsize / 2 - self.sprites.slideLeft:getHeight() / 2)
+        love.graphics.draw(self.sprites.slideRight, r, _y + self.vsize / 2 - self.sprites.slideRight:getHeight() / 2)
       end
     end
 

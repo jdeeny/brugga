@@ -5,8 +5,7 @@ local text = require 'ui.text'
 
 local Slider = class('Slider')
 
-function Slider:initialize(text, min, max, segments, value)
-  self.text = text
+function Slider:initialize(min, max, segments, value)
   self.min = min or 0.0
   self.max = max or 1.0
   self.segments = segments or 10
@@ -20,11 +19,11 @@ end
 
 
 function Slider:getWidth()
-  return self.text:getWidth() + self.pad + (self.segmentWidth * self.segments)
+  return self.segmentWidth * self.segments
 end
 
 function Slider:getHeight()
-  return self.text:getHeight()
+  return self.filled:getHeight()
 end
 
 function Slider:lower()

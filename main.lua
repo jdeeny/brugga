@@ -10,7 +10,7 @@ gameWorld = {}
 
 function love.load()
   gameWorld.assets = cargo.init('assets')
-  gameWorld.colors = require 'ui.colors'
+  gameWorld.colors = require('ui.colors')
   gameWorld.sound = require('ui.sound'):new()
 
   gameWorld.playerInput = baton.new {
