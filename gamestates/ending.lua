@@ -19,7 +19,7 @@ function Ending:update(dt)
 end
 
 function Ending:draw()
-    love.graphics.draw(love.graphics.newText(gameWorld.assets.fonts.generic(16), "Score: " .. gameWorld.playerScore), 1280 / 2, 720/2)
+    love.graphics.draw(love.graphics.newText(gameWorld.assets.fonts.generic(16), "Score: " .. gameWorld.playerData.score), 1280 / 2, 720/2)
 end
 
 return Ending

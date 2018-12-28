@@ -37,7 +37,7 @@ function love.load()
   }
 
   gameWorld.gameState = require('gamestates.manager'):new()
-  gameWorld.playerScore = 0
+  gameWorld.playerData = require('player.playerdata'):new()
 end
 
 function love.update(dt)

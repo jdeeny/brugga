@@ -17,6 +17,9 @@ function Gameplay:initialize(name)
 end
 
 function Gameplay:enter()
+  -- reset score
+  gameWorld.playerData:reset()
+
   -- Collision world
   self.bumpWorld = bump.newWorld(50)
   ---- Entity Creation
@@ -91,7 +94,7 @@ function  Gameplay:update(dt)
   self.nextReward = self.nextReward - dt
   if self.nextReward <= 0.0 then
     self.nextReward = self.rewardTime
-    gameWorld.playerScore = gameWorld.playerScore + 1
+    gameWorld.playerData:scoreIncrease(1)
   end
 end
 
