@@ -3,7 +3,7 @@ local bump = require 'lib.bump'
 local rect = require 'physics.rect'
 local cargo = require 'lib.cargo'
 local baton = require 'lib.baton'
-require 'lib.pl'
+require 'lib.pl'    -- provides on-demand lading on the penlight sublibraries
 
 -- Should be the only global
 gameWorld = {}
@@ -53,4 +53,10 @@ end
 
 function love.quit()
   print("Thanks for playing! Come back soon!")
+end
+
+
+-- switch to a newly connected joystick
+function love.joystickadded(j)
+  if gameWorld.playerInput then gameWorld.playerInput.joystick = j end
 end
