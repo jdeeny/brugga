@@ -3,6 +3,14 @@ local Gamestate = require 'gamestates.gamestate'
 
 local Ending = class('Ending', Gamestate)
 
+function Ending:initialize(name)
+  Gamestate.initialize(self, name)
+end
+
+function Ending:enter()
+  gameWorld.sound:playUi('gameOver')
+end
+
 function Ending:update(dt)
   if gameWorld.playerInput:pressed 'ok' then
     print("exit ending")

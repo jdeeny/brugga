@@ -3,9 +3,9 @@ local bump = require 'lib.bump'
 local Dude = require 'entities.dude'
 local Enemy = require 'entities.enemy'
 local Drink = require 'entities.drink'
+local Generator = require 'entities.generator'
 local Zone = require 'entities.zone'
 local Gamestate = require 'gamestates.gamestate'
-
 local Gameplay = class('Gameplay', Gamestate)
 
 -- Collision world
@@ -41,7 +41,15 @@ function Gameplay:enter()
   end
 end
 
+function Gameplay:enter()
+  self.generator = Generator:new()
+end
+
 function  Gameplay:update(dt)
+  self.generator:update(dt)
+  local gen = self.generator:generate()
+  if gen then pretty.dump(gen) end
+
   if gameWorld.playerInput:pressed('pause') then
     gameWorld.gameState:pushState('pause')
   elseif gameWorld.playerInput:pressed 'ok' then
