@@ -6,6 +6,8 @@ local SoundManager = class('SoundManager')
 
 function SoundManager:initialize()
   self.music = {}
+  self.ui = {}
+  self.sfx = {}
   self.tags = {
     music = ripple.newTag(),
     sfx = ripple.newTag(),
@@ -13,11 +15,17 @@ function SoundManager:initialize()
     angry = ripple.newTag(),
     male = ripple.newTag(),
   }
+
+--  for name, sound in pairs(gameWorld.assets.audio.ui) do
+--    self.ui[name] = ripple.newSound({source = sound, tags = { self.tags.sfx }})
+--  end
+  self.ui['menuSelect'] = ripple.newSound({source = gameWorld.assets.audio.ui.menuSelect, tags = { self.tags.sfx, }})
+  self.ui['menuSwitch'] = ripple.newSound({source = gameWorld.assets.audio.ui.menuSwitch, tags = { self.tags.sfx, }})
+
   --for m in gameWorld.assets.music do
   --  self.music[m] = ripple.newSound({source = m, volume = gameWorld.options.musicVolume, tags = { 'music' }})
   --end
-  print(gameWorld.assets.music.sonata)
-  self.music['test'] = ripple.newSound({source = gameWorld.assets.music.sonata, tags = { self.tags.music, self.tags.sound }})
+  self.music['test'] = ripple.newSound({source = gameWorld.assets.audio.music.sonata, tags = { self.tags.music, self.tags.sound }})
   for _, t in ipairs(self:scanTags('music/drink_male.ogg')) do
     print(t)
   end
@@ -36,11 +44,16 @@ function SoundManager:scanTags(path)
   return tags
 end
 
+function SoundManager:playUi(name)
+  print("PlayUI: " .. name)
+  pretty.dump(self.ui)
+  if self.ui[name] then self.ui[name]:play() end
+end
+
 
 function SoundManager:playMusic()
   self.musicPlaying = 'test'
   self.music[self.musicPlaying]:play()
-
 end
 
 function SoundManager:setMusicVolume(vol)
