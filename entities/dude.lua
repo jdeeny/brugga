@@ -108,8 +108,8 @@ function Dude:changeRow(dt)
   end
 
   self.moveDelay = 1/15
-  self.rect.x = 1000 + (self.row * 20)
-  self.rect.y = (self.row * 100) + 100
+  self.rect.x = 1000 + (self.row * 40)
+  self.rect.y = 15 + (self.row * 185)
 
   self:updateHeldDrinks()
 end
