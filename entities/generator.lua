@@ -65,7 +65,7 @@ function Generator:generate()
 
   print("Threat: " .. threat .. " " .. self.threat)
 
-  return { animations = animations, images=images, drink=drink, speed=speed, row=math.random(4), threat = threat }
+  return { animations = animations, images=images, drink=drink, speed=speed, row=math.random(3), threat = threat }
 end
 
 function Generator:update(dt)

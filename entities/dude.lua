@@ -11,18 +11,80 @@ function Dude:initialize()
   self.moveDir = "none"
   self.moveDelay = 0
 
+  -- Drinks
+  self.drinkPool = nil
+  self.drinkPour = nil
+  self.drinkPourOffset = { x=64, y=-8}
+  self.drinkSend = nil
+  self.drinkSendOffset = { x=-32, y=-8}
+
   -- Create collision rectangle
   self.rect:set(0, 0, 64, 64)
 end
 
 ---- SPAWN ----
-function Dude:spawn()
+function Dude:spawn(drinkPool)
+  self.drinkPool = drinkPool
   self.isActive = true
   self.rect.x = 1000 + (self.row * 20)
   self.rect.y = (self.row * 100) + 100
 end
 
+---- DRINK ACTIONS ----
+
+function Dude:getEmptyDrink()
+  self.drinkPour = self.drinkPool:getNewDrink()
+  self:updateHeldDrinks()
+end
+
+function Dude:updateHeldDrinks()
+  if self.drinkPour ~= nil then
+    self.drinkPour.rect:setPos(self.rect.x + self.drinkPourOffset.x, self.rect.y + self.drinkPourOffset.y)
+    self.drinkPour.row = self.row
+  end
+  if self.drinkSend ~= nil then
+    self.drinkSend.rect:setPos(self.rect.x + self.drinkSendOffset.x, self.rect.y + self.drinkSendOffset.y)
+    self.drinkSend.row = self.row
+  end
+end
+
+function Dude:swapDrinks()
+  local prevSend, prevPour = self.drinkSend, self.drinkPour
+  self.drinkSend = prevPour
+  self.drinkPour = prevSend
+  self:updateHeldDrinks()
+end
+
+function Dude:pour()
+  if self.drinkPour == nil then
+      self:getEmptyDrink()
+  end
+
+  if self.drinkPour ~= nil then
+    if self.row == 1 and self.drinkPour.drinkMix['a'] == nil then
+      table.insert(self.drinkPour.drinkMix, 'a')
+    elseif self.row == 2 and self.drinkPour.drinkMix['b'] == nil then
+      table.insert(self.drinkPour.drinkMix, 'b')
+    elseif self.row == 3 and self.drinkPour.drinkMix['c'] == nil then
+      table.insert(self.drinkPour.drinkMix, 'c')
+    end
+  end
+end
+
+function Dude:send()
+  if self.drinkSend ~= nil then
+    self.drinkSend:sendLeft()
+    self.drinkSend = nil
+  end
+end
+
+---- UPDATE ----
+
 function Dude:update(dt)
+  if (self.moveDelay > 0) then
+    self.moveDelay = self.moveDelay - dt
+  end
+
   if (self.moveDir ~= "none") then
     self:changeRow(dt)
   end
@@ -30,7 +92,6 @@ end
 
 function Dude:changeRow(dt)
   if (self.moveDelay > 0) then
-    self.moveDelay = self.moveDelay - dt
     do return end
   end
 
@@ -42,13 +103,15 @@ function Dude:changeRow(dt)
 
   if (self.row <= 1) then
     self.row = 1
-  elseif (self.row >= 4) then
-    self.row = 4
+  elseif (self.row >= 3) then
+    self.row = 3
   end
 
   self.moveDelay = 1/15
   self.rect.x = 1000 + (self.row * 20)
   self.rect.y = (self.row * 100) + 100
+
+  self:updateHeldDrinks()
 end
 
 function Dude:moveUp()

@@ -7,7 +7,7 @@ local Drink = class('Drink', Entity)
 function Drink:initialize()
   Entity.initialize(self)
 
-  self.drinkMix = { 'a', 'c' }
+  self.drinkMix = {  }
 
   -- Set properties
   self.props.isDrink = true;          -- Is a drink

@@ -24,13 +24,13 @@ return baton.new {
     -- [esc] and start button are pause / unpause
 
     -- Action: activate menu item, serve drink, advance through screens
-    action = { 'key:return', 'key:i', 'key:k', 'key:x', 'key:.', 'button:a' },
+    action = { 'key:return', 'key:i', 'key:k', 'key:z', 'key:.', 'button:a' },
 
     -- Pour: exit menu, pour ingredient
     pour = { 'key:o', 'key:l', 'key:c', 'key:/', 'button:b' },
 
     -- Swap: switch hands
-    swap = { 'key:u', 'key:j', 'key:z', 'key:,', 'button:x', 'button:y'},
+    swap = { 'key:u', 'key:j', 'key:x', 'key:,', 'button:x', 'button:y'},
 
     -- Pause
     pause = { 'key:escape', 'button:start' },
