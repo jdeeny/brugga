@@ -22,6 +22,8 @@ function Gameplay:enter()
   -- reset score
   gameWorld.playerData:reset()
 
+  self.overlay = require('ui.overlay'):new()
+
   -- Collision world
   self.bumpWorld = bump.newWorld(50)
   ---- Entity Creation
@@ -50,8 +52,7 @@ function  Gameplay:update(dt)
   local gen = self.generator:generate()
   if gen then
     --pretty.dump(gen)
-    local new_patron = Enemy:new(gen)      -- Create new patron
-    pretty.dump(new_patron)
+    local new_patron = Enemy:new(gen, self.overlay)      -- Create new patron
     new_patron:addToWorld(self.bumpWorld)       -- Add to bump world
     table.insert(self.patrons, new_patron) -- Put in master patron table
   end
@@ -101,6 +102,8 @@ function  Gameplay:update(dt)
     self.nextReward = self.rewardTime
     gameWorld.playerData:scoreIncrease(1)
   end
+
+  self.overlay:update(dt)
 end
 
 function Gameplay:draw()
@@ -127,6 +130,9 @@ function Gameplay:draw()
   for i=1,self.rows do
     self.drinkPool:draw(i)
   end
+
+  self.overlay:draw()
+
 end
 
 return Gameplay

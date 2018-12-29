@@ -6,7 +6,7 @@ local rect = require 'physics.rect'
 
 local Enemy = class('Enemy', Entity)
 
-function Enemy:initialize(data)
+function Enemy:initialize(data, overlay)
   Entity.initialize(self)  -- Run base class init
 
   -- Read enemy data
@@ -14,14 +14,11 @@ function Enemy:initialize(data)
   self.speed = data.speed
   self.row = data.row
   self.drinkMix = data.drink -- Desired drink
+  self.overlay = overlay
+  self.reward = data.threat
 
   self.animations = data.animations
   self.images = data.images
-
-  print("arch dump--")
-  pretty.dump(self.animations)
-  print("arch dump end--")
-
 
   -- Set properties
   self.isActive = true
@@ -121,6 +118,7 @@ function Enemy:update(dt)
       if len > 0 then self:checkEndCollision(cols) end
     -- Fly backwards when hit by drink
     elseif self.state == "hit" then
+      self.overlay:addFlyer(self.reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
       if self.hitDelay > 0 then
         self.hitDelay = self.hitDelay - dt            -- Advance hold timer
 
@@ -149,8 +147,6 @@ function Enemy:update(dt)
 
   end
   for n, anim in pairs(self.animations) do
-    print("update anim:" .. n)
-    pretty.dump(anim)
     anim:update(dt)
   end
 end
@@ -159,7 +155,6 @@ end
 
 function Enemy:draw()
   if self.isActive then
-    pretty.dump(self.animations)
     if self.animations[self.state] then
       love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
       self.animations[self.state]:draw(self.images[self.state], self.rect.x, self.rect.y)
