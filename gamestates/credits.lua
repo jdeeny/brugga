@@ -12,7 +12,7 @@ function Credits:initialize(name)
     { name="John Deeny", contact="jdeeny@gmail.com", role="code", },
     { name="Dieting Hippo", contact="@", role="code",},
     { name="Drauc", contact="soundcloud.com/drauc", role="audio", },
-    { name="Raujinn", contact="@", role="art", },
+    { name="raujinn", contact="@raujinn", role="art", },
     { name="Ashe", contact="@", role="voice", },
     -- { name="Xibanya", contact="@", role="voice", },
     -- { name="Mihai", contact="@", role="voice", },
