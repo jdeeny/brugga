@@ -38,8 +38,8 @@ function Overlay:draw()
   love.graphics.setColor(gameWorld.colors.score)
   love.graphics.setFont(self.flyer_font)
   for _, f in ipairs(self.flying) do
-    local x = f.x * f.done + self.score_x * (1.0 - f.done)
-    local y = f.y * f.done + self.score_y * (1.0 - f.done)
+    local x = f.x * (1 - f.done) + self.score_x * f.done
+    local y = f.y * (1 - f.done) + self.score_y * f.done
 
     love.graphics.draw(f.text, x, y)
 
