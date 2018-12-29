@@ -23,6 +23,9 @@ function Overlay:initialize()
   self.score_x = 1280 - self.score_width - 50
   self.score_y = 720 - 100
 
+  self.scale_x = 1.0
+  self.scale_y = 1.0
+
   self.flight_time = 0.7
 end
 
@@ -30,6 +33,7 @@ function Overlay:update(dt)
   for i, f in ipairs(self.flying) do
     if f.done >= 0.999 then
       gameWorld.sound:playSfx('coin')
+      self:pulseScore()
       self.flying[i] = nil
     end
   end
@@ -51,8 +55,8 @@ function Overlay:draw()
   love.graphics.setFont(self.score_font)
 
   local score_str = comma_value(gameWorld.playerData.score) .. ".00"
-  love.graphics.printf("$", self.score_x, self.score_y, self.score_width, 'left')
-  love.graphics.printf(score_str, self.score_x, self.score_y, self.score_width, 'right')
+  love.graphics.printf("$", self.score_x, self.score_y, self.score_width, 'left', 0, self.scale_x, self.scale_y)
+  love.graphics.printf(score_str, self.score_x, self.score_y, self.score_width, 'right', 0, self.scale_x, self.scale_y, self.score_width * self.scale_x - self.score_width)
 end
 
 function Overlay:addFlyer(amount, x, y)
@@ -64,6 +68,10 @@ function Overlay:addFlyer(amount, x, y)
   local t = self.flight_time + (love.math.random(self.flight_time / 10) - (self.flight_time / 20))
   print("score ".. self.score_x.." "..self.score_y)
   flux.to(new_flyer, t, { done = 1.0 })
+end
+
+function Overlay:pulseScore()
+  flux.to(self, 0.3, { scale_x = 1.2, scale_y = 1.4 }):ease('cubicout'):after(self, 0.7, { scale_x = 1.0, scale_y = 1.0 } ):ease('elasticout')
 end
 
 return Overlay

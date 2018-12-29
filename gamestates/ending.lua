@@ -21,9 +21,9 @@ end
 function Ending:initialize(name)
   Gamestate.initialize(self, name)
 
-  self.menu_height = 100
+  self.menu_height = 120
   self.menu_width = 1280
-  self.menu_y = 600
+  self.menu_y = 580
 
   self.menu = Menu:new({
     { kind='text', label='Play Again', func=function() gameWorld.gameState:setState('gameplay') end },
