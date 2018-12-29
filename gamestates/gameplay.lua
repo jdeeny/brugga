@@ -50,9 +50,10 @@ function  Gameplay:update(dt)
   local gen = self.generator:generate()
   if gen then
     --pretty.dump(gen)
-    local newPatron = Enemy:new(gen)      -- Create new patron
-    newPatron:addToWorld(self.bumpWorld)       -- Add to bump world
-    table.insert(self.patrons, newPatron) -- Put in master patron table
+    local new_patron = Enemy:new(gen)      -- Create new patron
+    pretty.dump(new_patron)
+    new_patron:addToWorld(self.bumpWorld)       -- Add to bump world
+    table.insert(self.patrons, new_patron) -- Put in master patron table
   end
 
   if gameWorld.playerInput:pressed('pause') then

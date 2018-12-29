@@ -1,5 +1,5 @@
 local class = require 'lib.middleclass'
-
+local anim8 = require 'lib.anim8'
 local Generator = class('Generator')
 
 function Generator:initialize()
@@ -17,7 +17,7 @@ function Generator:initialize()
   self.attempsRemaining = 0.8
 end
 
-function shuffle(tbl)
+local function shuffle(tbl)
   for i = #tbl, 2, -1 do
     local j = math.random(i)
     tbl[i], tbl[j] = tbl[j], tbl[i]
@@ -32,9 +32,16 @@ function Generator:generate()
   self.patronsGenerated = self.patronsGenerated + 1
 
   local archetype = self.archetypes:getRandom()
+  local animations = {}
+  local images = {}
 
-  -- pretty.dump(archetype)
+  for name, anim in pairs(archetype.animations) do
+    print("archs: "..name)
+    animations[name] = anim8.newAnimation(anim.grid, anim.rate)
+    images[name] = anim.image
+  end
 
+  print("endarchs")
   local drink_complexity = 1
   if love.math.random(50) < self.threat then drink_complexity = drink_complexity + 1 end
   if love.math.random(100) < self.threat then drink_complexity = drink_complexity + 1 end
@@ -58,7 +65,7 @@ function Generator:generate()
 
   print("Threat: " .. threat .. " " .. self.threat)
 
-  return { kind=archetype, drink=drink, speed=speed, row=math.random(3), threat = threat }
+  return { animations = animations, images=images, drink=drink, speed=speed, row=math.random(3), threat = threat }
 end
 
 function Generator:update(dt)
