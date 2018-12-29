@@ -16,6 +16,7 @@ function Enemy:initialize(data)
   self.drinkMix = data.drink -- Desired drink
 
   self.animations = data.animations
+  self.images = data.images
 
   print("arch dump--")
   pretty.dump(self.animations)
@@ -147,7 +148,9 @@ function Enemy:update(dt)
     end
 
   end
-  for _, anim in pairs(self.animations) do
+  for n, anim in pairs(self.animations) do
+    print("update anim:" .. n)
+    pretty.dump(anim)
     anim:update(dt)
   end
 end
@@ -158,7 +161,8 @@ function Enemy:draw()
   if self.isActive then
     pretty.dump(self.animations)
     if self.animations[self.state] then
-      self.animations[self.state]:draw(self.x, self.y)
+      love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+      self.animations[self.state]:draw(self.images[self.state], self.rect.x, self.rect.y)
     else
       Entity.draw(self)
     end
