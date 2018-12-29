@@ -1,6 +1,7 @@
 local class = require 'lib.middleclass'
 local Gamestate = require 'gamestates.gamestate'
 local anim8 = require 'lib.anim8'
+local Menu = require 'ui.menu'
 
 local Ending = class('Ending', Gamestate)
 
@@ -19,6 +20,16 @@ end
 
 function Ending:initialize(name)
   Gamestate.initialize(self, name)
+
+  self.menu_height = 100
+  self.menu_width = 1280
+  self.menu_y = 600
+
+  self.menu = Menu:new({
+    { kind='text', label='Play Again', func=function() gameWorld.gameState:setState('gameplay') end },
+    { kind='text', label='Return to Menu', func=function() gameWorld.gameState:setState('title') end },
+  }, self.menu_width, self.menu_height)
+
 
   self.font_banner = gameWorld.assets.fonts.generic(90)
   self.font_heading = gameWorld.assets.fonts.generic(60)
@@ -53,11 +64,13 @@ function Ending:enter()
 end
 
 function Ending:update(dt)
+  self.menu:update(dt)
   self.animation:update(dt)
-  if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour') then
+--[[  if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour') then
     print("exit ending")
     gameWorld.gameState:setState('credits')
   end
+  --]]
 end
 
 function Ending:draw()
@@ -81,6 +94,8 @@ function Ending:draw()
   --love.graphics.printf("Served:", self.margin, self.patrons_y, self.print_width, 'left')
   --love.graphics.printf("Drinks:", self.margin, self.drinks_y, self.print_width, 'left')
   self.animation:draw(self.image, self.avatar_x, self.avatar_y)
+
+  self.menu:draw(0, self.menu_y)
 
   if self.fade > 0 then
     love.graphics.setColor(0.0, 0.0, 0.0, self.fade)

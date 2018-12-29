@@ -1,6 +1,6 @@
 local class = require 'lib.middleclass'
 local Gamestate = require 'gamestates.gamestate'
-local Menu = require'ui.menu'
+local Menu = require 'ui.menu'
 
 local Title = class('Title', Gamestate)
 
@@ -35,7 +35,7 @@ function Title:draw()
   love.graphics.setColor(0.0,0.0,0.0,1.0)
   love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
-  self.menu:drawAt((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
+  self.menu:draw((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
   if self.fade > 0 then
     love.graphics.setColor(1.0-self.fade, 1.0-self.fade, 1.0-self.fade, self.fade) --(0.0, 0.0, 0.0, self.fade)
     love.graphics.rectangle('fill', 0, 0, 1280, 720)

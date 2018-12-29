@@ -28,7 +28,7 @@ function Pause:draw()
   love.graphics.setColor(1.0, 1.0, 1.0, 0.5)
   love.graphics.rectangle('fill', self.x - 20, self.y - 20, self.w + 40, self.h + 40, 16, 16, 16)
   love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
-  self.menu:drawAt(self.x, self.y)
+  self.menu:draw(self.x, self.y)
 end
 
 function Pause:exit()
