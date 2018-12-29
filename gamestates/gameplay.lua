@@ -3,6 +3,7 @@ local bump = require 'lib.bump'
 local Dude = require 'entities.dude'
 local Enemy = require 'entities.enemy'
 local Drink = require 'entities.drink'
+local DrinkPool = require 'entities.drinkpool'
 local Generator = require 'entities.generator'
 local Zone = require 'entities.zone'
 local Gamestate = require 'gamestates.gamestate'
@@ -12,6 +13,7 @@ local Gameplay = class('Gameplay', Gamestate)
 function Gameplay:initialize(name)
   Gamestate.initialize(self, name)
 
+  self.rows = 3
   self.rewardTime = 0.5
   self.nextReward = self.rewardTime
 end
@@ -26,18 +28,17 @@ function Gameplay:enter()
   -- Patrons
   self.generator = Generator:new()
   self.patrons = {}
+  -- Drinks
+  self.drinkPool = DrinkPool:new(30, self.bumpWorld)
   -- Brugga
   self.brugga = Dude:new()
   self.brugga:addToWorld(self.bumpWorld)
-  self.brugga:spawn()
-  -- Static drink
-  self.drink = Drink:new()
-  self.drink:addToWorld(self.bumpWorld)
-  self.drink.row = 1
+  self.brugga:spawn(self.drinkPool)
+
   -- Zones
   self.startZones = {}
   self.endZones = {}
-  for i=1,4 do
+  for i=1,self.rows do
     table.insert(self.startZones, Zone:new(i, "start", self.bumpWorld))
     table.insert(self.endZones, Zone:new(i, "end", self.bumpWorld))
   end
@@ -69,20 +70,25 @@ function  Gameplay:update(dt)
     self.brugga:moveDown()
   end
 
+  -- Pour drink
+  if gameWorld.playerInput:pressed('pour') then
+    self.brugga:pour()
+  end
+
+  -- Swap drink
+  if gameWorld.playerInput:pressed('swap') then
+    self.brugga:swapDrinks()
+  end
+
   -- Spawn drink if player presses throw
   if gameWorld.playerInput:pressed('action') then
-    if self.bumpWorld:hasItem(self.drink.rect) == false then
-      self.drink:addToWorld(self.bumpWorld)
-    end
-    self.drink.isActive = true
-    self.drink.row = self.brugga.row
-    self.drink:sendLeft()
+    self.brugga:send()
   end
 
   -- Update entities
 
   if self.brugga.isActive then self.brugga:update(dt) end
-  if self.drink.isActive then self.drink:update(dt) end
+  self.drinkPool:update(dt)
 
   -- Update patrons
   for _, p in ipairs(self.patrons) do
@@ -98,7 +104,7 @@ end
 
 function Gameplay:draw()
   -- Zones
-  for i=1,4 do
+  for i=1,self.rows do
     self.startZones[i]:draw()
     self.endZones[i]:draw()
   end
@@ -108,19 +114,18 @@ function Gameplay:draw()
   love.graphics.rectangle('fill', 300, 220, 680, 40)
   love.graphics.rectangle('fill', 280, 320, 720, 40)
   love.graphics.rectangle('fill', 260, 420, 760, 40)
-  love.graphics.rectangle('fill', 240, 520, 800, 40)
 
   self.brugga:draw() -- Draw brugga
 
   -- Draw patrons
-  local patronSize = table.getn(self.patrons)
-  if patronSize > 0 then
-    for i=1,patronSize do
-      self.patrons[i]:draw()
-    end
+  for _, p in ipairs(self.patrons) do
+    p:draw()
   end
 
-  self.drink:draw()  -- Draw drink
+  -- Draw drinks
+  for i=1,self.rows do
+    self.drinkPool:draw(i)
+  end
 end
 
 return Gameplay
