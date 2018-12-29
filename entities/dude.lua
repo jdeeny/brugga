@@ -64,12 +64,12 @@ function Dude:pour()
   end
 
   if self.drinkPour ~= nil then
-    if self.row == 1 and self.drinkPour.drinkMix['a'] == nil then
-      table.insert(self.drinkPour.drinkMix, 'a')
-    elseif self.row == 2 and self.drinkPour.drinkMix['b'] == nil then
-      table.insert(self.drinkPour.drinkMix, 'b')
-    elseif self.row == 3 and self.drinkPour.drinkMix['c'] == nil then
-      table.insert(self.drinkPour.drinkMix, 'c')
+    if self.row == 1 and self.drinkPour.props.drinkMix['a'] == nil then
+      self.drinkPour.props.drinkMix['a'] = true
+    elseif self.row == 2 and self.drinkPour.props.drinkMix['b'] == nil then
+      self.drinkPour.props.drinkMix['b'] = true
+    elseif self.row == 3 and self.drinkPour.props.drinkMix['c'] == nil then
+      self.drinkPour.props.drinkMix['c'] = true
     end
   end
 end
@@ -92,6 +92,8 @@ function Dude:update(dt)
     self:changeRow(dt)
   end
 end
+
+---- MOVEMENT --
 
 function Dude:changeRow(dt)
   if (self.moveDelay > 0) then
@@ -128,6 +130,8 @@ end
 function Dude:moveNone()
   self.moveDir = "none"
 end
+
+---- COLLISION ----
 
 function Dude:collisionFilter()
   local filter = function(item, other)

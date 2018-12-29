@@ -50,10 +50,8 @@ function Generator:generate()
   ingredients = shuffle(ingredients)
   local drink = {}
   for i=1, drink_complexity do
-    drink[#drink+1] = ingredients[i]
+    drink[ingredients[i]] = true
   end
-
-  --pretty.dump(drink)
 
   local speed = 1 + math.random(self.threat) / 100
 
