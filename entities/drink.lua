@@ -7,7 +7,7 @@ local Drink = class('Drink', Entity)
 function Drink:initialize()
   Entity.initialize(self)
 
-  self.drinkMix = {  }
+  self.drinkMix = {}
 
   -- Set properties
   self.props.isDrink = true;          -- Is a drink
@@ -72,7 +72,7 @@ function Drink:update(dt)
     if self.props.state == "held" then
       -- Nothing here
     elseif self.props.state == "toCustomer" then
-      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (175 * dt), self.rect.y, self:collisionFilter())
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (225 * dt), self.rect.y, self:collisionFilter())
       self.rect.x = actualX
       self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
 
@@ -97,8 +97,23 @@ end
 
 function Drink:draw()
   if self.isActive and self.props.state ~= "drinking" then
+    love.graphics.setColor(1.0,1.0,1.0,1.0)
     love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y - 50)
+
+    if self.props.drinkMix['a'] then
+      love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
+      love.graphics.rectangle('fill', self.rect.x + 80, self.rect.y, 16, 16)
+    end
+    if self.props.drinkMix['b'] then
+      love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
+      love.graphics.rectangle('fill', self.rect.x + 80, self.rect.y + 16, 16, 16)
+    end
+    if self.props.drinkMix['c'] then
+      love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
+      love.graphics.rectangle('fill', self.rect.x + 80, self.rect.y + 32, 16, 16)
+    end
   end
+
 end
 
 ---- COLLISION ----

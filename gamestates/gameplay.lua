@@ -113,10 +113,19 @@ function  Gameplay:update(dt)
 end
 
 function Gameplay:draw()
+  love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+
   -- BG
   love.graphics.draw(self.BG)
 
   ---- DEBUG DRAW -- --
+  love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
+  love.graphics.rectangle('fill', 1000, 150, 100, 100)
+  love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
+  love.graphics.rectangle('fill', 1040, 335, 100, 100)
+  love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
+  love.graphics.rectangle('fill', 1080, 520, 100, 100)
+
   --[[]
   -- Zones
   for i=1,self.rows do
