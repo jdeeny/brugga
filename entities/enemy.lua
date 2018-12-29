@@ -75,13 +75,19 @@ end
 
 ---- BAR ACTIONS ----
 function Enemy:matchDrink(drinkMix)
-  if self.drinkMix['a'] ~= drinkMix['a']
-  or self.drinkMix['b'] ~= drinkMix['b']
-  or self.drinkMix['c'] ~= drinkMix['c']
-  or self.drinkMix['d'] ~= drinkMix['d']
-  then return false end
-
-  return true
+  if self.drinkMix['a'] == drinkMix['a']
+  and self.drinkMix['b'] == drinkMix['b']
+  and self.drinkMix['c'] == drinkMix['c'] then
+    print("match")
+    pretty.dump(self.drinkMix)
+    pretty.dump(drinkMix)
+    return true
+  else
+    print("no match")
+    pretty.dump(self.drinkMix)
+    pretty.dump(drinkMix)
+    return false
+  end
 end
 
 function Enemy:reachedEnd()
@@ -90,7 +96,7 @@ end
 
 function Enemy:exited()
   self.overlay:addFlyer(self.reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
-  
+
   self.drink:deactivate() -- Drink is no longer active
   self:deactivate()
 end
@@ -156,6 +162,18 @@ function Enemy:draw()
       self.animations[self.state]:draw(image, self.rect.x - 100, self.rect.y - 140)
     else
       Entity.draw(self)
+    end
+    if self.drinkMix['a'] then
+      love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
+      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 48, 16, 16)
+    end
+    if self.drinkMix['b'] then
+      love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
+      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 32, 16, 16)
+    end
+    if self.drinkMix['c'] then
+      love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
+      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 16, 16, 16)
     end
   end
 end
