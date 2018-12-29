@@ -2,6 +2,7 @@ local class = require 'lib.middleclass'
 local bump = require 'lib.bump'
 local rect = require 'physics.rect'
 local cargo = require 'lib.cargo'
+flux = require 'lib.flux'
 require 'lib.pl'    -- provides on-demand lading on the penlight sublibraries
 
 -- Should be the only global
@@ -26,8 +27,9 @@ function love.load()
 end
 
 function love.update(dt)
-  gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
+  flux.update(dt)
   gameWorld.gameState:update(dt)
+  gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
   if gameWorld.debug then gameWorld.debug:update(dt) end
 end
 

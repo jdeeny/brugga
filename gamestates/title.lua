@@ -20,9 +20,13 @@ function Title:initialize(name)
     { kind='text', label='Exit to Desktop', func=function() gameWorld.settings:save() love.event.push('quit') end },
   }, self.menuWidth, self.menuHeight)
 
+  self.fade = 0.0
 end
 
 function Title:enter()
+  self.fade = 1.0
+  flux.to(self, 2, { fade = 0.0 }):ease("quadinout")
+
   gameWorld.sound:playMusic()
 end
 
@@ -32,6 +36,10 @@ function Title:draw()
   love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
   self.menu:drawAt((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
+  if self.fade > 0 then
+    love.graphics.setColor(1.0-self.fade, 1.0-self.fade, 1.0-self.fade, self.fade) --(0.0, 0.0, 0.0, self.fade)
+    love.graphics.rectangle('fill', 0, 0, 1280, 720)
+  end
 end
 
 function Title:exit()
