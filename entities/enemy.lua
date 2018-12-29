@@ -148,7 +148,8 @@ function Enemy:draw()
   if self.isActive then
     if self.animations[self.state] then
       love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
-      self.animations[self.state]:draw(self.images[self.state], self.rect.x, self.rect.y)
+      local image = self.images[self.state]
+      self.animations[self.state]:draw(image, self.rect.x - 100, self.rect.y - 140)
     else
       Entity.draw(self)
     end
