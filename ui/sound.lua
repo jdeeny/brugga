@@ -34,6 +34,10 @@ function SoundManager:initialize()
   self.ui['musicIncrease'] = ripple.newSound({source = gameWorld.assets.audio.ui.volumeIncrease, tags = { self.tags.music, self.tags.ui, }})
   self.ui['musicDecrease'] = ripple.newSound({source = gameWorld.assets.audio.ui.volumeDecrease, tags = { self.tags.music, self.tags.ui, }})
 
+
+  self.sfx['coin'] = ripple.newSound({source = gameWorld.assets.audio.sfx.money1, tags = { self.tags.sfx, }})
+
+
   --for m in gameWorld.assets.music do
   --  self.music[m] = ripple.newSound({source = m, volume = gameWorld.options.musicVolume, tags = { 'music' }})
   --end
@@ -69,8 +73,11 @@ function SoundManager:scanTags(path)
 end
 
 function SoundManager:playUi(name)
-  print("PlayUI: " .. name)
   if self.ui[name] then self.ui[name]:play() end
+end
+
+function SoundManager:playSfx(name)
+  if self.sfx[name] then self.sfx[name]:play() end
 end
 
 

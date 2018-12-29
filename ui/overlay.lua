@@ -29,6 +29,7 @@ end
 function Overlay:update(dt)
   for i, f in ipairs(self.flying) do
     if f.done >= 0.999 then
+      gameWorld.sound:playSfx('coin')
       self.flying[i] = nil
     end
   end
