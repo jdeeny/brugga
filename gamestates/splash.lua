@@ -9,7 +9,7 @@ function Splash:initialize(name)
 end
 
 function Splash:enter()
-  self.forcewatch_time = love.timer.getTime() + 0.35
+  self.forcewatch_time = love.timer.getTime() + 0.25
   self.fade = 1.0
   flux.to(self, 1.0, { fade = 0.0 }):ease("quadinout")
 end
@@ -27,7 +27,7 @@ function Splash:update()
   if (gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour'))
      and love.timer.getTime() > self.forcewatch_time and self.fade == 0
   then
-    flux.to(self, 1.2, { fade = 1.0 }):ease("quadinout"):after(0.4, {}):oncomplete( function() gameWorld.gameState:setState('title') end )
+    flux.to(self, 1.2, { fade = 1.0 }):ease("quadinout"):after(0.2, {}):oncomplete( function() gameWorld.gameState:setState('title') end )
   end
 end
 

@@ -16,7 +16,6 @@ function Entity:initialize()
   -- Drawing properties
   self.drawStyle = 'fill'
   self.drawColor = nil
-  print("Entity created")
 end
 
 function Entity:addToWorld(bumpWorld)
@@ -36,7 +35,6 @@ function Entity:draw()
   end
   -- Draw rectangle
   if self.animation_test then
-    pretty.dump(self.animation_test)
     local image = self.animation_test[1]
     local anim = self.animation_test[2]
     anim:draw(image, self.rect.x, self.rect.y)
