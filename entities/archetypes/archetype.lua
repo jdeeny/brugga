@@ -7,22 +7,21 @@ function Archetype:initialize(name)
   self.images = {}
   self.grids = {}
   self.animations = {}
+  self.tagsets = {}
   self.speed = 1.0
   self.rarity = 1.0
 end
 
-function Archetype:addImage(image, name)
-  local name = name or 'main'
+function Archetype:addImage(name, image)
   self.images[name] = image
+  pretty.dump(image)
 end
 
-function Archetype:addGrid(grid, name)
-  local name = name or 'main'
+function Archetype:addGrid(name, grid)
   self.grids[name] = grid
 end
 
-function Archetype:addAnimation(animation, name)
-  local name = name or 'main'
+function Archetype:addAnimation(name, animation)
   self.animations[name] = animation
 end
 

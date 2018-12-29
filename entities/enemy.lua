@@ -15,7 +15,12 @@ function Enemy:initialize(data)
   self.row = data.row
   self.drinkMix = data.drink -- Desired drink
 
-  self.animation_test = tablex.copy(data.kind.sitting)
+  self.animations = data.animations
+
+  print("arch dump--")
+  pretty.dump(self.animations)
+  print("arch dump end--")
+
 
   -- Set properties
   self.isActive = true
@@ -142,17 +147,21 @@ function Enemy:update(dt)
     end
 
   end
-  if self.animation_test then
-    self.animation_test[2]:update(dt)
+  for _, anim in pairs(self.animations) do
+    anim:update(dt)
   end
-
 end
 
 ---- DRAW ----
 
 function Enemy:draw()
   if self.isActive then
-    Entity.draw(self)
+    pretty.dump(self.animations)
+    if self.animations[self.state] then
+      self.animations[self.state]:draw(self.x, self.y)
+    else
+      Entity.draw(self)
+    end
   end
 end
 

@@ -17,7 +17,7 @@ function Generator:initialize()
   self.attempsRemaining = 0.8
 end
 
-function shuffle(tbl)
+local function shuffle(tbl)
   for i = #tbl, 2, -1 do
     local j = math.random(i)
     tbl[i], tbl[j] = tbl[j], tbl[i]
@@ -32,8 +32,11 @@ function Generator:generate()
   self.patronsGenerated = self.patronsGenerated + 1
 
   local archetype = self.archetypes:getRandom()
-
-  -- pretty.dump(archetype)
+  local animations = {}
+  for name, anim in pairs(archetype.animations) do
+    print(name)
+    animations[name] = tablex.copy(anim)
+  end
 
   local drink_complexity = 1
   if love.math.random(50) < self.threat then drink_complexity = drink_complexity + 1 end
@@ -58,7 +61,7 @@ function Generator:generate()
 
   print("Threat: " .. threat .. " " .. self.threat)
 
-  return { kind=archetype, drink=drink, speed=speed, row=math.random(4), threat = threat }
+  return { animations = animations, drink=drink, speed=speed, row=math.random(4), threat = threat }
 end
 
 function Generator:update(dt)
