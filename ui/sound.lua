@@ -49,6 +49,8 @@ function SoundManager:initialize()
   self.music['gameplay']:setLooping(true)
   self.music['credits'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
   self.music['credits']:setLooping(true)
+  self.music['ending'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['ending']:setLooping(true)
 
   for _, t in ipairs(self:scanTags('music/drink_male.ogg')) do
     print(t)
