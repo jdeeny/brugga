@@ -3,6 +3,7 @@ local anim8 = require 'lib.anim8'
 local Generator = class('Generator')
 
 function Generator:initialize()
+  self.isActive = false
   self.archetypes = require('entities.archetypes'):new()
   self.threatRate = .5
   self.patronScale = 0.1
@@ -14,6 +15,7 @@ function Generator:initialize()
   self._threatRate = self.threatRate
   self.threat = 0
   self.patronsGenerated = 0
+  self.maxPatrons = 0
   self.attempsRemaining = 0.8
 end
 
@@ -25,7 +27,19 @@ local function shuffle(tbl)
   return tbl
 end
 
+function Generator:start(maxPatrons, startingThreat)
+  self.isActive = true
+  self.maxPatrons = maxPatrons
+  self.threat = startingThreat
+end
+
+function Generator:stop()
+  self.isActive = false
+end
+
 function Generator:generate()
+  if self.isActive == false then return nil end
+
   if self.attempsRemaining < 1.0 then return nil end
 
   self.attempsRemaining = self.attempsRemaining - 1
@@ -63,17 +77,29 @@ function Generator:generate()
 
   print("Threat: " .. threat .. " " .. self.threat)
 
-  return { animations = animations, images=images, drink=drink, speed=speed, row=math.random(3), threat = threat }
+  return { animations = animations, images=images, drink=drink, speed=speed, row=love.math.random(3), threat = threat }
 end
 
 function Generator:update(dt)
-  self._threatRate = self.threatRate * math.pow(self.patronsGenerated * self.patronScale, self.scalePower) + self.threatRateOffset
-  self.threat = self.threat + self._threatRate * dt
-  self.attempsRemaining = self.attempsRemaining + self.attemptsPerThreatPerSecond * self.threat * dt
+  -- Don't update if inactive
+  if self.isActive == false then
+    do return end
+  end
 
-  --print("Threat: " .. self._threatRate .. " " .. self.threat)
-  --print("Patrons: " .. self.patronsGenerated .. " " .. self.attempsRemaining)
+  -- If max patrons reached, stop generating
+  if self.patronsGenerated >= self.maxPatrons then
+    self:stop()
+  -- Else, update threat rate,
+  else
+    self._threatRate = self.threatRate * math.pow(self.patronsGenerated * self.patronScale, self.scalePower) + self.threatRateOffset
+    self.threat = self.threat + self._threatRate * dt
+    self.attempsRemaining = self.attempsRemaining + self.attemptsPerThreatPerSecond * self.threat * dt
 
+    -- Capping out threat at 33
+    if self.threat > 33 then self.threat = 33 end
+    --print("Threat: " .. self._threatRate .. " " .. self.threat)
+    --print("Patrons: " .. self.patronsGenerated .. " " .. self.attempsRemaining)
+  end
 end
 
 -- Return a patron type or nil
