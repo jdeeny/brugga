@@ -34,6 +34,7 @@ end
 
 
 function Credits:enter()
+  gameWorld.sound:playMusic('credits')
 end
 
 function Credits:exit()
