@@ -43,7 +43,7 @@ function Enemy:initialize(data, overlay)
     return self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y
   end
 
-  self.rect:setPos(220 - (75 * self.row), 15 + (185 * self.row) - self.rect.h) -- set at start of specific row
+  self.rect:setPos(220 - (75 * self.row), 17 + (183 * self.row) - self.rect.h) -- set at start of specific row
 end
 
 ---- DRINK ACTIONS ----
@@ -159,7 +159,7 @@ function Enemy:draw()
     if self.animations[self.state] then
       love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
       local image = self.images[self.state]
-      self.animations[self.state]:draw(image, self.rect.x - 100, self.rect.y - 140)
+      self.animations[self.state]:draw(image, self.rect.x - 100, self.rect.y - 173)
     else
       Entity.draw(self)
     end

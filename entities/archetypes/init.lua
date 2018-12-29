@@ -5,7 +5,7 @@ local Archetypes = class('Archetypes')
 function Archetypes:initialize()
   self.kinds = {
     require('entities.archetypes.elf_swole'),
-    require('entities.archetypes.elf_test'),
+    --require('entities.archetypes.elf_test'),
     require('entities.archetypes.elf_female'),
   }
 

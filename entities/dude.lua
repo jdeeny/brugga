@@ -35,7 +35,6 @@ end
 function Dude:getEmptyDrink()
   self.drinkPour = self.drinkPool:getNewDrink()
   if self.drinkPour ~= nil then
-    self.drinkPour.props.state = "held"
     self:updateHeldDrinks()
   end
 end

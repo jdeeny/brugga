@@ -6,7 +6,7 @@ arch:addGrid('main', anim8.newGrid(244, 297, arch.images.main:getWidth(), arch.i
 
 arch:addAnimation('advance', { image = arch.images.main, grid = arch.grids.main(2, 1), rate = 0.1 } )
 arch:addAnimation('drink', { image = arch.images.main, grid = arch.grids.main(1, 1), rate = 0.1 } )
-arch:addAnimation('holding', { image = arch.images.main, grid = arch.grids.main(3, 1), rate = 0.1 } )
+arch:addAnimation('hit', { image = arch.images.main, grid = arch.grids.main(3, 1), rate = 0.1 } )
 
 arch:addTagset({ 'male' })
 arch:addTagset({ 'elf', })
