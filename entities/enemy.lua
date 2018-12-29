@@ -18,9 +18,9 @@ function Enemy:initialize(data)
   self.animations = data.animations
   self.images = data.images
 
-  print("arch dump--")
-  pretty.dump(self.animations)
-  print("arch dump end--")
+  --print("arch dump--")
+  --pretty.dump(self.animations)
+  --print("arch dump end--")
 
 
   -- Set properties
@@ -46,16 +46,7 @@ function Enemy:initialize(data)
     return self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y
   end
 
-  self.rect:setPos(320 - (20 * self.row), 120 + (100 * self.row) - self.rect.h) -- set at start of specific row
-end
-
----- SPAWN ----
-
-function Enemy:spawnEnemy(enemyType, row)
-  self.isActive = true
-  if (enemyType == "OnlyA") then self.drinkMix.a = true end   -- Enemy only wants drink A
-  if (enemyType == "OnlyB") then self.drinkMix.b = true end   -- Enemy only wants drink B
-  self.rect:setPos(320 - (20 * row), 120 + (100 * row) - self.rect.h) -- set at start of specific row
+  self.rect:setPos(220 - (75 * self.row), 15 + (185 * self.row) - self.rect.h) -- set at start of specific row
 end
 
 ---- DRINK ACTIONS ----
@@ -149,8 +140,8 @@ function Enemy:update(dt)
 
   end
   for n, anim in pairs(self.animations) do
-    print("update anim:" .. n)
-    pretty.dump(anim)
+    --print("update anim:" .. n)
+    --pretty.dump(anim)
     anim:update(dt)
   end
 end
@@ -159,7 +150,7 @@ end
 
 function Enemy:draw()
   if self.isActive then
-    pretty.dump(self.animations)
+    --pretty.dump(self.animations)
     if self.animations[self.state] then
       love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
       self.animations[self.state]:draw(self.images[self.state], self.rect.x, self.rect.y)

@@ -26,13 +26,13 @@ end
 -- when changing rows.
 function Drink:bartenderHold(row)
   self.row = row
-  self.rect:setPos(1000 + (self.row * 20), 100 + (self.row * 100))
+  self.rect:setPos(1000 + (self.row * 40), 15 + (self.row * 185))
 end
 
 -- Send drink to the left on the bar
 function Drink:sendLeft()
   self.props.state = "toCustomer" -- Set toCustomer state
-  self.rect:setPos(950 + (self.row * 20), 80 + (self.row * 100))  -- Set position on row
+  self.rect:setPos(780 + (self.row * 40), -15 + (self.row * 185))  -- Set position on row
 end
 
 -- Set drinking state when hitting patron
@@ -49,7 +49,7 @@ end
 
 -- Send drink to the right on the bar
 function Drink:sendRight(x)
-  self.rect:setPos(x, 80 + (self.row * 100))
+  self.rect:setPos(x, 15 + (self.row * 185))
   self.props.state = "toBartender"
 end
 
