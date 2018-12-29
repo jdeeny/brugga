@@ -96,7 +96,7 @@ end
 
 function Drink:draw()
   if self.isActive then
-    Entity.draw(self)
+    love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y)
   end
 end
 

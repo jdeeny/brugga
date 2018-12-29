@@ -6,23 +6,37 @@ local Archetypes = class('Archetypes')
 function Archetypes:initialize()
   -- Source images
   self.images = {
-    elf_a = gameWorld.assets.sprites.patrons.test,
+    elf_test = gameWorld.assets.sprites.patrons.test,
+    elf_swole = gameWorld.assets.sprites.patrons.swole_elf
   }
   -- Grid for each image
   self.grids = {
-    elf_a = anim8.newGrid(32, 32, self.images.elf_a:getWidth(), self.images.elf_a:getHeight(), 0, 0, 0),
+    elf_test = anim8.newGrid(32, 32, self.images.elf_test:getWidth(), self.images.elf_test:getHeight(), 0, 0, 0),
+    elf_swole = anim8.newGrid(342, 434)
   }
 
   -- List of archetypes, with animation and sound info
   self.kinds = {
-      elf_a = {
-      sitting = { self.images.elf_a, anim8.newAnimation(self.grids.elf_a('1-3', 1), 0.1) }, -- animations
-      drinking = { self.images.elf_a, anim8.newAnimation(self.grids.elf_a('3-1', 1), 0.1) }, -- animations
+    elf_test = {
+      sitting = { self.images.elf_test, anim8.newAnimation(self.grids.elf_test('1-3', 1), 0.1) },
+      drinking = { self.images.elf_test, anim8.newAnimation(self.grids.elf_test('3-1', 1), 0.1) },
       tagsets = {               -- When finding sfx, use these tags
-        { 'male', 'female', },
+        { 'male', 'female', 'nonspecific' },
         { 'elf', }
       }
     },
+
+    elf_swole = {
+      sitting = { self.images.elf_swole, anim8.newAnimation(self.grids.elf_swole(2, 1), 0.1) },
+      holding = { self.images.elf_swole, anim8.newAnimation(self.grids.elf_swole(3, 1), 0.1) },
+      drinking = { self.images.elf_swole, anim8.newAnimation(self.grids.elf_swole(1, 1), 0.1) },
+      tagsets = {               -- When finding sfx, use these tags
+        { 'male', }, -- should this have nonspecific or is he too swole?
+        { 'elf', }
+      }
+    },
+
+
   }
 
 end
