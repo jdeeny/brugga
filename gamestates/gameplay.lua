@@ -1,3 +1,4 @@
+local cargo = require 'lib.cargo'
 local class = require 'lib.middleclass'
 local bump = require 'lib.bump'
 local Dude = require 'entities.dude'
@@ -22,7 +23,12 @@ function Gameplay:enter()
   -- reset score
   gameWorld.playerData:reset()
 
+
   self.overlay = require('ui.overlay'):new()
+
+  -- Graphics
+  self.assets = cargo.init('assets')
+  self.BG = self.assets.sprites.environment.Background
 
   -- Collision world
   self.bumpWorld = bump.newWorld(50)
@@ -107,6 +113,9 @@ function  Gameplay:update(dt)
 end
 
 function Gameplay:draw()
+  -- BG
+  love.graphics.draw(self.BG)
+
   -- Zones
   for i=1,self.rows do
     self.startZones[i]:draw()
@@ -115,9 +124,9 @@ function Gameplay:draw()
 
   -- Debug bar boxes
   love.graphics.setColor(.6, .2, .1, 100)
-  love.graphics.rectangle('fill', 300, 220, 680, 40)
-  love.graphics.rectangle('fill', 280, 320, 720, 40)
-  love.graphics.rectangle('fill', 260, 420, 760, 40)
+  love.graphics.rectangle('fill', 150, 200, 670, 40)
+  love.graphics.rectangle('fill', 75, 385, 785, 40)
+  love.graphics.rectangle('fill', 0, 570, 900, 40)
 
   self.brugga:draw() -- Draw brugga
 

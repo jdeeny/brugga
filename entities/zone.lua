@@ -17,11 +17,11 @@ function Zone:initialize(row, location, bumpWorld)
   if location == "start" then
     self.props.isStart = true
     self.drawColor = { 0.5, 0.5, 0.2, 1.0 }
-    self.rect:setPos(320 - (20 * row) - self.rect.w, 120 + (100 * row) - self.rect.h) -- set at start of specific row
+    self.rect:setPos(225 - (75 * row) - self.rect.w, 15 + (185 * row) - self.rect.h) -- set at start of specific row
   elseif location == "end" then
     self.props.isEnd = true
     self.drawColor = { 0.2, 0.5, 0.5, 1.0 }
-    self.rect:setPos(960 + (20 * row), 120 + (100 * row) - self.rect.h) -- set at start of specific row
+    self.rect:setPos(780 + (40 * row), 15 + (185 * row) - self.rect.h) -- set at start of specific row
   end
 
   self:addToWorld(bumpWorld)

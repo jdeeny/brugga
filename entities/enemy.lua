@@ -43,16 +43,7 @@ function Enemy:initialize(data, overlay)
     return self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y
   end
 
-  self.rect:setPos(320 - (20 * self.row), 120 + (100 * self.row) - self.rect.h) -- set at start of specific row
-end
-
----- SPAWN ----
-
-function Enemy:spawnEnemy(enemyType, row)
-  self.isActive = true
-  if (enemyType == "OnlyA") then self.drinkMix.a = true end   -- Enemy only wants drink A
-  if (enemyType == "OnlyB") then self.drinkMix.b = true end   -- Enemy only wants drink B
-  self.rect:setPos(320 - (20 * row), 120 + (100 * row) - self.rect.h) -- set at start of specific row
+  self.rect:setPos(220 - (75 * self.row), 15 + (185 * self.row) - self.rect.h) -- set at start of specific row
 end
 
 ---- DRINK ACTIONS ----

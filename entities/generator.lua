@@ -53,7 +53,7 @@ function Generator:generate()
     drink[#drink+1] = ingredients[i]
   end
 
-  pretty.dump(drink)
+  --pretty.dump(drink)
 
   local speed = 1 + math.random(self.threat) / 100
 
