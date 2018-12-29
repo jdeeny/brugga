@@ -115,7 +115,7 @@ function Dude:changeRow(dt)
     self.row = 3
   end
 
-  self.moveDelay = 1/15
+  self.moveDelay = 1/6
   self.rect.x = 950 + (self.row * 40)
   self.rect.y = 15 + (self.row * 185)
 
