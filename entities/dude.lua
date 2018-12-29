@@ -75,9 +75,12 @@ function Dude:pour()
 end
 
 function Dude:send()
-  if self.drinkSend ~= nil then
+  if self.drinkSend ~= nil then     -- Send drink in sending hand
     self.drinkSend:sendLeft()
     self.drinkSend = nil
+  elseif self.drinkPour ~= nil then -- Send drink in pouring hand
+    self.drinkPour:sendLeft()
+    self.drinkPour = nil
   end
 end
 

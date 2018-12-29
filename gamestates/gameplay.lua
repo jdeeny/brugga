@@ -50,6 +50,8 @@ function Gameplay:enter()
     table.insert(self.startZones, Zone:new(i, "start", self.bumpWorld))
     table.insert(self.endZones, Zone:new(i, "end", self.bumpWorld))
   end
+
+  self.generator:start(12, 10)
 end
 
 function  Gameplay:update(dt)
