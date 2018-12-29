@@ -98,19 +98,19 @@ end
 function Drink:draw()
   if self.isActive and self.props.state ~= "drinking" then
     love.graphics.setColor(1.0,1.0,1.0,1.0)
-    love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y - 50)
+    love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y)
 
     if self.props.drinkMix['a'] then
       love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x + 80, self.rect.y, 16, 16)
+      love.graphics.rectangle('fill', self.rect.x + 40, self.rect.y, 16, 16)
     end
     if self.props.drinkMix['b'] then
       love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x + 80, self.rect.y + 16, 16, 16)
+      love.graphics.rectangle('fill', self.rect.x + 40, self.rect.y + 16, 16, 16)
     end
     if self.props.drinkMix['c'] then
       love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x + 80, self.rect.y + 32, 16, 16)
+      love.graphics.rectangle('fill', self.rect.x + 40, self.rect.y + 32, 16, 16)
     end
   end
 

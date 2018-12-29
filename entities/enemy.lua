@@ -79,13 +79,9 @@ function Enemy:matchDrink(drinkMix)
   and self.drinkMix['b'] == drinkMix['b']
   and self.drinkMix['c'] == drinkMix['c'] then
     print("match")
-    pretty.dump(self.drinkMix)
-    pretty.dump(drinkMix)
     return true
   else
     print("no match")
-    pretty.dump(self.drinkMix)
-    pretty.dump(drinkMix)
     return false
   end
 end

@@ -1,4 +1,5 @@
 local class = require 'lib.middleclass'
+local anim8 = require 'lib.anim8'
 local Entity = require 'entities.entity'
 local rect = require 'physics.rect'
 
@@ -6,6 +7,18 @@ local Dude = class('Dude', Entity)
 
 function Dude:initialize()
   Entity.initialize(self)
+  self.archetype = require('entities.archetypes.brugga')
+  self.animations = {}
+  self.images = {}
+
+  for name, anim in pairs(self.archetype.animations) do
+    self.animations[name] = anim8.newAnimation(anim.grid, anim.rate)
+    self.images[name] = anim.image
+  end
+
+  self.tempAnim = 'none'
+  self.tempAnimTimer = 0
+
   self.props.isPlayer = true
   self.row = 1
   self.moveDir = "none"
@@ -14,9 +27,9 @@ function Dude:initialize()
   -- Drinks
   self.drinkPool = nil
   self.drinkPour = nil
-  self.drinkPourOffset = { x=32, y=-8}
+  self.drinkPourOffset = { x=12, y=-8}
   self.drinkSend = nil
-  self.drinkSendOffset = { x=-128, y=-8}
+  self.drinkSendOffset = { x=-148, y=-8}
 
   -- Create collision rectangle
   self.rect:set(0, 0, 64, 64)
@@ -55,6 +68,7 @@ function Dude:swapDrinks()
   self.drinkSend = prevPour
   self.drinkPour = prevSend
   self:updateHeldDrinks()
+  self:haltTempAnim()
 end
 
 function Dude:pour()
@@ -71,30 +85,54 @@ function Dude:pour()
       self.drinkPour.props.drinkMix['c'] = true
     end
   end
+
+  self.tempAnim = 'pour'
+  self.tempAnimTimer = 1
 end
 
 function Dude:send()
   if self.drinkSend ~= nil then     -- Send drink in sending hand
     self.drinkSend:sendLeft()
     self.drinkSend = nil
+    self.tempAnim = 'throw'
+    self.tempAnimTimer = .5
   elseif self.drinkPour ~= nil then -- Send drink in pouring hand
     self.drinkPour:sendLeft()
     self.drinkPour = nil
+    self.tempAnim = 'throw'
+    self.tempAnimTimer = .5
   end
 end
 
 ---- UPDATE ----
 
 function Dude:update(dt)
-  if (self.moveDelay > 0) then
-    self.moveDelay = self.moveDelay - dt
-  end
+  if self.moveDelay > 0 then self.moveDelay = self.moveDelay - dt end
+  if self.tempAnimTimer > 0 then self.tempAnimTimer = self.tempAnimTimer - dt end
+  if self.tempAnimTimer <= 0 then self:haltTempAnim() end
 
   if (self.moveDir ~= "none") then
     self:changeRow(dt)
   end
 end
 
+---- DRAW ----
+function Dude:draw()
+  love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+  local imageState = 'idle'
+  if self.drinkPour or self.drinkSend then imageState = 'hold' end
+  if self.tempAnim ~= 'none' then
+    imageState = self.tempAnim
+  end
+
+  local image = self.images[imageState]
+  self.animations[imageState]:draw(image, self.rect.x - 150 , self.rect.y - 250)
+end
+
+function Dude:haltTempAnim()
+  self.tempAnim = 'none'
+  self.tempAnimTimer = 0
+end
 ---- MOVEMENT --
 
 function Dude:changeRow(dt)
@@ -119,6 +157,7 @@ function Dude:changeRow(dt)
   self.rect.y = 15 + (self.row * 185)
 
   self:updateHeldDrinks()
+  self:haltTempAnim()
 end
 
 function Dude:moveUp()
