@@ -27,7 +27,7 @@ function Title:enter()
   self.fade = 1.0
   flux.to(self, 2, { fade = 0.0 }):ease("quadinout")
 
-  gameWorld.sound:playMusic()
+  gameWorld.sound:playMusic('title')
 end
 
 function Title:draw()

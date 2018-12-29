@@ -9,6 +9,7 @@ end
 
 function Ending:enter()
   gameWorld.sound:playUi('gameOver')
+  gameWorld.sound:playMusic('ending')
 end
 
 function Ending:update(dt)

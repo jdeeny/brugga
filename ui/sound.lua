@@ -38,6 +38,14 @@ function SoundManager:initialize()
   --  self.music[m] = ripple.newSound({source = m, volume = gameWorld.options.musicVolume, tags = { 'music' }})
   --end
   self.music['test'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['test']:setLooping(true)
+  self.music['title'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['title']:setLooping(true)
+  self.music['gameplay'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['gameplay']:setLooping(true)
+  self.music['credits'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['credits']:setLooping(true)
+
   for _, t in ipairs(self:scanTags('music/drink_male.ogg')) do
     print(t)
   end
@@ -66,10 +74,9 @@ function SoundManager:playUi(name)
 end
 
 
-function SoundManager:playMusic()
+function SoundManager:playMusic(name)
   self.tags.music:stop()
-  self.musicPlaying = 'test'
-  self.music[self.musicPlaying]:play()
+  self.music[name]:play()
 end
 
 function SoundManager:setMusicVolume(vol)
