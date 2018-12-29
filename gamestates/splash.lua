@@ -11,7 +11,7 @@ end
 function Splash:enter()
   self.forcewatch_time = love.timer.getTime() + 0.35
   self.fade = 1.0
-  flux.to(self, 2, { fade = 0.0 }):ease("quadinout")
+  flux.to(self, 1.0, { fade = 0.0 }):ease("quadinout")
 end
 
 function Splash:draw()
