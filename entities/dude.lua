@@ -14,9 +14,9 @@ function Dude:initialize()
   -- Drinks
   self.drinkPool = nil
   self.drinkPour = nil
-  self.drinkPourOffset = { x=64, y=-8}
+  self.drinkPourOffset = { x=32, y=-8}
   self.drinkSend = nil
-  self.drinkSendOffset = { x=-32, y=-8}
+  self.drinkSendOffset = { x=-128, y=-8}
 
   -- Create collision rectangle
   self.rect:set(0, 0, 64, 64)
@@ -26,7 +26,7 @@ end
 function Dude:spawn(drinkPool)
   self.drinkPool = drinkPool
   self.isActive = true
-  self.rect.x = 1000 + (self.row * 20)
+  self.rect.x = 950 + (self.row * 20)
   self.rect.y = (self.row * 100) + 100
 end
 
@@ -34,7 +34,10 @@ end
 
 function Dude:getEmptyDrink()
   self.drinkPour = self.drinkPool:getNewDrink()
-  self:updateHeldDrinks()
+  if self.drinkPour ~= nil then
+    self.drinkPour.props.state = "held"
+    self:updateHeldDrinks()
+  end
 end
 
 function Dude:updateHeldDrinks()
@@ -108,7 +111,7 @@ function Dude:changeRow(dt)
   end
 
   self.moveDelay = 1/15
-  self.rect.x = 1000 + (self.row * 40)
+  self.rect.x = 950 + (self.row * 40)
   self.rect.y = 15 + (self.row * 185)
 
   self:updateHeldDrinks()

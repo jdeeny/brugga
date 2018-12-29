@@ -112,6 +112,8 @@ function Gameplay:draw()
   -- BG
   love.graphics.draw(self.BG)
 
+  ---- DEBUG DRAW -- --
+  --[[]
   -- Zones
   for i=1,self.rows do
     self.startZones[i]:draw()
@@ -123,6 +125,7 @@ function Gameplay:draw()
   love.graphics.rectangle('fill', 150, 200, 670, 40)
   love.graphics.rectangle('fill', 75, 385, 785, 40)
   love.graphics.rectangle('fill', 0, 570, 900, 40)
+  --]]
 
   self.brugga:draw() -- Draw brugga
 

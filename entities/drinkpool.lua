@@ -34,12 +34,12 @@ end
 
 function DrinkPool:update(dt)
   for i,drink in ipairs(self.active) do
-    drink:update(dt)
-
     -- Cull if now inactive
     if drink.isActive == false then
       table.insert(self.inactive, drink)  -- Add to inactive table
       table.remove(self.active, i) -- Remove from active table
+    else
+      drink:update(dt)
     end
   end
 end

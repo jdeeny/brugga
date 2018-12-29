@@ -32,7 +32,7 @@ end
 -- Send drink to the left on the bar
 function Drink:sendLeft()
   self.props.state = "toCustomer" -- Set toCustomer state
-  self.rect:setPos(780 + (self.row * 40), -15 + (self.row * 185))  -- Set position on row
+  self.rect:setPos(780 + (self.row * 40), -30 + (self.row * 185))  -- Set position on row
 end
 
 -- Set drinking state when hitting patron
@@ -49,7 +49,7 @@ end
 
 -- Send drink to the right on the bar
 function Drink:sendRight(x)
-  self.rect:setPos(x, 15 + (self.row * 185))
+  self.rect:setPos(x, -30 + (self.row * 185))
   self.props.state = "toBartender"
 end
 
@@ -61,6 +61,7 @@ end
 
 function Drink:deactivate()
   self.isActive = false
+  self.props.state = "none"
   self.bumpWorld:remove(self.rect)
 end
 
@@ -95,8 +96,8 @@ end
 ---- DRAW ----
 
 function Drink:draw()
-  if self.isActive then
-    love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y)
+  if self.isActive and self.props.state ~= "drinking" then
+    love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y - 50)
   end
 end
 
