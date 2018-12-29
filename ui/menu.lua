@@ -74,7 +74,7 @@ function Menu:update(dt)
   end
 end
 
-function Menu:drawAt(x, y)
+function Menu:draw(x, y)
   love.graphics.setColor(colors.lightblue)
   for i, entry in ipairs(self.entries) do
     local _y = (i - 1) * self.vsize + y
