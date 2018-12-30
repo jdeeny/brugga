@@ -67,7 +67,7 @@ function StemStack:loadstem()
     end
     print("loc " .. self.loc .." self.playing " .. self.playing)
     --pretty.dump(self.loops[level])
-    if self.sources[self.playing] and self.sources[self.playing][self.loc] then
+    if self.playing and self.sources[self.playing] and self.sources[self.playing][self.loc] then
       self.queue:queue(self.sources[self.playing][self.loc])
     end
   end
