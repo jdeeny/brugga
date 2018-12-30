@@ -7,13 +7,15 @@ local Title = class('Title', Gamestate)
 function Title:initialize(name)
   Gamestate.initialize(self, name)
 
-  self.title = love.graphics.newText(gameWorld.assets.fonts.title(120), 'Game Title')
+  self.title = love.graphics.newText(gameWorld.assets.fonts.title(100), 'Brugga the Brewer')
 
   self.menuWidth = 900
   self.menuHeight = 340
 
   self.menu = Menu:new({
-    { kind='text', label='Credits', func=function() gameWorld.gameState:setState('credits') end },
+    { kind='text', label='Credits', func=function()
+      flux.to(self, 0.2, { fade = 1.0 }):oncomplete(function() gameWorld.gameState:setState('credits') end) end },
+
     { kind='text', label='Play Game', func=function() gameWorld.gameState:setState('gameplay') end },
     { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound:setSfxVolume(value) end },
     { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound:setMusicVolume(value) end },
@@ -24,6 +26,7 @@ function Title:initialize(name)
 end
 
 function Title:enter()
+  self.backsnow = require('ui.snow'):new()
   self.snow = require('ui.snow'):new()
   self.fade = 1.0
   flux.to(self, 1, { fade = 0.0 }):ease("quadinout")
@@ -35,7 +38,7 @@ function Title:draw()
   love.graphics.setColor(gameWorld.colors.white)
   love.graphics.clear(gameWorld.colors.title_background)
   love.graphics.draw(gameWorld.assets.backdrops.title_background, 0, 0)
-
+  self.backsnow:draw()
   love.graphics.setColor(0.0,0.0,0.0,1.0)
   love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
@@ -52,6 +55,7 @@ function Title:exit()
 end
 
 function Title:update(dt)
+  self.backsnow:update(dt*0.9)
   self.snow:update(dt)
   self.menu:update(dt)
 end

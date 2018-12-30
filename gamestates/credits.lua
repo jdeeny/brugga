@@ -19,6 +19,7 @@ function Contributor:initialize(name, contact, role, font)
   self.contact = contact
   self.role = role
 end
+
 function Contributor:draw(x, y, h, w)
   local vsplit = h / 4
   love.graphics.setFont(self.font)
@@ -30,6 +31,7 @@ end
 
 function Credits:initialize(name)
   Gamestate.initialize(self, name)
+  self.fade = 0.0
 
   self.textfont = gameWorld.assets.fonts.generic(32)
 
@@ -41,13 +43,18 @@ function Credits:initialize(name)
     Contributor:new('Ashe', '@', 'voice', self.textfont),
   }
 
-  self.title = love.graphics.newText(gameWorld.assets.fonts.title(120), 'Game Title')
+  self.title = love.graphics.newText(gameWorld.assets.fonts.title(120), 'Brugga the Brewer')
   self.subtitle = love.graphics.newText(self.textfont, 'Dec 25 - Dec 31 2018')
 
 end
 
 
 function Credits:enter()
+  self.fade = 1.0
+  flux.to(self, 1, { fade = 0.0 }):ease("quadinout")
+
+  self.backsnow = require('ui.snow'):new()
+  self.snow = require('ui.snow'):new()
   self.contributors = shuffle(self.contributors)
   gameWorld.sound:playMusic('credits')
 end
@@ -56,21 +63,38 @@ function Credits:exit()
 end
 
 function Credits:update(dt)
-  if gameWorld.playerInput:pressed('action') then gameWorld.gameState:setState('title') end
+  self.backsnow:update(dt*0.9)
+  self.snow:update(dt)
+  if gameWorld.playerInput:pressed('action') then
+    flux.to(self, 0.2, { fade = 1.0 }):oncomplete(function() gameWorld.gameState:setState('title') end)
+  end
 end
 
 
 function Credits:draw()
+  love.graphics.setColor(gameWorld.colors.white)
   love.graphics.clear(1.0, 1.0, 1.0, 1.0)
-  love.graphics.setColor(gameWorld.colors.lightblue)
+  love.graphics.draw(gameWorld.assets.backdrops.title_background, 0, 0)
+
+  self.backsnow:draw()
+  love.graphics.setColor(gameWorld.colors.credits_title)
   love.graphics.draw(self.title, 1280 / 2 - self.title:getWidth() / 2, 50)
   local x = 0
+  love.graphics.setColor(gameWorld.colors.credits_text)
   for i, contrib in ipairs(self.contributors) do
     local y = math.floor((i - 1) / 2) * ( (720 - 200 - 40) / math.floor(#self.contributors / 2 + 0.5))
     local w = (1280 - 160) / 2
     contrib:draw(x + 80, y + 200, 120, w)
 
     x = ((1280 - 100) / 2) - x
+  end
+  love.graphics.setColor(gameWorld.colors.white)
+  self.snow:draw()
+
+
+  if self.fade > 0 then
+    love.graphics.setColor(0.0, 0.0, 0.0, self.fade) --(0.0, 0.0, 0.0, self.fade)
+    love.graphics.rectangle('fill', 0, 0, 1280, 720)
   end
 end
 

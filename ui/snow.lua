@@ -24,16 +24,16 @@ function Snow:initialize()
     sys:setSizes(0.1)
     sys:setColors(1.0, 1.0, 1.0, 0.4)
     sys:setSpin(0-PI/8, PI/8)
-    sys:setSpinVariation(1)
+    --sys:setSpinVariation(1)
     sys:setRotation(0, PI * 2)
     sys:setRadialAcceleration(0, 0.2)
     sys:setRelativeRotation(false)
-    sys:setTangentialAcceleration(0.0, 0.1)
+    sys:setTangentialAcceleration(0.0, 0.25)
   end
 
 
-  self.particles.low:setEmissionRate(5)
-  self.particles.med:setEmissionRate(2)
+  self.particles.low:setEmissionRate(4)
+  self.particles.med:setEmissionRate(1.5)
   self.particles.high:setEmissionRate(0.5)
 
   for _, sys in pairs(self.particles) do
