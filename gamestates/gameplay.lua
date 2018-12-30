@@ -171,7 +171,7 @@ function Gameplay:draw()
   end
 
   self.overlay:draw()
-  love.graphics.draw(self.outline:getOutline(self.waveText, colors.score, colors.score_back), 1050, 10)
+  love.graphics.draw(self.outline:getOutline(self.waveText, colors.wave, colors.wave_back), 1050, 720-90)
 
 end
 

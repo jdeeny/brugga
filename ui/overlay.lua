@@ -8,14 +8,18 @@ function Overlay:initialize()
   self.flying = {}
 
   self.score_width = 300
-  self.score_x = self.score_width / 2
-  self.score_y = 0--720 - 100
+  self.score_x = (1280 - 300) / 2
+  self.score_y = 720 - 92
 
   self.target_x = self.score_x
   self.target_y = self.score_y
 
   self.scale_x = 1.0
   self.scale_y = 1.0
+
+  self.lifey = 720 - 72
+  self.lifex = 16
+  self.lifexdelta = 54
 
   self.flight_time = 0.7
 end
@@ -46,6 +50,21 @@ function Overlay:draw()
 
   love.graphics.setColor(1.0,1.0,1.0,1.0)
   love.graphics.draw(score:getDrawable(), self.score_x + w/2, self.score_y+h/2, 0, self.scale_x, self.scale_y, w/2, h/2)
+
+
+  local lives = gameWorld.playerData.lives
+
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
+  for i = 1, 5 do
+    if lives >= i then
+      love.graphics.draw(gameWorld.assets.sprites.ui.newLife, self.lifex + (i - 1) * self.lifexdelta, self.lifey)
+    else
+      love.graphics.setColor(0.7, 0.7, 0.7, 0.9)
+      love.graphics.draw(gameWorld.assets.sprites.ui.usedLife, self.lifex + (i - 1) * self.lifexdelta, self.lifey)
+      love.graphics.setColor(1.0,1.0,1.0,1.0)
+    end
+  end
+
   end
 
 

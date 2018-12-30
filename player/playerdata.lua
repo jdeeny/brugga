@@ -9,6 +9,7 @@ end
 function PlayerData:reset()
   self.score = 0
   self.wave = 1
+  self.lives = 3
   self.initial_patrons = 8
   self.initial_threat = 2
   self.patron_history = {}
@@ -38,5 +39,14 @@ end
 function PlayerData:recordDrink(drink)
   self.drink_history[#self.drink_history + 1] = drink
 end
+
+function PlayerData:livesDecrease(n)
+  if self.lives >= 1 then self.lives = self.lives - 1 end
+end
+
+function PlayerData:livesIncrease(n)
+  if self.lives <= 4 then self.lives = self.lives + 1 end
+end
+
 
 return PlayerData
