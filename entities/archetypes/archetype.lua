@@ -15,7 +15,6 @@ end
 
 function Archetype:addImage(name, image)
   self.images[name] = image
-  pretty.dump(image)
 end
 
 function Archetype:addGrid(name, grid)
@@ -45,7 +44,6 @@ end
 
 function Archetype:setSwaps(swaps)
   self.swaps_in = swaps
-  pretty.dump(self.swaps_in)
 end
 
 

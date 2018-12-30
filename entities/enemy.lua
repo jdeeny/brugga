@@ -24,9 +24,9 @@ function Enemy:initialize(data, overlay)
   self.images = data.images
 
   self.swaps_in  = data.swaps_in or {} -- { 0, 0, 0, 1}, {1,0,0,1} }
-  pretty.dump(self.swaps_in)
+  --pretty.dump(self.swaps_in)
   self.swaps_out = { { love.math.random(),love.math.random(),love.math.random(), 1 }}
-  pretty.dump(self.swaps_out)
+  --pretty.dump(self.swaps_out)
 
   -- Set properties
   self.isActive = true
