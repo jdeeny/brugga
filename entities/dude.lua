@@ -39,8 +39,8 @@ end
 function Dude:spawn(drinkPool)
   self.drinkPool = drinkPool
   self.isActive = true
-  self.rect.x = 950 + (self.row * 20)
-  self.rect.y = (self.row * 100) + 100
+  self.rect.x = 950 + (self.row * 40)
+  self.rect.y = (self.row * 15) + 185
 end
 
 ---- DRINK ACTIONS ----

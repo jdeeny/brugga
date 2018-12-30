@@ -30,7 +30,11 @@ function Title:initialize(name)
     { kind='text', label='Credits', func=function()
       flux.to(self, 0.2, { fade = 1.0 }):oncomplete(function() gameWorld.gameState:setState('credits') end) end },
 
-    { kind='text', label='Play Game', func=function() gameWorld.gameState:setState('gameplay') end },
+    { kind='text', label='Play Game', func=function()
+      gameWorld.initialPatrons = 8
+      gameWorld.initialThreat = 0
+      gameWorld.gameState:setState('gameplay')
+    end },
     { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound:setSfxVolume(value) end },
     { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound:setMusicVolume(value) end },
     { kind='text', label='Exit to Desktop', func=function() gameWorld.settings:save() love.event.push('quit') end },

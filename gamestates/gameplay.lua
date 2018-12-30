@@ -53,7 +53,7 @@ function Gameplay:enter()
     table.insert(self.endZones, Zone:new(i, "end", self.bumpWorld))
   end
 
-  self.generator:start(12, 10)
+  self.generator:start(gameWorld.initialPatrons, gameWorld.initialThreat)
 end
 
 function  Gameplay:update(dt)
@@ -104,13 +104,34 @@ function  Gameplay:update(dt)
   self.drinkPool:update(dt)
 
   -- Update patrons
-  for _, p in ipairs(self.patrons) do
+  for i, p in ipairs(self.patrons) do
     p:update(dt)
+    -- Cull inactive patrons
+    if p.isActive == false then table.remove(self.patrons, i) end
   end
-
+  -- Sort patron z order by x-coordinate
   table.sort(self.patrons, self.patronZOrderCompare)
 
+  -- If all conditions are met, wave is over
+  if self.generator.isActive == false and
+      #self.drinkPool.active == 0 and
+      #self.patrons == 0 then
+
+    -- Increase initial patron/threat counts
+    gameWorld.initialPatrons = gameWorld.initialPatrons + 1
+    gameWorld.initialThreat = gameWorld.initialThreat + 1
+
+    -- Go to ending after 10 waves
+    if gameWorld.initialThreat >= 10 then
+      gameWorld.gameState:setState('ending')
+    -- Start next wave
+    else
+      gameWorld.gameState:setState('gameplay')
+    end
+  end
+
   self.overlay:update(dt)
+
 end
 
 function love.wheelmoved(x, y)
