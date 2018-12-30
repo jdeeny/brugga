@@ -8,6 +8,7 @@ local DrinkPool = require 'entities.drinkpool'
 local Generator = require 'entities.generator'
 local Zone = require 'entities.zone'
 local Gamestate = require 'gamestates.gamestate'
+local colors = require 'ui.colors'
 
 local Gameplay = class('Gameplay', Gamestate)
 local wheelSwap = false
@@ -48,6 +49,10 @@ function Gameplay:enter()
     table.insert(self.startZones, Zone:new(i, "start", self.bumpWorld))
     table.insert(self.endZones, Zone:new(i, "end", self.bumpWorld))
   end
+
+  self.font = gameWorld.assets.fonts.score(50)
+  self.outline = require('ui.outline'):new(self.font, 3)
+  self.waveText = ("Wave %d"):format(gameWorld.playerData.wave)
 
   self.generator:start(gameWorld.playerData.initial_patrons, gameWorld.playerData.initial_threat)
 end
@@ -167,6 +172,7 @@ function Gameplay:draw()
   end
 
   self.overlay:draw()
+  love.graphics.draw(self.outline:getOutline(self.waveText, colors.score, colors.score_back), 1050, 10)
 
 end
 
