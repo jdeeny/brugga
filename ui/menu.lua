@@ -18,8 +18,8 @@ function Menu:initialize(entries, w, h)
   self.sprites = {
     left = gameWorld.assets.sprites.ui.selectorLeft,
     right = gameWorld.assets.sprites.ui.selectorRight,
-    slideLeft = gameWorld.assets.sprites.ui.sliderLeft,
-    slideRight = gameWorld.assets.sprites.ui.sliderRight,
+    slideLeft = gameWorld.assets.sprites.ui.selectorLeft,
+    slideRight = gameWorld.assets.sprites.ui.selectorRight,
   }
 
   for _, entry in ipairs(_entries) do
@@ -75,27 +75,30 @@ function Menu:update(dt)
 end
 
 function Menu:draw(x, y)
-  love.graphics.setColor(colors.lightblue)
   for i, entry in ipairs(self.entries) do
     local _y = (i - 1) * self.vsize + y
     if entry.kind == 'text' then
+      love.graphics.setColor(colors.menu_text)
       entry.text:draw(x, _y, self.w, self.h)
       if i == self.selected then
         local c = x + self.w / 2
         local l = c - entry.width / 2 - self.hpad - self.sprites.left:getWidth()
         local r = c + entry.width / 2 + self.hpad
-        love.graphics.draw(self.sprites.left, l, _y + self.vsize / 2 - self.sprites.left:getHeight() / 2)
-        love.graphics.draw(self.sprites.right, r, _y + self.vsize / 2 - self.sprites.right:getHeight() / 2)
+        love.graphics.setColor(colors.white)
+        love.graphics.draw(self.sprites.left, l, _y + self.vsize / 2 - self.sprites.left:getHeight() / 2 - 4)
+        love.graphics.draw(self.sprites.right, r, _y + self.vsize / 2 - self.sprites.right:getHeight() / 2 - 4)
       end
     elseif entry.kind == 'slider' then
+      love.graphics.setColor(colors.menu_text)
       entry.text:draw(x + self.w / 2 - entry.width / 2, _y, entry.text:getWidth(), self.h)
+      love.graphics.setColor(colors.white)
       entry.slider:draw(x + self.w / 2 + entry.width / 2 - entry.slider:getWidth(), _y + self.vsize / 2 - entry.slider:getHeight() / 2)
       if i == self.selected then
         local c = x + self.w / 2
         local l = c - entry.width / 2 - self.hpad - self.sprites.slideLeft:getWidth()
         local r = c + entry.width / 2 + self.hpad
-        love.graphics.draw(self.sprites.slideLeft, l, _y + self.vsize / 2 - self.sprites.slideLeft:getHeight() / 2)
-        love.graphics.draw(self.sprites.slideRight, r, _y + self.vsize / 2 - self.sprites.slideRight:getHeight() / 2)
+        love.graphics.draw(self.sprites.slideLeft, l, _y + self.vsize / 2 - self.sprites.slideLeft:getHeight() / 2 - 4)
+        love.graphics.draw(self.sprites.slideRight, r, _y + self.vsize / 2 - self.sprites.slideRight:getHeight() / 2 - 4)
       end
     end
 
