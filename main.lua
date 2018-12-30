@@ -28,6 +28,8 @@ function love.load()
 
   gameWorld.gameState = require('gamestates.manager'):new()
   gameWorld.playerData = require('player.playerdata'):new()
+  gameWorld.initialPatrons = 8
+  gameWorld.initialThreat = 0
   gameWorld.gameState:setState('gameplay')
 end
 
