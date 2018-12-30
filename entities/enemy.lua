@@ -116,17 +116,28 @@ function Enemy:update(dt)
       local actualX, actualY, cols, len = 0, 0, {}, 0
       if self.advanceState == "walk" then
         actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (self.speed * 50 * dt), self.rect.y, self:collisionFilter())
+        local eCols, eLen = self.bumpWorld:queryRect(self.rect.x + self.rect.w * 1.1, self.rect.y, self.rect.w, self.rect.h, self:enemyFilter())
         self.rect.x = actualX -- Move forwards
         self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
-        if self.advanceStateTimer <= 0 then
+        if self.advanceStateTimer <= 0 or eLen > 0 then
           self.advanceState = "stand"
-          self.advanceStateTimer = 2.5
+
+          if eLen > 0 then
+            self.advanceStateTimer = .1
+          else
+            self.advanceStateTimer = 2
+          end
         end
       elseif self.advanceState == "stand" then
         actualX, actualY, cols, len = self.bumpWorld:check(self.rect, self.rect.x, self.rect.y, self:collisionFilter())
+        local eCols, eLen = self.bumpWorld:queryRect(self.rect.x + self.rect.w * 1.1, self.rect.y, self.rect.w, self.rect.h, self:enemyFilter())
         if self.advanceStateTimer <= 0 then
-          self.advanceState = "walk"
-          self.advanceStateTimer = 2
+          if eLen > 0 then
+            self.advanceStateTimer = .5
+          else
+            self.advanceState = "walk"
+            self.advanceStateTimer = 2.5
+          end
         end
       end
       -- Check collisions
@@ -216,6 +227,18 @@ function Enemy:collisionFilter()
     end
 
     -- Ignore all other collisions
+    return nil
+  end
+
+  return filter
+end
+
+function Enemy:enemyFilter()
+  local filter = function(item)
+    if item.props.isEnemy and self.rect ~= item then
+      return 'cross'
+    end
+
     return nil
   end
 
