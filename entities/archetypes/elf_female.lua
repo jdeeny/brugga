@@ -14,4 +14,8 @@ arch:addTagset({ 'elf', 'anykind' })
 arch:setRarity(100)
 arch:setSpeed(1.0)
 arch:setBubbleOffset(35, -160)
+
+arch:setSwaps( { { 0xbd / 0xFF, 0x56 / 0xFF, 0x5c / 0xFF, 1 } } )
+
+
 return arch

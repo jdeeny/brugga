@@ -15,4 +15,6 @@ arch:setSpeed(1.2)
 
 arch:setBubbleOffset(40, -160)
 
+arch:setSwaps( { { 0x22 / 0xFF, 0x22 / 0xFF, 0x38 / 0xFF, 1 } } )
+
 return arch

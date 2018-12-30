@@ -23,8 +23,10 @@ function Enemy:initialize(data, overlay)
   self.animations = data.animations
   self.images = data.images
 
-  self.swaps_in  = { { 0, 0, 0, 1}, {1,0,0,1} }
-  self.swaps_out =  { {love.math.random(),love.math.random(),love.math.random(),1}, {love.math.random(),love.math.random(),love.math.random(),1} }
+  self.swaps_in  = data.swaps_in or {} -- { 0, 0, 0, 1}, {1,0,0,1} }
+  pretty.dump(self.swaps_in)
+  self.swaps_out = { { love.math.random(),love.math.random(),love.math.random(), 1 }}
+  pretty.dump(self.swaps_out)
 
   -- Set properties
   self.isActive = true
@@ -179,7 +181,7 @@ function Enemy:draw()
       local image = self.images[self.state]
       gameWorld.paletteswap:setSwap(self.swaps_in, self.swaps_out)
       gameWorld.paletteswap:doEffect(function()
-        self.animations[self.state]:draw(image, math.floor(self.rect.x + 0.5 - 100), math.floor(self.rect.y + 0.5 - 173))
+        self.animations[self.state]:draw(image, math.floor(self.rect.x + 0.5) - 100, math.floor(self.rect.y + 0.5) - 173)
       end)
       gameWorld.paletteswap:clearSwap()
 
