@@ -51,6 +51,7 @@ end
 function Drink:sendRight(x)
   self.rect:setPos(x, -30 + (self.row * 185))
   self.props.state = "toBartender"
+  self.props.drinkMix = {}
 end
 
 ---- BAR ACTIONS --
@@ -72,7 +73,7 @@ function Drink:update(dt)
     if self.props.state == "held" then
       -- Nothing here
     elseif self.props.state == "toCustomer" then
-      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (225 * dt), self.rect.y, self:collisionFilter())
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (300 * dt), self.rect.y, self:collisionFilter())
       self.rect.x = actualX
       self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
 
@@ -100,20 +101,18 @@ function Drink:draw()
     love.graphics.setColor(1.0,1.0,1.0,1.0)
     love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y)
 
+    local drinkOffset = { x = self.rect.x + 30, y = self.rect.y + 14 }
+
     if self.props.drinkMix['a'] then
-      love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x + 40, self.rect.y, 16, 16)
+      love.graphics.draw(gameWorld.assets.sprites.game.gem_PURPLE, drinkOffset.x, drinkOffset.y)
     end
     if self.props.drinkMix['b'] then
-      love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x + 40, self.rect.y + 16, 16, 16)
+      love.graphics.draw(gameWorld.assets.sprites.game.gem_GREEN, drinkOffset.x - 16, drinkOffset.y + 32)
     end
     if self.props.drinkMix['c'] then
-      love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x + 40, self.rect.y + 32, 16, 16)
+      love.graphics.draw(gameWorld.assets.sprites.game.gem_CYAN, drinkOffset.x + 16, drinkOffset.y + 32)
     end
   end
-
 end
 
 ---- COLLISION ----
