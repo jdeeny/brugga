@@ -54,16 +54,16 @@ function SoundManager:initialize()
 
   self.music.stacked = {}
   --local dec = love.sound.newDecoder('assets/audio/music/gameplay1'):decode()
-  self.music.stacked[1] = love.sound.newDecoder('assets/audio/music/gameplay1.ogg', 16 * 1024)--:decode()
-  self.music.stacked[2] = love.sound.newDecoder('assets/audio/music/gameplay2.ogg', 16 * 1024)--:decode()
-  self.music.stacked[3] = love.sound.newDecoder('assets/audio/music/gameplay3.ogg', 16 * 1024)--:decode()
-  self.music.stacked[4] = love.sound.newDecoder('assets/audio/music/gameplay4.ogg', 16 * 1024)--:decode()
-  self.music.stacked[5] = love.sound.newDecoder('assets/audio/music/gameplay5.ogg', 16 * 1024)--:decode()
-  self.music.stacked[6] = love.sound.newDecoder('assets/audio/music/gameplay6.ogg', 16 * 1024)--:decode()
-  self.music.stacked[7] = love.sound.newDecoder('assets/audio/music/gameplay7.ogg', 16 * 1024)--:decode()
-  self.music.stacked[8] = love.sound.newDecoder('assets/audio/music/gameplay8.ogg', 16 * 1024)--:decode()
-  self.music.stacked[9] = love.sound.newDecoder('assets/audio/music/gameplay9.ogg', 16 * 1024)--:decode()
-  self.music.stacked[10] = love.sound.newDecoder('assets/audio/music/gameplay10.ogg', 16 * 1024)--:decode()
+  self.music.stacked[1] = love.sound.newDecoder('assets/audio/music/gameplay1.ogg', 1 * 1024)--:decode()
+  self.music.stacked[2] = love.sound.newDecoder('assets/audio/music/gameplay2.ogg', 1 * 1024)--:decode()
+  self.music.stacked[3] = love.sound.newDecoder('assets/audio/music/gameplay3.ogg', 1 * 1024)--:decode()
+  self.music.stacked[4] = love.sound.newDecoder('assets/audio/music/gameplay4.ogg', 1 * 1024)--:decode()
+  self.music.stacked[5] = love.sound.newDecoder('assets/audio/music/gameplay5.ogg', 1 * 1024)--:decode()
+  self.music.stacked[6] = love.sound.newDecoder('assets/audio/music/gameplay6.ogg', 1 * 1024)--:decode()
+  self.music.stacked[7] = love.sound.newDecoder('assets/audio/music/gameplay7.ogg', 1 * 1024)--:decode()
+  self.music.stacked[8] = love.sound.newDecoder('assets/audio/music/gameplay8.ogg', 1 * 1024)--:decode()
+  self.music.stacked[9] = love.sound.newDecoder('assets/audio/music/gameplay9.ogg', 1 * 1024)--:decode()
+  self.music.stacked[10] = love.sound.newDecoder('assets/audio/music/gameplay10.ogg', 1 * 1024)--:decode()
 
 
   --self.music.stacked[11] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay1, tags = { self.tags.music, }})
@@ -101,7 +101,7 @@ end
 
 function SoundManager:playMusic(name)
   self.tags.music:stop()
-  self.music[name]:play()
+  --self.music[name]:play()
 end
 
 function SoundManager:setMusicVolume(vol)
