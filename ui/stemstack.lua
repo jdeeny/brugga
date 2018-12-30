@@ -24,7 +24,13 @@ end
 
 function StemStack:setLevel(level)
   if self.playing == level then return end
-  self.target = level
+  if level >= 1 and level <= 10 then
+    self.target = level
+  else
+    self.target = nil
+    self.playing = self.target
+    self.queue:stop()
+  end
 end
 
 function StemStack:update(dt)
@@ -61,7 +67,9 @@ function StemStack:loadstem()
     end
     print("loc " .. self.loc .." self.playing " .. self.playing)
     --pretty.dump(self.loops[level])
-    self.queue:queue(self.sources[self.playing][self.loc])
+    if self.sources[self.playing] and self.sources[self.playing][self.loc] then
+      self.queue:queue(self.sources[self.playing][self.loc])
+    end
   end
 end
 
