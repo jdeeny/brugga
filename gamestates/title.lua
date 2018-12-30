@@ -1,6 +1,7 @@
 local class = require 'lib.middleclass'
 local Gamestate = require 'gamestates.gamestate'
 local Menu = require 'ui.menu'
+local anim8 = require 'lib.anim8'
 
 local Title = class('Title', Gamestate)
 
@@ -11,6 +12,19 @@ function Title:initialize(name)
 
   self.menuWidth = 900
   self.menuHeight = 340
+  self.brugga_x = 900
+  self.brugga_y = 200
+
+  self.animations = {}
+  self.images = {}
+
+  local brugga_arch = require('entities.archetypes.brugga')
+  for name, anim in pairs(brugga_arch.animations) do
+    self.animations[name] = anim8.newAnimation(anim.grid, anim.rate)
+    self.images[name] = anim.image
+  end
+
+  self.anim = 'idle'
 
   self.menu = Menu:new({
     { kind='text', label='Credits', func=function()
@@ -42,6 +56,10 @@ function Title:draw()
   love.graphics.setColor(0.0,0.0,0.0,1.0)
   love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
+
+  self.animations[self.anim]:draw(self.images[self.anim], self.brugga_x, self.brugga_y)
+
+
   self.menu:draw((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
   self.snow:draw()
   if self.fade > 0 then
@@ -58,6 +76,7 @@ function Title:update(dt)
   self.backsnow:update(dt*0.9)
   self.snow:update(dt)
   self.menu:update(dt)
+  self.animations[self.anim]:update(dt)
 end
 
 
