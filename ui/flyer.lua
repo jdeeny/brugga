@@ -20,6 +20,7 @@ function Flyer:draw()
   if self.dead then return end
   local x = self.start_x * (1-self.completion) + self.dest_x * self.completion
   local y = self.start_y * (1-self.completion) + self.dest_y * self.completion
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
   love.graphics.draw(self.drawable, x, y, 0, 0.6 + math.sqrt(self.completion) * 0.4, 0.6 + math.sqrt(self.completion) * 0.4)
 end
 

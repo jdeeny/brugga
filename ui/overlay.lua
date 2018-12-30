@@ -39,11 +39,12 @@ function Overlay:draw()
   for _, f in ipairs(self.flying) do
     f:draw()
   end
-  local score = Score:new(gameWorld.playerData.score)
+  local score = Score:new(gameWorld.playerData.score, 64, 0)
   local drawable = score:getDrawable()
   local w = drawable:getWidth()
   local h = drawable:getHeight()
 
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
   love.graphics.draw(score:getDrawable(), self.score_x, self.score_y, 0, self.scale_x, self.scale_y)
   end
 
