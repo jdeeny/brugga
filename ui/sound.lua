@@ -20,11 +20,7 @@ function SoundManager:initialize()
     male = ripple.newTag(),
   }
 
-  self.stacked_target = 1
-  self.stacked_level = 1
-  self.stacked_loc = 0
-
-  self.ui.assets = cargo.init('assets')
+  --self.ui.assets = cargo.init('assets')
 
 --  for name, sound in pairs(gameWorld.assets.audio.ui) do
 --    self.ui[name] = ripple.newSound({source = sound, tags = { self.tags.sfx }})
@@ -57,24 +53,22 @@ function SoundManager:initialize()
   self.music['ending']:setLooping(true)
 
   self.music.stacked = {}
-  self.music.stacked[1] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay1, tags = { self.tags.music, }})
-  self.music.stacked[2] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay2, tags = { self.tags.music, }})
-  self.music.stacked[3] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay3, tags = { self.tags.music, }})
-  self.music.stacked[4] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay4, tags = { self.tags.music, }})
-  self.music.stacked[5] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay5, tags = { self.tags.music, }})
-  self.music.stacked[6] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay6, tags = { self.tags.music, }})
-  self.music.stacked[7] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay7, tags = { self.tags.music, }})
-  self.music.stacked[8] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay8, tags = { self.tags.music, }})
-  self.music.stacked[9] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay9, tags = { self.tags.music, }})
-  self.music.stacked[10] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay10, tags = { self.tags.music, }})
+  --local dec = love.sound.newDecoder('assets/audio/music/gameplay1'):decode()
+  self.music.stacked[1] = love.sound.newDecoder('assets/audio/music/gameplay1.ogg', 16 * 1024)--:decode()
+  self.music.stacked[2] = love.sound.newDecoder('assets/audio/music/gameplay2.ogg', 16 * 1024)--:decode()
+  self.music.stacked[3] = love.sound.newDecoder('assets/audio/music/gameplay3.ogg', 16 * 1024)--:decode()
+  self.music.stacked[4] = love.sound.newDecoder('assets/audio/music/gameplay4.ogg', 16 * 1024)--:decode()
+  self.music.stacked[5] = love.sound.newDecoder('assets/audio/music/gameplay5.ogg', 16 * 1024)--:decode()
+  self.music.stacked[6] = love.sound.newDecoder('assets/audio/music/gameplay6.ogg', 16 * 1024)--:decode()
+  self.music.stacked[7] = love.sound.newDecoder('assets/audio/music/gameplay7.ogg', 16 * 1024)--:decode()
+  self.music.stacked[8] = love.sound.newDecoder('assets/audio/music/gameplay8.ogg', 16 * 1024)--:decode()
+  self.music.stacked[9] = love.sound.newDecoder('assets/audio/music/gameplay9.ogg', 16 * 1024)--:decode()
+  self.music.stacked[10] = love.sound.newDecoder('assets/audio/music/gameplay10.ogg', 16 * 1024)--:decode()
+
+
   --self.music.stacked[11] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay1, tags = { self.tags.music, }})
 
-  for _, k in ipairs(self.music.stacked) do
-    k:setLooping(true)
-    k.volume = 0
-    k:play()
-  end
-
+  self.stemstack = require('ui.stemstack'):new(self.music.stacked)
 
   self.musicPlaying = false
 
@@ -90,6 +84,10 @@ function SoundManager:scanTags(path)
     end
   end
   return tags
+end
+
+function SoundManager:update(dt)
+  self.stemstack:update(dt)
 end
 
 function SoundManager:playUi(name)
@@ -128,13 +126,7 @@ function SoundManager:isMusicPlaying()
 end
 
 function SoundManager:playStacked(level)
-  local l = (level >= 1 and level <= 10 and level) or 1
-  if self.stacked_level == l then return end
-  flux.to(self.music.stacked[l], 0.5, { volume = 1.0 })
-  flux.to(self.music.stacked[self.stacked_level], 0.5, { volume = 0.0 })
-
-  self.stacked_level = l
-
+  self.stemstack:setLevel(level)
 end
 
 

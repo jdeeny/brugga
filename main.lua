@@ -37,6 +37,7 @@ end
 function love.update(dt)
   flux.update(dt)
   gameWorld.gameState:update(dt)
+  gameWorld.sound:update(dt)
   gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
   if gameWorld.debug then gameWorld.debug:update(dt) end
 end
