@@ -18,6 +18,7 @@ function Dude:initialize()
 
   self.tempAnim = 'none'
   self.tempAnimTimer = 0
+  self.scale = { x = 1, y = 1 }
 
   self.props.isPlayer = true
   self.row = 1
@@ -126,7 +127,7 @@ function Dude:draw()
   end
 
   local image = self.images[imageState]
-  self.animations[imageState]:draw(image, self.rect.x - 150 , self.rect.y - 250)
+  self.animations[imageState]:draw(image, self.rect.x - 150 , self.rect.y - 250, 0, self.scale.x, self.scale.y)
 end
 
 function Dude:haltTempAnim()
@@ -141,8 +142,10 @@ function Dude:changeRow(dt)
   end
 
   if (self.moveDir == "up") then
+    flux.to(self.scale, .05, {y = .98}):after(self.scale, .1, {y = 1})
     self.row = self.row - 1
   elseif (self.moveDir == "down") then
+    flux.to(self.scale, .05, {y = 1.02}):after(self.scale, .1, {y = 1})
     self.row = self.row + 1
   end
 

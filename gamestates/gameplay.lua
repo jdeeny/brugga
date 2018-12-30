@@ -21,10 +21,6 @@ function Gameplay:initialize(name)
 end
 
 function Gameplay:enter()
-  -- reset score
-  gameWorld.playerData:reset()
-
-
   self.overlay = require('ui.overlay'):new()
 
   -- Graphics
@@ -53,7 +49,7 @@ function Gameplay:enter()
     table.insert(self.endZones, Zone:new(i, "end", self.bumpWorld))
   end
 
-  self.generator:start(gameWorld.initialPatrons, gameWorld.initialThreat)
+  self.generator:start(gameWorld.playerData.initial_patrons, gameWorld.playerData.initial_threat)
 end
 
 function  Gameplay:update(dt)
@@ -117,12 +113,11 @@ function  Gameplay:update(dt)
       #self.drinkPool.active == 0 and
       #self.patrons == 0 then
 
-    -- Increase initial patron/threat counts
-    gameWorld.initialPatrons = gameWorld.initialPatrons + 1
-    gameWorld.initialThreat = gameWorld.initialThreat + 1
+    -- Increase player wave properties
+    gameWorld.playerData:waveIncrease()
 
     -- Go to ending after 10 waves
-    if gameWorld.initialThreat >= 10 then
+    if gameWorld.playerData.wave > 10 then
       gameWorld.gameState:setState('ending')
     -- Start next wave
     else
