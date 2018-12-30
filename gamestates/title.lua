@@ -32,14 +32,17 @@ function Title:enter()
 end
 
 function Title:draw()
+  love.graphics.setColor(gameWorld.colors.white)
   love.graphics.clear(gameWorld.colors.title_background)
+  love.graphics.draw(gameWorld.assets.backdrops.title_background, 0, 0)
+
   love.graphics.setColor(0.0,0.0,0.0,1.0)
   love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
   self.menu:draw((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
   self.snow:draw()
   if self.fade > 0 then
-    love.graphics.setColor(1.0-self.fade, 1.0-self.fade, 1.0-self.fade, self.fade) --(0.0, 0.0, 0.0, self.fade)
+    love.graphics.setColor(0.0, 0.0, 0.0, self.fade) --(0.0, 0.0, 0.0, self.fade)
     love.graphics.rectangle('fill', 0, 0, 1280, 720)
   end
 end

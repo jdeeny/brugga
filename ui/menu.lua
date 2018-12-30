@@ -75,7 +75,7 @@ function Menu:update(dt)
 end
 
 function Menu:draw(x, y)
-  love.graphics.setColor(colors.lightblue)
+  love.graphics.setColor(colors.menu_text)
   for i, entry in ipairs(self.entries) do
     local _y = (i - 1) * self.vsize + y
     if entry.kind == 'text' then
