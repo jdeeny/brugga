@@ -7,7 +7,6 @@ function Outline:initialize(font, outline, color, backcolor)
   self.outline = outline or 2
   self.color = color or { 1.0, 1.0, 1.0, 1.0 }
   self.backcolor = backcolor or { 1.0, 1.0, 1.0, 1.0 }
-
 end
 
 function Outline:getOutline(text, color, backcolor)
@@ -33,6 +32,7 @@ function Outline:getOutline(text, color, backcolor)
   love.graphics.setColor(color)
   love.graphics.draw(text, self.outline, self.outline)
   love.graphics.setCanvas()
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
   return canvas
 end
 
