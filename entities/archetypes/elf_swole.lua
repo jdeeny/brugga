@@ -10,7 +10,7 @@ arch:addAnimation('hit', { image = arch.images.main, grid = arch.grids.main(3, 1
 
 arch:addTagset({ 'male' })
 arch:addTagset({ 'elf', })
-arch:setRarity(1.0)
-arch:setSpeed(1.0)
+arch:setRarity(70)
+arch:setSpeed(1.2)
 
 return arch

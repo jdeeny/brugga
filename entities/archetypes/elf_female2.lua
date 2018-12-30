@@ -1,8 +1,8 @@
 local anim8 = require('lib.anim8')
-local arch = require('entities.archetypes.archetype'):new('elf_female')
+local arch = require('entities.archetypes.archetype'):new('elf_female2')
 
-arch:addImage('main', gameWorld.assets.sprites.patrons.elf_female)
-arch:addGrid('main', anim8.newGrid(209, 297, arch.images.main:getWidth(), arch.images.main:getHeight(), 0, 0, 0))
+arch:addImage('main', gameWorld.assets.sprites.patrons.elf_female2)
+arch:addGrid('main', anim8.newGrid(190, 291, arch.images.main:getWidth(), arch.images.main:getHeight(), 0, 27, 0))
 
 arch:addAnimation('advance', { image = arch.images.main, grid = arch.grids.main(2, 1), rate = 0.1 } )
 arch:addAnimation('drink', { image = arch.images.main, grid = arch.grids.main(1, 1), rate = 0.1 } )
