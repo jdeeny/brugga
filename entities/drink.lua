@@ -57,7 +57,9 @@ end
 ---- BAR ACTIONS --
 
 function Drink:slideOffBar()
-  self:deactivate()
+  self.props.state = "falling"
+  flux.to(self.rect, .5, { x = self.rect.x + 100, y = self.rect.y + 150 }):ease("circin"):oncomplete(function() self:deactivate() end)
+  flux.to(self.rect, .5, { spin = 2 * math.pi }):ease('circin'):oncomplete(function() self.rect.spin = 0 end)
 end
 
 function Drink:deactivate()
@@ -99,18 +101,39 @@ end
 function Drink:draw()
   if self.isActive and self.props.state ~= "drinking" then
     love.graphics.setColor(1.0,1.0,1.0,1.0)
-    love.graphics.draw(gameWorld.assets.sprites.game.tankard, self.rect.x, self.rect.y)
+    love.graphics.draw(
+    gameWorld.assets.sprites.game.tankard,
+    self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2,
+    self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2,
+    self.rect.spin,
+    1, 1,
+    gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
 
     local drinkOffset = { x = self.rect.x + 30, y = self.rect.y + 14 }
 
     if self.props.drinkMix['a'] then
-      love.graphics.draw(gameWorld.assets.sprites.game.gem_PURPLE, drinkOffset.x, drinkOffset.y)
+      love.graphics.draw(gameWorld.assets.sprites.game.tankard_PURPLE,
+      self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2,
+      self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2,
+      self.rect.spin,
+      1, 1,
+      gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
     end
     if self.props.drinkMix['b'] then
-      love.graphics.draw(gameWorld.assets.sprites.game.gem_GREEN, drinkOffset.x - 16, drinkOffset.y + 32)
+      love.graphics.draw(gameWorld.assets.sprites.game.tankard_GREEN,
+      self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2,
+      self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2,
+      self.rect.spin,
+      1, 1,
+      gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
     end
     if self.props.drinkMix['c'] then
-      love.graphics.draw(gameWorld.assets.sprites.game.gem_CYAN, drinkOffset.x + 16, drinkOffset.y + 32)
+      love.graphics.draw(gameWorld.assets.sprites.game.tankard_CYAN,
+      self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2,
+      self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2,
+      self.rect.spin,
+      1, 1,
+      gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
     end
   end
 end

@@ -6,6 +6,7 @@ function Rect:initialize()
   self.name = "rect"
   self:set(0,0,0,0)
   self.props = {}
+  self.spin = 0
 end
 
 function Rect:set(x, y, w, h)
