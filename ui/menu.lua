@@ -4,6 +4,7 @@ local Text = require 'ui.text'
 local Slider = require 'ui.slider'
 
 local Menu = class('Menu')
+local PI = 3.14159
 
 function Menu:initialize(entries, w, h)
   local _entries = entries
@@ -13,6 +14,7 @@ function Menu:initialize(entries, w, h)
   self.font = gameWorld.assets.fonts.generic(42)
   self.vsize = self.h / #_entries
   self.vpad = 50
+  self.spin = 0
   self.hpad = 25
   self.segments = 10
   self.sprites = {
@@ -41,7 +43,7 @@ function Menu:update(dt)
   if gameWorld.playerInput:pressed('action') then
     if current_entry.kind == 'text' then
       gameWorld.sound:playUi('menuSelect')
-      current_entry.func()
+      flux.to(self, 0.5, { spin = 1.0 }):oncomplete(function() self.spin = 0 end):oncomplete(current_entry.func)
     end
   elseif gameWorld.playerInput:pressed('down') then
     gameWorld.sound:playUi('menuSwitch')
@@ -85,8 +87,8 @@ function Menu:draw(x, y)
         local l = c - entry.width / 2 - self.hpad - self.sprites.left:getWidth()
         local r = c + entry.width / 2 + self.hpad
         love.graphics.setColor(colors.white)
-        love.graphics.draw(self.sprites.left, l, _y + self.vsize / 2 - self.sprites.left:getHeight() / 2 - 4)
-        love.graphics.draw(self.sprites.right, r, _y + self.vsize / 2 - self.sprites.right:getHeight() / 2 - 4)
+        love.graphics.draw(self.sprites.left, l + self.sprites.left:getWidth()/2, _y + self.vsize / 2 - 4, PI * 2 * self.spin, 1, 1, self.sprites.left:getWidth()/2, self.sprites.left:getHeight()/2)
+        love.graphics.draw(self.sprites.right, r + self.sprites.right:getWidth()/2, _y + self.vsize / 2 - 4, 0 - PI * 2 * self.spin, 1, 1, self.sprites.right:getWidth()/2, self.sprites.right:getHeight()/2)
       end
     elseif entry.kind == 'slider' then
       love.graphics.setColor(colors.menu_text)
