@@ -60,7 +60,9 @@ end
 function  Gameplay:update(dt)
   -- Generate new patrons
 
-  gameWorld.sound:playStacked(#self.patrons)
+  local n = #self.patrons / 3 + 1
+  if n > 10 then n = 10 end
+  gameWorld.sound:playStacked(n)
 
   self.generator:update(dt)
   local gen = self.generator:generate()

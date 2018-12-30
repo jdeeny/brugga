@@ -24,33 +24,47 @@ end
 
 function StemStack:setLevel(level)
   if self.playing == level then return end
-  self.playing = level or false
-  if self.playing and not self.queue:isPlaying() then
-    self.queue = self:newQueue()
-    self:loadstem(level)
-    self.queue:play()
-  end
-  if not self.playing then self.queue:stop() end
+  self.target = level
 end
 
 function StemStack:update(dt)
-  if self.playing then
-    self:loadstem(self.playing)
+  if not self.playing then self.playing = self.target end
+
+  if not self.playing then self.queue:stop() end
+
+  if self.playing and not self.queue:isPlaying() then
+    --print("new q")
+    self.queue = self:newQueue()
+    self.loc = 1
+    self:loadstem(level)
+    self.queue:play()
+  end
+
+
+  if self.playing or self.target then
+    self:loadstem()
     self.queue:play()
   end
 end
 
-function StemStack:loadstem(level)
-  while self.loops[level] and self.queue:getFreeBufferCount() > 0 do
+function StemStack:loadstem()
+  --print("load" .. self.queue:getFreeBufferCount() .. " " .. self.playing)
+
+  while self.loops[self.playing] and self.queue:getFreeBufferCount() > 0 do
     self.loc = self.loc + 1
-    if not self.sources[level][self.loc] then
+    --print("loc" .. self.loc)
+    if not self.sources[self.playing][self.loc] then
       self.loc = 1
+      if self.target ~= self.playing then
+        self.playing = self.target
+      end
     end
-    print("loc " .. self.loc .." level " .. self.playing)
+    print("loc " .. self.loc .." self.playing " .. self.playing)
     --pretty.dump(self.loops[level])
-    self.queue:queue(self.sources[level][self.loc])
+    self.queue:queue(self.sources[self.playing][self.loc])
   end
 end
+
 
 function StemStack:newQueue()
   return love.audio.newQueueableSource(44100, 16, 2, self.buffers)
