@@ -10,6 +10,7 @@ local Zone = require 'entities.zone'
 local Gamestate = require 'gamestates.gamestate'
 
 local Gameplay = class('Gameplay', Gamestate)
+local wheelSwap = false
 
 function Gameplay:initialize(name)
   Gamestate.initialize(self, name)
@@ -86,8 +87,9 @@ function  Gameplay:update(dt)
   end
 
   -- Swap drink
-  if gameWorld.playerInput:pressed('swap') then
+  if gameWorld.playerInput:pressed('swap') or wheelSwap then
     self.brugga:swapDrinks()
+    wheelSwap = false
   end
 
   -- Spawn drink if player presses throw
@@ -106,6 +108,10 @@ function  Gameplay:update(dt)
   end
 
   self.overlay:update(dt)
+end
+
+function love.wheelmoved(x, y)
+  if y < 0 or y > 0 then wheelSwap = true end
 end
 
 function Gameplay:draw()
