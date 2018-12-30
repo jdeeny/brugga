@@ -16,7 +16,7 @@ function Pause:initialize(name)
 
   self.menu = Menu:new({
     { kind='text', label='Return to Game', func=function() gameWorld.gameState:exitState() end },
-    { kind='text', label='Abandon Game', func=function() gameWorld.gameState:setState('title') end },
+    { kind='text', label='Abandon Game', func=function() gameWorld.gameState:setState('ending') end },
     { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound:setSfxVolume(value) end },
     { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound:setMusicVolume(value) end },
     { kind='text', label='Exit to Desktop', func=function() gameWorld.settings:save() love.event.push('quit') end },
