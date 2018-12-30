@@ -55,14 +55,14 @@ function Gameplay:enter()
   self.waveText = ("Wave %d"):format(gameWorld.playerData.wave)
 
   self.generator:start(gameWorld.playerData.initial_patrons, gameWorld.playerData.initial_threat)
+
+  self:checkFrenzy()
 end
 
 function  Gameplay:update(dt)
   -- Generate new patrons
 
-  local n = #self.patrons / 3 + 1
-  if n > 10 then n = 10 end
-  gameWorld.sound:playStacked(n)
+  self:checkFrenzy()
 
   self.generator:update(dt)
   local gen = self.generator:generate()
@@ -142,6 +142,36 @@ end
 
 function love.wheelmoved(x, y)
   if y < 0 or y > 0 then wheelSwap = true end
+end
+
+
+function Gameplay:checkFrenzy()
+  local patrons = 0 --#self.patrons
+  for i, k in ipairs(self.patrons) do
+    local x_factor = 0.1 + k.rect.x * k.rect.x / 250000
+    local drinks = 0
+
+    if k.drinkMix then
+      local m = k.drinkMix
+      drinks = drinks + (m.a and 1 or 0) + (m.b and 1 or 0) + (m.c and 1 or 0)
+    end
+
+    patrons = patrons + (1 + drinks) * x_factor
+  end
+
+  local life_factor =  (6 - gameWorld.playerData.lives) / 6
+
+
+  local n = math.floor(patrons * life_factor)
+  if n < 1 then n = 1 end
+  if n > 10 then n = 10 end
+
+  print("check: ".. patrons .. " "..life_factor.. " " ..n)
+
+  local n = #self.patrons / 3 + 1
+  if n > 10 then n = 10 end
+  gameWorld.sound:playStacked(n)
+
 end
 
 function Gameplay:draw()

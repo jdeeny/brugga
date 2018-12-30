@@ -22,6 +22,7 @@ function StemStack:initialize(sources)
   self.loc = 0
 end
 
+
 function StemStack:setLevel(level)
   if self.playing == level then return end
   if level >= 1 and level <= 10 then
