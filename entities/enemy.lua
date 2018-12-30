@@ -66,13 +66,12 @@ function Enemy:startDrinking()
 end
 
 function Enemy:stopDrinking()
-  -- Add tip flyer
-  self.overlay:addFlyer(self.reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
-
   self.drinkDelay = .8    -- Reset drink timer
   self.state = "advance"  -- Set advance state
   self.drink:sendRight(self.rect.x + self.rect.w) -- Slide drink back from end of patron
   self.drink = nil        -- Customer no longer holding drink
+
+
 end
 
 ---- BAR ACTIONS ----
@@ -93,10 +92,11 @@ function Enemy:reachedEnd()
 end
 
 function Enemy:exited()
-  self.overlay:addFlyer(self.reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
-
   self.drink:deactivate() -- Drink is no longer active
   self:deactivate()
+  -- Add tip flyer
+  self.overlay:addTipFlyer(self.reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+
 end
 
 function Enemy:deactivate()
