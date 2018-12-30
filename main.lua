@@ -21,6 +21,8 @@ function love.load()
   gameWorld.colors = require('ui.colors')
   gameWorld.sound = require('ui.sound'):new()
 
+  gameWorld.paletteswap = require('ui.paletteswap'):new()
+
   -- Comment this out to disable debug print
   gameWorld.debug = require('ui.debug'):new()
 
