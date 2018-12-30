@@ -135,9 +135,16 @@ function Gameplay:draw()
     if self.brugga.row == i then self.brugga:draw() end
 
     -- Draw patrons
+    love.graphics.setBackgroundColor(0,0,0,0)
+    local canvas = love.graphics.newCanvas()
+    love.graphics.setCanvas(canvas)
+    love.graphics.setColor(1,1,1,1)
     for _, p in ipairs(self.patrons) do
       if p.row == i then p:draw() end
     end
+
+    love.graphics.setCanvas()
+    love.graphics.draw(canvas,0,0)
 
     -- Draw drinks
     self.drinkPool:draw(i)
