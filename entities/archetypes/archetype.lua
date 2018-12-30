@@ -10,6 +10,7 @@ function Archetype:initialize(name)
   self.tagsets = {}
   self.speed = 1.0
   self.rarity = 1.0
+  self.speech_offset = { x = 0, y = 0 }
 end
 
 function Archetype:addImage(name, image)
@@ -24,6 +25,11 @@ end
 function Archetype:addAnimation(name, animation)
   self.animations[name] = animation
 end
+
+function Archetype:setBubbleOffset(x, y)
+  self.speech_offset = { x = x, y = y }
+end
+
 
 function Archetype:addTagset(tags)
   self.tagsets[#self.tagsets + 1] = tags

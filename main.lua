@@ -28,6 +28,7 @@ function love.load()
 
   gameWorld.gameState = require('gamestates.manager'):new()
   gameWorld.playerData = require('player.playerdata'):new()
+  gameWorld.gameState:setState('gameplay')
 end
 
 function love.update(dt)

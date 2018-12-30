@@ -17,6 +17,8 @@ function Enemy:initialize(data, overlay)
   self.overlay = overlay
   self.reward = data.threat
 
+  self.speech_offset = data.speech_offset
+
   self.animations = data.animations
   self.images = data.images
 
@@ -176,7 +178,7 @@ function Enemy:draw()
       Entity.draw(self)
     end
     if self.state == "advance" then
-      local speechOffset = { x = self.rect.x + 100, y = self.rect.y - 114 }
+      local speechOffset = { x = self.speech_offset.x + self.rect.x, y = self.speech_offset.y + self.rect.y }
       local drinkOffset = { x = speechOffset.x + 20, y = speechOffset.y + 18 }
 
       love.graphics.draw(gameWorld.assets.sprites.game.speechbubble, speechOffset.x, speechOffset.y)

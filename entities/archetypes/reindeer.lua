@@ -2,7 +2,7 @@ local anim8 = require('lib.anim8')
 local arch = require('entities.archetypes.archetype'):new('reindeer')
 
 arch:addImage('main', gameWorld.assets.sprites.patrons.reindeer)
-arch:addGrid('main', anim8.newGrid(199, 297, arch.images.main:getWidth(), arch.images.main:getHeight(), 0, 0, 0))
+arch:addGrid('main', anim8.newGrid(199, 297, arch.images.main:getWidth(), arch.images.main:getHeight(), 0, 6, 0))
 
 arch:addAnimation('advance', { image = arch.images.main, grid = arch.grids.main(2, 1), rate = 0.1 } )
 arch:addAnimation('drink', { image = arch.images.main, grid = arch.grids.main(1, 1), rate = 0.1 } )

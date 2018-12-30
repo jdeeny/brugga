@@ -13,4 +13,6 @@ arch:addTagset({ 'elf', })
 arch:setRarity(70)
 arch:setSpeed(1.2)
 
+arch:setBubbleOffset(40, -160)
+
 return arch
