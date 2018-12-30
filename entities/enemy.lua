@@ -54,6 +54,8 @@ function Enemy:initialize(data, overlay)
     return self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y
   end
 
+  self.drinkfoam = require('ui.drinkfoam'):new()
+
   self.rect:setPos(220 - (75 * self.row), 17 + (183 * self.row) - self.rect.h) -- set at start of specific row
 end
 
@@ -72,6 +74,7 @@ function Enemy:startDrinking()
   self.state = "drink"  -- Set drinking state
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
   self.drink:startDrinking(self.rect.x + self.drinkDrinkingOffset.x, self.rect.y + self.drinkDrinkingOffset.y)    -- Apply drinking position to drink
+  self.drinkfoam:createFoam(self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y)
 end
 
 function Enemy:stopDrinking()
@@ -116,6 +119,7 @@ end
 ---- UPDATE ----
 
 function Enemy:update(dt)
+  self.drinkfoam:update(dt)
   if self.isActive then
     -- Advance towards the player
     if self.state == "advance" then
@@ -203,6 +207,7 @@ function Enemy:draw()
         love.graphics.draw(gameWorld.assets.sprites.game.gem_CYAN, drinkOffset.x, drinkOffset.y + 64)
       end
     end
+    self.drinkfoam:draw()
   end
 end
 
