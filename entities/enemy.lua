@@ -23,6 +23,8 @@ function Enemy:initialize(data, overlay)
   -- Set properties
   self.isActive = true
   self.state = "advance"  -- Current operational state
+  self.advanceState = "walk"
+  self.advanceStateTimer = 2
   self.hitDelay = 1.5       -- Hit state duration
   self.drinkDelay = .5    -- Drinking state duration
   self.props.isEnemy = true          -- Is an enemy
@@ -108,9 +110,23 @@ function Enemy:update(dt)
   if self.isActive then
     -- Advance towards the player
     if self.state == "advance" then
-      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (self.speed * 25 * dt), self.rect.y, self:collisionFilter())
-      self.rect.x = actualX -- Move forwards
-      self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
+      self.advanceStateTimer = self.advanceStateTimer - dt
+      local actualX, actualY, cols, len = 0, 0, {}, 0
+      if self.advanceState == "walk" then
+        actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (self.speed * 50 * dt), self.rect.y, self:collisionFilter())
+        self.rect.x = actualX -- Move forwards
+        self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
+        if self.advanceStateTimer <= 0 then
+          self.advanceState = "stand"
+          self.advanceStateTimer = 2.5
+        end
+      elseif self.advanceState == "stand" then
+        actualX, actualY, cols, len = self.bumpWorld:check(self.rect, self.rect.x, self.rect.y, self:collisionFilter())
+        if self.advanceStateTimer <= 0 then
+          self.advanceState = "walk"
+          self.advanceStateTimer = 2
+        end
+      end
       -- Check collisions
       if len > 0 then self:checkDrinkCollision(cols) end
       if len > 0 then self:checkEndCollision(cols) end
@@ -159,17 +175,21 @@ function Enemy:draw()
     else
       Entity.draw(self)
     end
-    if self.drinkMix['a'] then
-      love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 48, 16, 16)
-    end
-    if self.drinkMix['b'] then
-      love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 32, 16, 16)
-    end
-    if self.drinkMix['c'] then
-      love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 16, 16, 16)
+    if self.state == "advance" then
+      local speechOffset = { x = self.rect.x + 100, y = self.rect.y - 114 }
+      local drinkOffset = { x = speechOffset.x + 20, y = speechOffset.y + 18 }
+
+      love.graphics.draw(gameWorld.assets.sprites.game.speechbubble, speechOffset.x, speechOffset.y)
+
+      if self.drinkMix['a'] then
+        love.graphics.draw(gameWorld.assets.sprites.game.gem_PURPLE, drinkOffset.x, drinkOffset.y)
+      end
+      if self.drinkMix['b'] then
+        love.graphics.draw(gameWorld.assets.sprites.game.gem_GREEN, drinkOffset.x, drinkOffset.y + 32)
+      end
+      if self.drinkMix['c'] then
+        love.graphics.draw(gameWorld.assets.sprites.game.gem_CYAN, drinkOffset.x, drinkOffset.y + 64)
+      end
     end
   end
 end
