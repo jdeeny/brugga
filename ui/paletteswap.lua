@@ -13,10 +13,10 @@ local shader = love.graphics.newShader[[
     float b = lhs.b - rhs.b;
     float a = lhs.a - rhs.a;
 
-    if ( (r * r) > 0.0001) { return false; }
-    if ( (g * g) > 0.0001) { return false; }
-    if ( (b * b) > 0.0001) { return false; }
-    if ( (a * a) > 0.0001) { return false; }
+    if ( (r * r) > 0.01) { return false; }
+    if ( (g * g) > 0.01) { return false; }
+    if ( (b * b) > 0.01) { return false; }
+    if ( (a * a) > 0.01) { return false; }
 
     return true;
   }
@@ -53,8 +53,6 @@ setters.in_colors = function(c)
       c[i] = { 0, 0, 0, 0 }
     end
   end
-  print("send in")
-  pretty.dump(c)
   shader:send("in_colors", c[1], c[2], c[3], c[4])
 end
 
@@ -64,8 +62,6 @@ setters.out_colors = function(c)
       c[i] = { 0, 0, 0, 0 }
     end
   end
-  print("send out")
-  pretty.dump(c)
   shader:send("out_colors", c[1], c[2], c[3], c[4])
 end
 

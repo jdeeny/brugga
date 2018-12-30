@@ -43,4 +43,10 @@ function Archetype:setSpeed(speed)
   self.speed = speed
 end
 
+function Archetype:setSwaps(swaps)
+  self.swaps_in = swaps
+  pretty.dump(self.swaps_in)
+end
+
+
 return Archetype
