@@ -59,6 +59,9 @@ end
 
 function  Gameplay:update(dt)
   -- Generate new patrons
+
+  gameWorld.sound:playStacked(#self.patrons)
+
   self.generator:update(dt)
   local gen = self.generator:generate()
   if gen then

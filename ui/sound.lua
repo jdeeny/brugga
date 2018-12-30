@@ -20,6 +20,9 @@ function SoundManager:initialize()
     male = ripple.newTag(),
   }
 
+  self.stacked_target = 1
+  self.stacked_level = 1
+  self.stacked_loc = 0
 
   self.ui.assets = cargo.init('assets')
 
@@ -53,13 +56,27 @@ function SoundManager:initialize()
   self.music['ending'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
   self.music['ending']:setLooping(true)
 
-  for _, t in ipairs(self:scanTags('music/drink_male.ogg')) do
-    print(t)
+  self.music.stacked = {}
+  self.music.stacked[1] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay1, tags = { self.tags.music, }})
+  self.music.stacked[2] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay2, tags = { self.tags.music, }})
+  self.music.stacked[3] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay3, tags = { self.tags.music, }})
+  self.music.stacked[4] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay4, tags = { self.tags.music, }})
+  self.music.stacked[5] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay5, tags = { self.tags.music, }})
+  self.music.stacked[6] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay6, tags = { self.tags.music, }})
+  self.music.stacked[7] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay7, tags = { self.tags.music, }})
+  self.music.stacked[8] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay8, tags = { self.tags.music, }})
+  self.music.stacked[9] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay9, tags = { self.tags.music, }})
+  self.music.stacked[10] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay10, tags = { self.tags.music, }})
+  --self.music.stacked[11] = ripple.newSound({source = gameWorld.assets.audio.music.gameplay1, tags = { self.tags.music, }})
+
+  for _, k in ipairs(self.music.stacked) do
+    k:setLooping(true)
+    k.volume = 0
+    k:play()
   end
-  self.music['test']:setLooping(true)
+
 
   self.musicPlaying = false
-
 
   if gameWorld.settings.config.sfx_volume then self:setSfxVolume(gameWorld.settings.config.sfx_volume) print("1") end
   if gameWorld.settings.config.music_volume then self:setMusicVolume(gameWorld.settings.config.music_volume) print("2") end
@@ -109,5 +126,21 @@ end
 function SoundManager:isMusicPlaying()
   return self.musicPlaying
 end
+
+function SoundManager:playStacked(level)
+  local l = (level >= 1 and level <= 10 and level) or 1
+  if self.stacked_level == l then return end
+  self.stacked_level = l
+  for i, k in ipairs(self.music.stacked) do
+    if i <= l and k.volume < 1 then
+      print("flux to 1 ".. i)
+      flux.to(self.music.stacked[i], 0.5, { volume = 1.0 })
+    elseif i > l and k.volume > 0 then
+      print("flux to 0 ".. i)
+      flux.to(self.music.stacked[i], 0.5, { volume = 0.0 })
+    end
+  end
+end
+
 
 return SoundManager
