@@ -61,7 +61,7 @@ function Overlay:addTipFlyer(amount, x, y)
   print("Tip: " .. amount)
   local score = Score:new(amount, 64, 0)
   local new_flyer = Flyer:new(score:getDrawable(), x, y, self.target_x, self.target_y)
-  local flight_time = 0.5 + love.math.random(0.2)
+  local flight_time = 0.5 + gameWorld.random:random(0.2)
   local tween = flux.to(new_flyer, flight_time, { completion = 1.0 }):oncomplete(function() gameWorld.playerData:scoreIncrease(amount) self:pulseScore() new_flyer:destroy() end)
   table.insert(self.flying, new_flyer )
 end

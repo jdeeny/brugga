@@ -57,8 +57,8 @@ function Generator:generate()
 
   print("endarchs")
   local drink_complexity = 1
-  if love.math.random(50) < self.threat then drink_complexity = drink_complexity + 1 end
-  if love.math.random(100) < self.threat then drink_complexity = drink_complexity + 1 end
+  if gameWorld.random:random(50) < self.threat then drink_complexity = drink_complexity + 1 end
+  if gameWorld.random:random(100) < self.threat then drink_complexity = drink_complexity + 1 end
 
   local ingredients = { 'a', 'b', 'c' }
   ingredients = shuffle(ingredients)
@@ -77,7 +77,7 @@ function Generator:generate()
 
   print("Threat: " .. threat .. " " .. self.threat)
 
-  return { animations = animations, images=images, drink=drink, speed=speed, row=love.math.random(3), threat = threat }
+  return { animations = animations, images=images, drink=drink, speed=speed, row=gameWorld.random:random(3), threat = threat }
 end
 
 function Generator:update(dt)
