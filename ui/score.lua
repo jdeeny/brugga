@@ -87,15 +87,21 @@ end
 
 function Score:getDrawable()
   local offset = 6
-  local _str = format_num(self.amount) --.. ".00"
+  local _str = format_num(self.amount, 2, '', '()')
   local score_str
   if self.spaces == 0 then
     score_str = "$" .. string.rep(" ", self.spaces - #_str) .. _str
   else
     score_str = "$" .. _str
   end
+  local fg = colors.score
+  local bg = colors.score_back
+  if self.amount <= -0.005 then
+    fg = colors.bad_score
+    bg = colors.bad_score_back
+  end
+  return self.outline:getOutline(score_str, fg, bg)
 
-  return self.outline:getOutline(score_str, colors.score, colors.score_back)
 end
 
 return Score

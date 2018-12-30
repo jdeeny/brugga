@@ -16,7 +16,11 @@ function PlayerData:reset()
 end
 
 function PlayerData:scoreIncrease(i)
-  gameWorld.sound:playSfx('coin')
+  if i >= 0 then
+    gameWorld.sound:playSfx('coin')
+  else
+    gameWorld.sound:playSfx('coindown')
+  end
   self.score = self.score + i
 end
 
