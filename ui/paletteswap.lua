@@ -13,72 +13,68 @@ local shader = love.graphics.newShader[[
     float b = lhs.b - rhs.b;
     float a = lhs.a - rhs.a;
 
-    if ( r * r > 0.001) { return false; }
-    if ( g * g > 0.001) { return false; }
-    if ( b * b > 0.001) { return false; }
-    if ( a * a > 0.001) { return false; }
+    if ( (r * r) > 0.0001) { return false; }
+    if ( (g * g) > 0.0001) { return false; }
+    if ( (b * b) > 0.0001) { return false; }
+    if ( (a * a) > 0.0001) { return false; }
 
     return true;
   }
 
   vec4 effect(vec4 color, Image tex, vec2 tc, vec2 _) {
     vec4 c = Texel(tex, tc);
-    vec4 outc = c * color;
+    vec4 outc = c;// * color;
     if (comp(outc, in_colors[0])) {
-      outc = out_colors[0];
+      outc.rgb = out_colors[0].rgb;
     }
     if (comp(outc, in_colors[1])) {
-      outc = out_colors[1];
+      outc.rgb = out_colors[1].rgb;
     }
     if (comp(outc, in_colors[2])) {
-      outc = out_colors[2];
+      outc.rgb = out_colors[2].rgb;
     }
     if (comp(outc, in_colors[3])) {
-      outc = out_colors[3];
+      outc.rgb = out_colors[3].rgb;
     }
 
     return outc;
   }]]
 
 local defaults = {
-  in_colors = {{1,1,1,1},{1,1,1,1},{1,1,1,1},{1,1,1,1},},
-  out_colors = {{1,1,1,1},{1,1,1,1},{1,1,1,1},{1,1,1,1},},
+  in_colors = {{0,0,0,1},{0,0,0,0},{0,0,0,0},{0,0,0,0},},
+  out_colors = {{0,0,0,1},{0,0,0,0},{0,0,0,0},{0,0,0,0},},
 }
 
 local setters = {}
 
 setters.in_colors = function(c)
-  local colors = {}
   for i=1,4 do
-    if c[i] then
-      assert(type(c[i]) == "table" and #c[i] == 4, "invalid color")
-      colors[#colors + 1] = c[i]
-    else
-      colors[#colors + 1] = { 1, 1, 1, 1 }
+    if not c[i] then
+      c[i] = { 0, 0, 0, 0 }
     end
   end
-  shader:send("out_colors", colors[1], colors[2], colors[3], colors[4])
+  print("send in")
+  pretty.dump(c)
+  shader:send("in_colors", c[1], c[2], c[3], c[4])
 end
 
 setters.out_colors = function(c)
-  local colors = {}
   for i=1,4 do
-    if c[i] then
-      assert(type(c[i]) == "table" and #c[i] == 4, "invalid color")
-      colors[#colors + 1] = c[i]
-    else
-      colors[#colors + 1] = { 1, 1, 1, 1 }
+    if not c[i] then
+      c[i] = { 0, 0, 0, 0 }
     end
   end
-  shader:send("out_colors", colors[1], colors[2], colors[3], colors[4])
+  print("send out")
+  pretty.dump(c)
+  shader:send("out_colors", c[1], c[2], c[3], c[4])
 end
 
 
 
 function PaletteSwap:initialize()
-  self.swaps = {
-    none = { },
-  }
+  --self.swaps = {
+--    none = { },
+--  }
   self.current = 'none'
   self._effect = moonshine.Effect{
     name = "PaletteSwap",
@@ -89,20 +85,23 @@ function PaletteSwap:initialize()
   self.effect = moonshine(self._effect)
 end
 
-function PaletteSwap:addSwap(name, swaps)
-  self.swaps[name] = swaps
+--function PaletteSwap:addSwap(swaps)
+--  self.swaps[#self.swaps + 1] = swaps
+--  return #self.swaps
+--end
+
+--function PaletteSwap:removeSwap(name)
+--  self.swaps[name] = nil
+--end
+
+function PaletteSwap:setSwap(i, o)
+  self.effect.PaletteSwap.in_colors = i
+  self.effect.PaletteSwap.out_colors = o
 end
 
-function PaletteSwap:removeSwap(name)
-  self.swaps[name] = nil
-end
-
-function PaletteSwap:setSwap(name)
-  --local name = name or 'none'
-  --if not self.swaps[name] then return end
-  --self.current = name
-  --self.effect.in_colors = self.swaps[name][1]
-  --self.effect.out_colors = self.swaps[name][2]
+function PaletteSwap:clearSwap()
+  self.effect.in_colors = {}
+  self.effect.out_colors = {}
 end
 
 function PaletteSwap:doEffect(func)

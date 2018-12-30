@@ -2,6 +2,7 @@ local class = require 'lib.middleclass'
 local Entity = require 'entities.entity'
 local rect = require 'physics.rect'
 
+
 ---- INIT ----
 
 local Enemy = class('Enemy', Entity)
@@ -22,6 +23,9 @@ function Enemy:initialize(data, overlay)
   self.animations = data.animations
   self.images = data.images
 
+  self.swaps_in  = { { 0, 0, 0, 1}, {1,0,0,1} }
+  self.swaps_out =  { {love.math.random(),love.math.random(),love.math.random(),1}, {love.math.random(),love.math.random(),love.math.random(),1} }
+
   -- Set properties
   self.isActive = true
   self.state = "advance"  -- Current operational state
@@ -30,7 +34,6 @@ function Enemy:initialize(data, overlay)
   self.hitDelay = 1.5       -- Hit state duration
   self.drinkDelay = .5    -- Drinking state duration
   self.props.isEnemy = true          -- Is an enemy
-  self.props.inLine = true
 
   -- Create collision rectangle
   self.rect:set(300, 156, 64, 64)        -- Set position/size
@@ -56,7 +59,6 @@ end
 function Enemy:drinkHit(drink)
     self.drink = drink  -- Store drink that collided
     self.state = "hit"  -- Set hit state
-    self.props.inLine = false
     print("[enemy] now in hit state")
     self.drink:patronHold()   -- Set drink's drinking state
     self.drinkOffset = self.drinkHoldOffset -- Set the drink position offset
@@ -65,7 +67,6 @@ end
 function Enemy:startDrinking()
   self.hitDelay = 2     -- Reset hit timer
   self.state = "drink"  -- Set drinking state
-  self.props.inLine = false
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
   self.drink:startDrinking(self.rect.x + self.drinkDrinkingOffset.x, self.rect.y + self.drinkDrinkingOffset.y)    -- Apply drinking position to drink
 end
@@ -73,7 +74,6 @@ end
 function Enemy:stopDrinking()
   self.drinkDelay = .8    -- Reset drink timer
   self.state = "advance"  -- Set advance state
-  self.props.inLine = true
   self.drink:sendRight(self.rect.x + self.rect.w) -- Slide drink back from end of patron
   self.drink = nil        -- Customer no longer holding drink
 
@@ -120,41 +120,17 @@ function Enemy:update(dt)
       local actualX, actualY, cols, len = 0, 0, {}, 0
       if self.advanceState == "walk" then
         actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x + (self.speed * 50 * dt), self.rect.y, self:collisionFilter())
-        local eCols, eLen = self.bumpWorld:queryRect(self.rect.x + self.rect.w * 1.1, self.rect.y, self.rect.w, self.rect.h, self:enemyFilter())
-
         self.rect.x = actualX -- Move forwards
         self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
-
-        local patronsAhead = false
-        for i,col in ipairs(eCols) do
-          if col.props.inLine then patronsAhead = true end
-        end
-
-        if self.advanceStateTimer <= 0 or patronsAhead then
+        if self.advanceStateTimer <= 0 then
           self.advanceState = "stand"
-
-          if patronsAhead then
-            self.advanceStateTimer = .1
-          else
-            self.advanceStateTimer = 2
-          end
+          self.advanceStateTimer = 2.5
         end
       elseif self.advanceState == "stand" then
         actualX, actualY, cols, len = self.bumpWorld:check(self.rect, self.rect.x, self.rect.y, self:collisionFilter())
-        local eCols, eLen = self.bumpWorld:queryRect(self.rect.x + self.rect.w * 1.1, self.rect.y, self.rect.w, self.rect.h, self:enemyFilter())
-
-        local patronsAhead = false
-        for i,col in ipairs(eCols) do
-          if col.props.inLine then patronsAhead = true end
-        end
-
         if self.advanceStateTimer <= 0 then
-          if patronsAhead then
-            self.advanceStateTimer = .5
-          else
-            self.advanceState = "walk"
-            self.advanceStateTimer = 2.5
-          end
+          self.advanceState = "walk"
+          self.advanceStateTimer = 2
         end
       end
       -- Check collisions
@@ -201,7 +177,12 @@ function Enemy:draw()
     if self.animations[self.state] then
       love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
       local image = self.images[self.state]
-      self.animations[self.state]:draw(image, self.rect.x - 100, self.rect.y - 173)
+      gameWorld.paletteswap:setSwap(self.swaps_in, self.swaps_out)
+      gameWorld.paletteswap:doEffect(function()
+        self.animations[self.state]:draw(image, math.floor(self.rect.x + 0.5 - 100), math.floor(self.rect.y + 0.5 - 173))
+      end)
+      gameWorld.paletteswap:clearSwap()
+
     else
       Entity.draw(self)
     end
@@ -244,18 +225,6 @@ function Enemy:collisionFilter()
     end
 
     -- Ignore all other collisions
-    return nil
-  end
-
-  return filter
-end
-
-function Enemy:enemyFilter()
-  local filter = function(item)
-    if item.props.isEnemy and self.rect ~= item then
-      return 'cross'
-    end
-
     return nil
   end
 
