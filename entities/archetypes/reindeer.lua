@@ -14,4 +14,6 @@ arch:addTagset({ 'reindeer', 'anykind' })
 arch:setRarity(90)
 arch:setSpeed(1.0)
 
+arch:setBubbleOffset(55, -160)
+
 return arch
