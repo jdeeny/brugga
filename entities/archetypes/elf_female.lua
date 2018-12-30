@@ -13,5 +13,5 @@ arch:addTagset({ 'female', 'anygender' })
 arch:addTagset({ 'elf', 'anykind' })
 arch:setRarity(100)
 arch:setSpeed(1.0)
-arch:setBubbleOffset(50, 50)
+arch:setBubbleOffset(35, -160)
 return arch
