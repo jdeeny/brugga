@@ -159,17 +159,26 @@ function Enemy:draw()
     else
       Entity.draw(self)
     end
-    if self.drinkMix['a'] then
-      love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 48, 16, 16)
-    end
-    if self.drinkMix['b'] then
-      love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 32, 16, 16)
-    end
-    if self.drinkMix['c'] then
-      love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
-      love.graphics.rectangle('fill', self.rect.x, self.rect.y - 16, 16, 16)
+    if self.state == "advance" then
+      local speechOffset = { x = self.rect.x + 100, y = self.rect.y - 114 }
+      local drinkOffset = { x = speechOffset.x + 20, y = speechOffset.y + 18 }
+
+      love.graphics.draw(gameWorld.assets.sprites.game.speechbubble, speechOffset.x, speechOffset.y)
+      if self.drinkMix['a'] then
+        love.graphics.draw(gameWorld.assets.sprites.game.gem_PURPLE, drinkOffset.x, drinkOffset.y)
+        --love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
+        --love.graphics.rectangle('fill', self.rect.x, self.rect.y - 48, 16, 16)
+      end
+      if self.drinkMix['b'] then
+        love.graphics.draw(gameWorld.assets.sprites.game.gem_GREEN, drinkOffset.x, drinkOffset.y + 32)
+        --love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
+        --love.graphics.rectangle('fill', self.rect.x, self.rect.y - 32, 16, 16)
+      end
+      if self.drinkMix['c'] then
+        love.graphics.draw(gameWorld.assets.sprites.game.gem_CYAN, drinkOffset.x, drinkOffset.y + 64)
+        --love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
+        --love.graphics.rectangle('fill', self.rect.x, self.rect.y - 16, 16, 16)
+      end
     end
   end
 end
