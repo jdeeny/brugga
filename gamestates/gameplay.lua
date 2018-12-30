@@ -37,6 +37,7 @@ function Gameplay:enter()
   -- Patrons
   self.generator = Generator:new()
   self.patrons = {}
+  self.patronZOrderCompare = function(a, b) return a.rect.x < b.rect.x end
   -- Drinks
   self.drinkPool = DrinkPool:new(30, self.bumpWorld)
   -- Brugga
@@ -107,6 +108,8 @@ function  Gameplay:update(dt)
     p:update(dt)
   end
 
+  table.sort(self.patrons, self.patronZOrderCompare)
+
   self.overlay:update(dt)
 end
 
@@ -128,29 +131,15 @@ function Gameplay:draw()
   love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
   love.graphics.rectangle('fill', 1080, 520, 100, 100)
 
-  --[[]
-  -- Zones
   for i=1,self.rows do
-    self.startZones[i]:draw()
-    self.endZones[i]:draw()
-  end
+    if self.brugga.row == i then self.brugga:draw() end
 
-  -- Debug bar boxes
-  love.graphics.setColor(.6, .2, .1, 100)
-  love.graphics.rectangle('fill', 150, 200, 670, 40)
-  love.graphics.rectangle('fill', 75, 385, 785, 40)
-  love.graphics.rectangle('fill', 0, 570, 900, 40)
-  --]]
+    -- Draw patrons
+    for _, p in ipairs(self.patrons) do
+      if p.row == i then p:draw() end
+    end
 
-  self.brugga:draw() -- Draw brugga
-
-  -- Draw patrons
-  for _, p in ipairs(self.patrons) do
-    p:draw()
-  end
-
-  -- Draw drinks
-  for i=1,self.rows do
+    -- Draw drinks
     self.drinkPool:draw(i)
   end
 
