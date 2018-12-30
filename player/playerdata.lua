@@ -12,7 +12,11 @@ function PlayerData:reset()
   self.drink_history = {}
 end
 
+
+
+
 function PlayerData:scoreIncrease(i)
+  gameWorld.sound:playSfx('coin')
   self.score = self.score + i
 end
 

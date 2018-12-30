@@ -105,12 +105,6 @@ function  Gameplay:update(dt)
     p:update(dt)
   end
 
-  self.nextReward = self.nextReward - dt
-  if self.nextReward <= 0.0 then
-    self.nextReward = self.rewardTime
-    gameWorld.playerData:scoreIncrease(1)
-  end
-
   self.overlay:update(dt)
 end
 
