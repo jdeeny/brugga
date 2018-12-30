@@ -13,4 +13,6 @@ arch:addTagset({ 'snowman', 'anykind' })
 arch:setRarity(80)
 arch:setSpeed(1.0)
 
+arch:setBubbleOffset(55, -155)
+
 return arch
