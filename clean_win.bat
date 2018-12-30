@@ -1,2 +1,2 @@
-del Brugga.exe
-del Brugga_Windows.zip
+rmdir /S /Q release\Brugga_Windows
+del release\Brugga_Windows.zip
