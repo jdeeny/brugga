@@ -14,4 +14,6 @@ arch:addTagset({ 'elf', 'anykind' })
 arch:setRarity(100)
 arch:setSpeed(1.0)
 
+arch:setBubbleOffset(40, -160)
+
 return arch
