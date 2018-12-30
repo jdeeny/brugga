@@ -61,6 +61,11 @@ function Ending:enter()
   self.fade = 1.0
   flux.to(self, 2, { fade = 0.0 }):ease("quadinout")
   gameWorld.sound:playMusic('ending')
+
+  if gameWorld.playerData.score > gameWorld.settings.config.high_score then
+    gameWorld.settings.config.high_score = gameWorld.playerData.score
+    gameWorld.settings:save()
+  end
 end
 
 function Ending:update(dt)

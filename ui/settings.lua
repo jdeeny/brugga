@@ -20,7 +20,7 @@ function Settings:load()
     local conf = bitser.loadLoveFile(self.filename)
     if conf.sfx_volume then self.config.sfx_volume = conf.sfx_volume end
     if conf.music_volume then self.config.music_volume = conf.music_volume end
-    if conf.high_score then self.config.high_score = conf.music_volume end
+    if conf.high_score then self.config.high_score = conf.high_score end
   else
     return false
   end
