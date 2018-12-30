@@ -1,5 +1,9 @@
 zip -r Brugga.zip assets entities gamestates lib physics player ui conf.lua main.lua README.md
 rename Brugga.zip Brugga.love
-copy /b love.exe+Brugga.love Brugga.exe
-zip Brugga_Windows.zip Brugga.exe
+mkdir release\Brugga_Windows
+copy /b love.exe+Brugga.love release\Brugga_Windows\Brugga.exe
 del Brugga.love
+copy release\dist\* release\Brugga_Windows
+cd release
+zip -r Brugga_Windows.zip Brugga_Windows
+
