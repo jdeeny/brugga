@@ -10,7 +10,10 @@ function Snow:initialize()
   self.particles = {
     low = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.simple, 500),
     med = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.med, 500),
-    high = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.fancy, 500)
+    high = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.fancy, 500),
+    lowr = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.simple, 500),
+    medr = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.med, 500),
+    highr = love.graphics.newParticleSystem(gameWorld.assets.sprites.snow.fancy, 500)
   }
 
   for _, sys in pairs(self.particles) do
@@ -22,9 +25,9 @@ function Snow:initialize()
     sys:setSpread(PI/16)
     sys:setSpeed(30, 55)
     sys:setSizes(0.1)
-    sys:setColors(1.0, 1.0, 1.0, 0.4)
-    sys:setSpin(0-PI/8, PI/8)
-    --sys:setSpinVariation(1)
+    sys:setColors(.95, 0.95, 1.0, 0.7)
+    sys:setSpin(PI/4)
+    sys:setSpinVariation(PI/8)
     sys:setRotation(0, PI * 2)
     sys:setRadialAcceleration(0, 0.2)
     sys:setRelativeRotation(false)
@@ -32,9 +35,17 @@ function Snow:initialize()
   end
 
 
-  self.particles.low:setEmissionRate(4)
-  self.particles.med:setEmissionRate(1.5)
-  self.particles.high:setEmissionRate(0.5)
+  self.particles.low:setEmissionRate(2)
+  self.particles.med:setEmissionRate(.7)
+  self.particles.high:setEmissionRate(0.2)
+
+  self.particles.lowr:setEmissionRate(2)
+  self.particles.medr:setEmissionRate(0.7)
+  self.particles.highr:setEmissionRate(0.2)
+  self.particles.lowr:setSpin(-PI/4)
+  self.particles.medr:setSpin(-PI/4)
+  self.particles.highr:setSpin(-PI/4)
+
 
   for _, sys in pairs(self.particles) do
     sys:start()
