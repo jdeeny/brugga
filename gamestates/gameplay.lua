@@ -157,15 +157,18 @@ function Gameplay:draw()
 
     -- Draw patrons
     love.graphics.setBackgroundColor(0,0,0,0)
-    local canvas = love.graphics.newCanvas()
-    love.graphics.setCanvas(canvas)
+    --local canvas = love.graphics.newCanvas()
+    --love.graphics.setCanvas(canvas)
     love.graphics.setColor(1,1,1,1)
+    gameWorld.paletteswap:doEffect(function()
+
     for _, p in ipairs(self.patrons) do
       if p.row == i then p:draw() end
     end
+    end)
 
-    love.graphics.setCanvas()
-    love.graphics.draw(canvas,0,0)
+    --love.graphics.setCanvas()
+    --love.graphics.draw(canvas,0,0)
 
     -- Draw drinks
     self.drinkPool:draw(i)

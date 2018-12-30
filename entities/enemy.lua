@@ -26,7 +26,7 @@ function Enemy:initialize(data, overlay)
   self.swaps_in  = data.swaps_in or {} -- { 0, 0, 0, 1}, {1,0,0,1} }
   --pretty.dump(self.swaps_in)
 
-  self.swaps_out = { { gameWorld.random:randomNormal(0.04, 0) + self.swaps_in[1][1], gameWorld.random:randomNormal(0.04, 0) + self.swaps_in[1][2], gameWorld.random:randomNormal(0.04, 0) + self.swaps_in[1][3], 1 }}
+  self.swaps_out = { { gameWorld.random:randomNormal(0.08, 0) + self.swaps_in[1][1], gameWorld.random:randomNormal(0.08, 0) + self.swaps_in[1][2], gameWorld.random:randomNormal(0.08, 0) + self.swaps_in[1][3], 1 }}
   --pretty.dump(self.swaps_out)
 
   -- Set properties
@@ -181,9 +181,7 @@ function Enemy:draw()
       love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
       local image = self.images[self.state]
       gameWorld.paletteswap:setSwap(self.swaps_in, self.swaps_out)
-      gameWorld.paletteswap:doEffect(function()
         self.animations[self.state]:draw(image, math.floor(self.rect.x + 0.5) - 100, math.floor(self.rect.y + 0.5) - 173)
-      end)
       gameWorld.paletteswap:clearSwap()
 
     else
