@@ -130,16 +130,11 @@ end
 function SoundManager:playStacked(level)
   local l = (level >= 1 and level <= 10 and level) or 1
   if self.stacked_level == l then return end
+  flux.to(self.music.stacked[l], 0.5, { volume = 1.0 })
+  flux.to(self.music.stacked[self.stacked_level], 0.5, { volume = 0.0 })
+
   self.stacked_level = l
-  for i, k in ipairs(self.music.stacked) do
-    if i <= l and k.volume < 1 then
-      print("flux to 1 ".. i)
-      flux.to(self.music.stacked[i], 0.5, { volume = 1.0 })
-    elseif i > l and k.volume > 0 then
-      print("flux to 0 ".. i)
-      flux.to(self.music.stacked[i], 0.5, { volume = 0.0 })
-    end
-  end
+
 end
 
 
