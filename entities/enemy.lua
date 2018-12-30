@@ -37,7 +37,7 @@ function Enemy:initialize(data, overlay)
   self.hitDelay = 1.5       -- Hit state duration
   self.drinkDelay = .5    -- Drinking state duration
   self.props.isEnemy = true          -- Is an enemy
-  self.props.inLine = true
+  self.props.inLine = true  -- Patron is waiting in line (not drinking)
 
   -- Create collision rectangle
   self.rect:set(300, 156, 64, 64)        -- Set position/size
@@ -61,26 +61,26 @@ end
 ---- DRINK ACTIONS ----
 
 function Enemy:drinkHit(drink)
-    self.drink = drink  -- Store drink that collided
-    self.state = "hit"  -- Set hit state
-    self.props.inLine = false
+    self.drink = drink        -- Store drink that collided
+    self.state = "hit"        -- Set hit state
+    self.props.inLine = false -- Patron no longer considered waiting in line
     print("[enemy] now in hit state")
     self.drink:patronHold()   -- Set drink's drinking state
     self.drinkOffset = self.drinkHoldOffset -- Set the drink position offset
 end
 
 function Enemy:startDrinking()
-  self.hitDelay = 2     -- Reset hit timer
-  self.state = "drink"  -- Set drinking state
-  self.props.inLine = false
+  self.hitDelay = 2         -- Reset hit timer
+  self.state = "drink"      -- Set drinking state
+  self.props.inLine = false -- Patron no longer considered waiting in line
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
   self.drink:startDrinking(self.rect.x + self.drinkDrinkingOffset.x, self.rect.y + self.drinkDrinkingOffset.y)    -- Apply drinking position to drink
 end
 
 function Enemy:stopDrinking()
-  self.drinkDelay = .8    -- Reset drink timer
-  self.state = "advance"  -- Set advance state
-  self.props.inLine = true
+  self.drinkDelay = .8      -- Reset drink timer
+  self.state = "advance"    -- Set advance state
+  self.props.inLine = true  -- Patron now considered waiting in line
   self.drink:sendRight(self.rect.x + self.rect.w) -- Slide drink back from end of patron
   self.drink = nil        -- Customer no longer holding drink
 
@@ -132,12 +132,13 @@ function Enemy:update(dt)
         self.rect.x = actualX -- Move forwards
         self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
 
-
+        -- Check if other patrons are in the way
         local patronsAhead = false
         for i,col in ipairs(eCols) do
           if col.props.inLine then patronsAhead = true end
         end
 
+        -- Change state if timer up or patron detected
         if self.advanceStateTimer <= 0 or patronsAhead then
           self.advanceState = "stand"
           if patronsAhead then
@@ -151,13 +152,15 @@ function Enemy:update(dt)
         actualX, actualY, cols, len = self.bumpWorld:check(self.rect, self.rect.x, self.rect.y, self:collisionFilter())
         local eCols, eLen = self.bumpWorld:queryRect(self.rect.x + self.rect.w * 1.1, self.rect.y, self.rect.w, self.rect.h, self:enemyFilter())
 
+        -- Check if other patrons are in the way
         local patronsAhead = false
         for i,col in ipairs(eCols) do
           if col.props.inLine then patronsAhead = true end
         end
 
+        -- Change state if timer up
         if self.advanceStateTimer <= 0 then
-          if patronsAhead then
+          if patronsAhead then  -- Stay in stand state if patron detected
             self.advanceStateTimer = .5
           else
             self.advanceState = "walk"
