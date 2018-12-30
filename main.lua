@@ -9,7 +9,10 @@ require 'lib.pl'    -- provides on-demand lading on the penlight sublibraries
 gameWorld = {}
 
 function love.load()
-  math.randomseed(love.timer.getTime())
+  gameWorld.random = love.math.newRandomGenerator()
+  gameWorld.random:setSeed(os.time())
+  math.randomseed(os.time())
+
   gameWorld.settings = require('ui.settings'):new()
   gameWorld.settings:load()
   gameWorld.settings:save()

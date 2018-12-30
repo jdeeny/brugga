@@ -17,7 +17,7 @@ function Archetypes:initialize()
 end
 
 function Archetypes:getRandom()
-  local pick = love.math.random(self.rarity_total)
+  local pick = gameWorld.random:random(self.rarity_total)
   for i, arch in ipairs(self.kinds) do
     pick = pick - arch.rarity
     if pick <= 0.0 then return arch end
