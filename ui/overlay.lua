@@ -7,9 +7,9 @@ local Overlay = class('Overlay')
 function Overlay:initialize()
   self.flying = {}
 
-  self.score_width = 400
-  self.score_x = 1280 - self.score_width - 50
-  self.score_y = 720 - 100
+  self.score_width = 300
+  self.score_x = self.score_width / 2
+  self.score_y = 0--720 - 100
 
   self.target_x = self.score_x
   self.target_y = self.score_y
@@ -45,7 +45,7 @@ function Overlay:draw()
   local h = drawable:getHeight()
 
   love.graphics.setColor(1.0,1.0,1.0,1.0)
-  love.graphics.draw(score:getDrawable(), self.score_x, self.score_y, 0, self.scale_x, self.scale_y)
+  love.graphics.draw(score:getDrawable(), self.score_x + w/2, self.score_y+h/2, 0, self.scale_x, self.scale_y, w/2, h/2)
   end
 
 
@@ -61,13 +61,15 @@ function Overlay:addTipFlyer(amount, x, y)
   print("Tip: " .. amount)
   local score = Score:new(amount, 64, 0)
   local new_flyer = Flyer:new(score:getDrawable(), x, y, self.target_x, self.target_y)
-  local flight_time = 0.5 + gameWorld.random:random(0.2)
-  local tween = flux.to(new_flyer, flight_time, { completion = 1.0 }):oncomplete(function() gameWorld.playerData:scoreIncrease(amount) self:pulseScore() new_flyer:destroy() end)
+  local dist = math.sqrt((self.target_x - x) * (self.target_x - x) + (self.target_y - y) * (self.target_y- y))
+  local flight_time = gameWorld.random:randomNormal(.1, 0.5) * (dist / 450)
+  if flight_time <= 0.01 then flight_time = 0.1 end
+  local tween = flux.to(new_flyer, flight_time, { completion = 1.0 }):ease('circin'):oncomplete(function() gameWorld.playerData:scoreIncrease(amount) self:pulseScore() new_flyer:destroy() end)
   table.insert(self.flying, new_flyer )
 end
 
 function Overlay:pulseScore()
-  flux.to(self, 0.3, { scale_x = 1.2, scale_y = 1.4 }):ease('cubicout'):after(self, 0.7, { scale_x = 1.0, scale_y = 1.0 } ):ease('elasticout')
+  flux.to(self, 0.3, { scale_x = 1.2, scale_y = 1.4 }):ease('cubicout'):after(self, 0.4, { scale_x = 1.0, scale_y = 1.0 } ):ease('elasticout')
 end
 
 return Overlay
