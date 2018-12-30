@@ -127,7 +127,7 @@ function Dude:draw()
   end
 
   local image = self.images[imageState]
-  self.animations[imageState]:draw(image, self.rect.x - 150 , self.rect.y - 250, 0, self.scale.x, self.scale.y)
+  self.animations[imageState]:draw(image, self.rect.x - 150 , self.rect.y - 215, 0, self.scale.x, self.scale.y)
 end
 
 function Dude:haltTempAnim()
