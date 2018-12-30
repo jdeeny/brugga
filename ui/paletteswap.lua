@@ -13,10 +13,10 @@ local shader = love.graphics.newShader[[
     float b = lhs.b - rhs.b;
     float a = lhs.a - rhs.a;
 
-    if ( (r * r) > 0.01) { return false; }
-    if ( (g * g) > 0.01) { return false; }
-    if ( (b * b) > 0.01) { return false; }
-    if ( (a * a) > 0.01) { return false; }
+    if ( (r * r) > 0.015) { return false; }
+    if ( (g * g) > 0.015) { return false; }
+    if ( (b * b) > 0.015) { return false; }
+    if ( (a * a) > 0.015) { return false; }
 
     return true;
   }

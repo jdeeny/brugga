@@ -25,7 +25,8 @@ function Enemy:initialize(data, overlay)
 
   self.swaps_in  = data.swaps_in or {} -- { 0, 0, 0, 1}, {1,0,0,1} }
   --pretty.dump(self.swaps_in)
-  self.swaps_out = { { love.math.random(),love.math.random(),love.math.random(), 1 }}
+
+  self.swaps_out = { { gameWorld.random:randomNormal(0.04, 0) + self.swaps_in[1][1], gameWorld.random:randomNormal(0.04, 0) + self.swaps_in[1][2], gameWorld.random:randomNormal(0.04, 0) + self.swaps_in[1][3], 1 }}
   --pretty.dump(self.swaps_out)
 
   -- Set properties
