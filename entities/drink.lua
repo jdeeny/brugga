@@ -57,12 +57,18 @@ function Drink:sendRight(x)
 end
 
 ---- BAR ACTIONS --
+function Drink:caught()
+  self.overlay:addTipFlyer(.5, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+  self:deactivate()
+end
 
 function Drink:slideOffBar()
   self.props.state = "falling"
-  self.overlay:addTipFlyer(-0.25, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
   flux.to(self.rect, .5, { x = self.rect.x + 100, y = self.rect.y + 150 }):ease("circin"):oncomplete(function() self:deactivate() end)
-  flux.to(self.rect, .5, { spin = 2 * math.pi }):ease('circin'):oncomplete(function() self.rect.spin = 0 end)
+  flux.to(self.rect, .5, { spin = 2 * math.pi }):ease('circin'):oncomplete(function() self.rect.spin = 0 end):oncomplete(
+    function()
+      self.overlay:addTipFlyer(-0.25, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+    end)
 end
 
 function Drink:deactivate()
