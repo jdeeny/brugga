@@ -191,11 +191,11 @@ function Gameplay:draw()
     -- Draw patrons
     love.graphics.setBackgroundColor(0,0,0,0)
     love.graphics.setColor(1,1,1,1)
-    gameWorld.paletteswap:doEffect(function()
+    --gameWorld.paletteswap:doEffect(function()
       for _, p in ipairs(self.patrons) do
         if p.row == i then p:draw() end
       end
-    end)
+    --end)
 
     -- Draw drinks
     self.drinkPool:draw(i)
