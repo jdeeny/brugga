@@ -31,7 +31,7 @@ function love.load()
   gameWorld.gameState = require('gamestates.manager'):new()
   gameWorld.playerData = require('player.playerdata'):new()
   gameWorld.playerData:reset()
-  gameWorld.gameState:setState('gameplay')
+  gameWorld.gameState:setState('splash')
 end
 
 function love.update(dt)

@@ -105,7 +105,7 @@ function Drink:update(dt)
     if self.props.state == "held" then
       -- Nothing here
     elseif self.props.state == "toCustomer" then
-      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (300 * dt), self.rect.y, self:collisionFilter())
+      local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (500 * dt), self.rect.y, self:collisionFilter())
       self.rect.x = actualX
 
       if len > 0 then self:startCollision(cols) end
