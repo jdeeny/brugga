@@ -108,6 +108,10 @@ function  Gameplay:update(dt)
     self.brugga:send()
   end
 
+  if gameWorld.playerInput:pressed('skipwave') then
+    self:endWave()
+  end
+
   -- Update entities
 
   if self.brugga.isActive then self.brugga:update(dt) end
@@ -127,21 +131,25 @@ function  Gameplay:update(dt)
       #self.drinkPool.active == 0 and
       #self.patrons == 0 then
 
-    -- Increase player wave properties
-    gameWorld.playerData:waveIncrease()
-
-    -- Go to ending after 10 waves
-    if gameWorld.playerData.wave > 10 then
-      gameWorld.gameState:setState('ending')
-    -- Start next wave
-    else
-      gameWorld.gameState:setState('gameplay')
-    end
+    self:endWave()
   end
 
 
   self.overlay:update(dt)
 
+end
+
+function Gameplay:endWave()
+  -- Increase player wave properties
+  gameWorld.playerData:waveIncrease()
+
+  -- Go to ending after 10 waves
+  if gameWorld.playerData.wave > 10 then
+    gameWorld.gameState:setState('ending')
+  -- Start next wave
+  else
+    gameWorld.gameState:setState('gameplay')
+  end
 end
 
 function love.wheelmoved(x, y)

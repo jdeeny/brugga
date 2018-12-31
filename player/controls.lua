@@ -37,6 +37,7 @@ return baton.new {
 
     -- Special for debugging
     jumptoend = { 'key:0' },
+    skipwave = { 'key:9'},
 
     mb1 = { 'mouse:1' },
   },
