@@ -12,7 +12,6 @@ function StemStack:initialize(sources)
       local src = self.loops[i]:decode()
       if src then
         self.sources[i][#self.sources[i]+1] = src
-        print('src')
       end
     until not src
   end
@@ -66,7 +65,7 @@ function StemStack:loadstem()
         self.playing = self.target
       end
     end
-    print("loc " .. self.loc .." self.playing " .. self.playing)
+    --print("loc " .. self.loc .." self.playing " .. self.playing)
     --pretty.dump(self.loops[level])
     if self.playing and self.sources[self.playing] and self.sources[self.playing][self.loc] then
       self.queue:queue(self.sources[self.playing][self.loc])
