@@ -196,8 +196,6 @@ function Tutorial:draw()
     love.graphics.print("Move", 1000, 75)
     love.graphics.print("WASD / Arrow Keys / Control Pad", 820, 110)
     love.graphics.print("Pick up empty tankards\nto collect an extra tip!", 580, 160)
-    --love.graphics.print("Send - LMB / Z / Gamepad A", 840, 100)
-    --love.graphics.print("Send out a drink to\nthe patrons at the \nbar by pressing LMB. \nMake sure the drink \nyou send matches\ntheir order!", 680, 350)
     love.graphics.setColor(gameWorld.colors.white)
   end
   ----- Title
