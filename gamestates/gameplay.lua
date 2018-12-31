@@ -40,7 +40,7 @@ function Gameplay:enter()
   self.patrons = {}
   self.patronZOrderCompare = function(a, b) return a.rect.x < b.rect.x end
   -- Drinks
-  self.drinkPool = DrinkPool:new(30, self.bumpWorld)
+  self.drinkPool = DrinkPool:new(30, self.bumpWorld, self.overlay)
   -- Brugga
   self.brugga = Dude:new()
   self.brugga:addToWorld(self.bumpWorld)

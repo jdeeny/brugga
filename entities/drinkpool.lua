@@ -3,13 +3,14 @@ local Drink = require 'entities.drink'
 
 local DrinkPool = class('DrinkPool')
 
-function DrinkPool:initialize(drinkAmt, bumpWorld)
+function DrinkPool:initialize(drinkAmt, bumpWorld, overlay)
   self.bumpWorld = bumpWorld
+  self.overlay = overlay
 
   -- Generate drinks
   self.drinks = {}
   for i=1,drinkAmt do
-    table.insert(self.drinks, Drink:new())
+    table.insert(self.drinks, Drink:new(overlay))
   end
 
   self.active = {}  -- No drinks initially active
