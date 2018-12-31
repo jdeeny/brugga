@@ -26,7 +26,11 @@ function Gameplay:enter()
 
   -- Graphics
   self.assets = cargo.init('assets')
-  self.BG = self.assets.sprites.environment.Background
+  self.BG = {
+    gameWorld.assets.sprites.environment.BKG_Backlayer,
+    gameWorld.assets.sprites.environment.BKG_Midlayer,
+    gameWorld.assets.sprites.environment.BKG_Toplayer
+  }
 
   -- Collision world
   self.bumpWorld = bump.newWorld(50)
@@ -178,31 +182,26 @@ function Gameplay:draw()
   love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
 
   -- BG
-  love.graphics.draw(self.BG)
-
-  ---- DEBUG DRAW -- --
-  love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
-  love.graphics.rectangle('fill', 1000, 150, 100, 100)
-  love.graphics.setColor(0.0, 1.0, 0.0, 1.0)
-  love.graphics.rectangle('fill', 1040, 335, 100, 100)
-  love.graphics.setColor(0.0, 0.0, 1.0, 1.0)
-  love.graphics.rectangle('fill', 1080, 520, 100, 100)
+  love.graphics.draw(gameWorld.assets.sprites.environment.BKG_Baselayer)
 
   for i=1,self.rows do
+    -- Draw Brugga
     if self.brugga.row == i then self.brugga:draw() end
 
     -- Draw patrons
     love.graphics.setBackgroundColor(0,0,0,0)
     love.graphics.setColor(1,1,1,1)
     gameWorld.paletteswap:doEffect(function()
-
-    for _, p in ipairs(self.patrons) do
-      if p.row == i then p:draw() end
-    end
+      for _, p in ipairs(self.patrons) do
+        if p.row == i then p:draw() end
+      end
     end)
 
     -- Draw drinks
     self.drinkPool:draw(i)
+
+    -- Draw BG layers
+    love.graphics.draw(self.BG[i])
   end
 
   self.overlay:draw()
