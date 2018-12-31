@@ -77,7 +77,7 @@ function Enemy:startDrinking()
   self.props.inLine = false -- Patron no longer considered waiting in line
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
   self.drink:startDrinking(self.rect.x + self.drinkDrinkingOffset.x, self.rect.y + self.drinkDrinkingOffset.y)    -- Apply drinking position to drink
-  self.drinkfoam:createFoam(self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y)
+  self.drinkfoam:createFoam(self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y, self.drinkMix)
 end
 
 function Enemy:stopDrinking()
