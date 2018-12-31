@@ -46,16 +46,16 @@ function Ending:initialize(name)
   self.score_y = 120
   self.patrons_y = 220
 
-  self.score_x = 700
-  self.score_y = 150
+  self.score_x = 650
+  self.score_y = 250
   self.score_width = 300
 
-  self.avatar_x = 40
-  self.avatar_y = 90
+  self.avatar_x = 190
+  self.avatar_y = 240
 
-  self.image = gameWorld.assets.sprites.brugga.running
-  local grid = anim8.newGrid(300, 300, self.image:getWidth(), self.image:getHeight(), 0, 0, 0)
-  self.animation = anim8.newAnimation(grid(1, 2), 0.1)
+  self.image = gameWorld.assets.sprites.brugga.BruggaRunningSheet
+  local grid = anim8.newGrid(339, 265, self.image:getWidth(), self.image:getHeight(), 0, 0, 0)
+  self.animation = anim8.newAnimation(grid('1-8',1), .1)
 end
 
 function Ending:enter()
@@ -106,8 +106,10 @@ function Ending:draw()
   --local score_str = comma_value(gameWorld.playerData.score) .. ".00"
   --love.graphics.printf("$", self.score_x, self.score_y, self.score_width, 'left')
   --love.graphics.printf(score_str, self.score_x, self.score_y, self.score_width, 'right')
+  love.graphics.print("Total:", self.score_x, self.score_y - 90)
   love.graphics.draw(self.score, self.score_x, self.score_y)
-  love.graphics.draw(self.high_score, self.score_x, self.score_y + 90)
+  love.graphics.print("High Score:", self.score_x, self.score_y + 90)
+  love.graphics.draw(self.high_score, self.score_x, self.score_y + 180)
 
   love.graphics.setColor(gameWorld.colors.white)
 
