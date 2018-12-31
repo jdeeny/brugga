@@ -28,20 +28,20 @@ function Dude:initialize()
   -- Drinks
   self.drinkPool = nil
   self.drinkPour = nil
-  self.drinkPourOffset = { x=12, y=-8}
+  self.drinkPourOffset = { x=112, y=-8}
   self.drinkSend = nil
-  self.drinkSendOffset = { x=-148, y=-8}
+  self.drinkSendOffset = { x=-48, y=-8}
 
   -- Create collision rectangle
-  self.rect:set(0, 0, 64, 64)
+  self.rect:set(0, 0, 256, 128)
 end
 
 ---- SPAWN ----
 function Dude:spawn(drinkPool)
   self.drinkPool = drinkPool
   self.isActive = true
-  self.rect.x = 950 + (self.row * 40)
-  self.rect.y = (self.row * 15) + 185
+  self.rect.x = 750 + (self.row * 40)
+  self.rect.y = 15 + (self.row * 185)
 end
 
 ---- DRINK ACTIONS ----
@@ -55,11 +55,11 @@ end
 
 function Dude:updateHeldDrinks()
   if self.drinkPour ~= nil then
-    self.drinkPour.rect:setPos(self.rect.x + self.drinkPourOffset.x, self.rect.y + self.drinkPourOffset.y)
+    self.drinkPour.rect:setPos(self.rect.x + self.drinkPourOffset.x + (self.row * 20), self.rect.y + self.drinkPourOffset.y - (self.row * 5))
     self.drinkPour.row = self.row
   end
   if self.drinkSend ~= nil then
-    self.drinkSend.rect:setPos(self.rect.x + self.drinkSendOffset.x, self.rect.y + self.drinkSendOffset.y)
+    self.drinkSend.rect:setPos(self.rect.x + self.drinkSendOffset.x + (self.row * 20), self.rect.y + self.drinkSendOffset.y - (self.row * 5))
     self.drinkSend.row = self.row
   end
 end
@@ -127,7 +127,7 @@ function Dude:draw()
   end
 
   local image = self.images[imageState]
-  self.animations[imageState]:draw(image, self.rect.x - 150 , self.rect.y - 215, 0, self.scale.x, self.scale.y)
+  self.animations[imageState]:draw(image, self.rect.x - 60 + (self.row * 20), self.rect.y - 195 - (self.row * 5), 0, self.scale.x, self.scale.y)
 end
 
 function Dude:haltTempAnim()
@@ -156,8 +156,10 @@ function Dude:changeRow(dt)
   end
 
   self.moveDelay = 1/6
-  self.rect.x = 950 + (self.row * 40)
+  self.rect.x = 750 + (self.row * 40)
   self.rect.y = 15 + (self.row * 185)
+
+  self.bumpWorld:move(self.rect, self.rect.x, self.rect.y, function() return 'cross' end)
 
   self:updateHeldDrinks()
   self:haltTempAnim()
