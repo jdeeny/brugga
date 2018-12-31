@@ -2,6 +2,7 @@ local class = require 'lib.middleclass'
 local Gamestate = require 'gamestates.gamestate'
 local anim8 = require 'lib.anim8'
 local Menu = require 'ui.menu'
+local Score = require 'ui.score'
 
 local Ending = class('Ending', Gamestate)
 
@@ -66,6 +67,10 @@ function Ending:enter()
     gameWorld.settings.config.high_score = gameWorld.playerData.score
     gameWorld.settings:save()
   end
+
+  self.score = Score:new(gameWorld.playerData.score, 80, 0):getDrawable()
+  self.high_score = Score:new(gameWorld.settings.config.high_score, 80, 0):getDrawable()
+
 end
 
 function Ending:update(dt)
@@ -89,9 +94,11 @@ function Ending:draw()
   love.graphics.setColor(gameWorld.colors.score)
   love.graphics.setFont(self.font_score)
 
-  local score_str = comma_value(gameWorld.playerData.score) .. ".00"
-  love.graphics.printf("$", self.score_x, self.score_y, self.score_width, 'left')
-  love.graphics.printf(score_str, self.score_x, self.score_y, self.score_width, 'right')
+  --local score_str = comma_value(gameWorld.playerData.score) .. ".00"
+  --love.graphics.printf("$", self.score_x, self.score_y, self.score_width, 'left')
+  --love.graphics.printf(score_str, self.score_x, self.score_y, self.score_width, 'right')
+  love.graphics.draw(self.score, self.score_x, self.score_y)
+  love.graphics.draw(self.high_score, self.score_x, self.score_y + 90)
 
   love.graphics.setColor(gameWorld.colors.white)
 
