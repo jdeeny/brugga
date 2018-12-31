@@ -105,6 +105,7 @@ end
 
 function Enemy:reachedEnd()
   self:deactivate()
+  if gameWorld.playerData:livesDecrease(1) then gameWorld.gameState:setState('ending') end
 end
 
 function Enemy:exited()

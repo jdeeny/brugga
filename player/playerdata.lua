@@ -9,7 +9,7 @@ end
 function PlayerData:reset()
   self.score = 0
   self.wave = 1
-  self.lives = 3
+  self.lives = 5
   self.initial_patrons = 8
   self.initial_threat = 2
   self.patron_history = {}
@@ -42,6 +42,7 @@ end
 
 function PlayerData:livesDecrease(n)
   if self.lives >= 1 then self.lives = self.lives - 1 end
+  return self.lives == 0
 end
 
 function PlayerData:livesIncrease(n)
