@@ -61,6 +61,9 @@ end
 function Ending:enter()
   self.fade = 1.0
   flux.to(self, 2, { fade = 0.0 }):ease("quadinout")
+
+  self.backsnow = require('ui.snow'):new()
+  self.snow = require('ui.snow'):new()
   gameWorld.sound:playMusic('ending')
 
   if gameWorld.playerData.score > gameWorld.settings.config.high_score then
@@ -76,6 +79,8 @@ end
 function Ending:update(dt)
   self.menu:update(dt)
   self.animation:update(dt)
+  self.backsnow:update(dt*0.9)
+  self.snow:update(dt)
 --[[  if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour') then
     print("exit ending")
     gameWorld.gameState:setState('credits')
@@ -85,6 +90,10 @@ end
 
 function Ending:draw()
   love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
+  love.graphics.draw(gameWorld.assets.backdrops.title_background, 0, 0)
+  ----- Backsnow
+  self.backsnow:draw()
+  ----- Banner
   love.graphics.setFont(self.font_banner)
   love.graphics.printf("What A Night!", self.margin, self.banner_y, self.print_width, 'center')
 
@@ -108,7 +117,10 @@ function Ending:draw()
   self.animation:draw(self.image, self.avatar_x, self.avatar_y)
 
   self.menu:draw(0, self.menu_y)
-
+  ----- Frontsnow
+  love.graphics.setColor(gameWorld.colors.white)
+  self.snow:draw()
+  ----- Fade
   if self.fade > 0 then
     love.graphics.setColor(0.0, 0.0, 0.0, self.fade)
     love.graphics.rectangle('fill', 0, 0, 1280, 720)
