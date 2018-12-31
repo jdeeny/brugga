@@ -26,7 +26,6 @@ end
 function SmokePuff:draw()
   love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
   for _, k in ipairs(self.particles) do
-    print("smokedraw "..k.x.." "..k.y)
     love.graphics.draw(k.puff, k.x, k.y)
   end
 end
