@@ -48,9 +48,13 @@ function love.draw()
 end
 
 function love.quit()
-  print("Thanks for playing! Come back soon!")
 end
 
+function love.focus(f)
+  if not f and gameWorld.gameState:getCurrent() == 'gameplay' then
+    gameWorld.gameState:pushState('pause')
+  end
+end
 
 -- switch to a newly connected joystick
 function love.joystickadded(j)

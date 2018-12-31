@@ -22,19 +22,12 @@ function Overlay:initialize()
   self.lifexdelta = 54
 
   self.flight_time = 0.7
+  self.smoke = require('ui.smokepuff'):new()
 end
 
 
 function Overlay:update(dt)
-  --for i, f in ipairs(self.flying) do
---    f:update(dt)
-
---  if f.completion >= 1 then
---      f:destroy()
---      self.flying[i] = nil
---    end
---  end
-
+  self.smoke:update(dt)
 end
 
 function Overlay:draw()
@@ -43,12 +36,17 @@ function Overlay:draw()
   for _, f in ipairs(self.flying) do
     f:draw()
   end
+
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
+  self.smoke:draw()
+
   local score = Score:new(gameWorld.playerData.score, 64, 0)
   local drawable = score:getDrawable()
   local w = drawable:getWidth()
   local h = drawable:getHeight()
 
   love.graphics.setColor(1.0,1.0,1.0,1.0)
+
   love.graphics.draw(score:getDrawable(), self.score_x + w/2, self.score_y+h/2, 0, self.scale_x, self.scale_y, w/2, h/2)
 
 
@@ -75,6 +73,10 @@ function Overlay:draw()
   --love.graphics.printf("$", self.score_x, self.score_y, self.score_width, 'left', 0, self.scale_x, self.scale_y)
   --love.graphics.printf(score_str, self.score_x, self.score_y, self.score_width, 'right', 0, self.scale_x, self.scale_y, self.score_width * self.scale_x - self.score_width)
 --end
+
+function Overlay:addSmokePuff(x, y)
+  self.smoke:createPuff(x, y)
+end
 
 function Overlay:addTipFlyer(amount, x, y)
   print("Tip: " .. amount)

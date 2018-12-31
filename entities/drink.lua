@@ -21,8 +21,8 @@ function Drink:initialize(overlay)
   -- Create collision rectangle
   self.rect:set(0, 0, 64, 64)        -- Set position/size
   self.drawColor = { 1.0, 0.2, 0.2, 1.0 }
-
   self.drawOffset = { x = 0, y = 0 }
+  self.trail = require('ui.drinktrail'):new()
 end
 
 ---- STATES ----
@@ -39,18 +39,21 @@ function Drink:sendLeft()
   self.props.state = "toCustomer" -- Set toCustomer state
   self.rect:setPos(780 + (self.row * 20), (self.row * 185) - 30)  -- Set position on row
   self.bumpWorld:update(self.rect, self.rect.x, self.rect.y, self.rect.w, self.rect.h)
+  self.trail:createTrail(self.rect.w * .5, -self.rect.h * .4, self.rect.h * .6)
 end
 
 -- Set drinking state when hitting patron
 function Drink:patronHold()
   print("[drink] held, changing to drinking state")
   self.props.state = "drinking"
+  self.trail:stop()
 end
 
 -- Set position while customer drinks
 function Drink:startDrinking(x, y)
   print("[drink] starting drinking")
   self.rect:setPos(x, y)
+  self.trail:stop()
 end
 
 -- Send drink to the right on the bar
@@ -58,25 +61,30 @@ function Drink:sendRight(x)
   self.rect:setPos(x, (self.row * 185) - 30)
   self.props.state = "toBartender"
   self.props.drinkMix = {}
+  self.trail:createTrail(0, -self.rect.h * .4, self.rect.h * .6)
 end
 
 ---- BAR ACTIONS --
 function Drink:caught()
   if self.props.state == "falling" then self:stopFall() end -- Stop fall tweens
   self.overlay:addTipFlyer(.5, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+  self.trail:stop()
   self:deactivate()
 end
 
 function Drink:slideOffBar()
   self.props.state = "falling"
   self.tween.fallMove = flux.to(self.rect, .5, { x = self.rect.x + 100, y = self.rect.y + 150 }):ease("circin"):oncomplete(function()
+    self.trail:stop()
     self.overlay:addTipFlyer(-0.25, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+    self.overlay:addSmokePuff(self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
     self:deactivate()
   end)
   self.tween.fallSpin = flux.to(self.rect, .5, { spin = 2 * math.pi }):ease('circin'):oncomplete(function() self.rect.spin = 0 end)
 end
 
 function Drink:deactivate()
+  self.trail:stop()
   self.isActive = false
   self.props.state = "none"
   self.bumpWorld:remove(self.rect)
@@ -89,6 +97,7 @@ end
 ---- UPDATE ----
 
 function Drink:update(dt)
+  self.trail:update(dt)
   if self.isActive then
     if self.props.state == "held" then
       -- Nothing here
@@ -121,6 +130,9 @@ end
 function Drink:draw()
   if self.isActive and self.props.state ~= "drinking" then
     love.graphics.setColor(1.0,1.0,1.0,1.0)
+
+    self.trail:draw(self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+
     love.graphics.draw(
     gameWorld.assets.sprites.game.tankard,
     self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2 + self.drawOffset.x,

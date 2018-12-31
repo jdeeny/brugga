@@ -27,6 +27,7 @@ function DrinkPool:getNewDrink()
     newDrink.isActive = true              -- Set active
     newDrink.props.drinkMix = {}
     newDrink.props.state = "held"
+    newDrink.rect.spin = 0
     newDrink:addToWorld(self.bumpWorld)
     table.insert(self.active, newDrink)      -- Add to active table
     table.remove(self.inactive, 1) -- Remove from inactive table
