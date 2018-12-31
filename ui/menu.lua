@@ -8,8 +8,10 @@ local PI = 3.14159
 
 function Menu:initialize(entries, w, h)
   local _entries = entries
-  self.w = w or 500
-  self.h = h or 300
+  self.x = 1
+  self.y = 1
+  self.w = w or 700
+  self.h = h or 350
   self.selected = 1
   self.font = gameWorld.assets.fonts.generic(42)
   self.vsize = self.h / #_entries
@@ -36,11 +38,24 @@ function Menu:initialize(entries, w, h)
   end
   self.entries = _entries
 
+  self.last_mouse = { love.mouse.getPosition() }
+
 end
 
 function Menu:update(dt)
-    local current_entry = self.entries[self.selected]
+  local current_entry = self.entries[self.selected]
+
+  local m_pos = { love.mouse.getPosition() }
+  if self.last_mouse ~= m_pos or gameWorld.playerInput:pressed('mb1') then
+    self.last_mouse = m_pos
+    self:cursorInside()
+  end
+
   if gameWorld.playerInput:pressed('action') then
+    if gameWorld.playerInput:pressed('mb1') and not self:cursorInside() then
+      return
+    end
+
     if current_entry.kind == 'text' then
       gameWorld.sound:playUi('menuSelect')
       flux.to(self, 0.5, { spin = 1.0 }):oncomplete(function() self.spin = 0 end):oncomplete(current_entry.func)
@@ -77,6 +92,8 @@ function Menu:update(dt)
 end
 
 function Menu:draw(x, y)
+  self.x = x
+  self.y = y
   for i, entry in ipairs(self.entries) do
     local _y = (i - 1) * self.vsize + y
     if entry.kind == 'text' then
@@ -109,5 +126,19 @@ function Menu:draw(x, y)
   end
 end
 
+function Menu:cursorInside()
+  local x = self.last_mouse[1]
+  local y = self.last_mouse[2]
+
+  if x > self.x + 5 and x < self.x + self.w - 5 then
+    if y > self.y + 5 and y < self.y + self.h - 5 then
+      self.selected = math.floor((y - self.y) / self.vsize) + 1
+      return true
+    else
+      return false
+    end
+  end
+
+end
 
 return Menu

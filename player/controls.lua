@@ -37,6 +37,8 @@ return baton.new {
 
     -- Special for debugging
     jumptoend = { 'key:0' },
+
+    mb1 = { 'mouse:1' },
   },
   pairs = {
     move = { 'left', 'right', 'up', 'down' },

@@ -170,7 +170,7 @@ function Gameplay:checkFrenzy()
   if n < 1 then n = 1 end
   if n > 10 then n = 10 end
 
-  print("check: ".. patrons .. " "..life_factor.. " " ..n)
+  --print("check: ".. patrons .. " "..life_factor.. " " ..n)
 
   local n = #self.patrons / 3 + 1
   if n > 10 then n = 10 end

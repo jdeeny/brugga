@@ -8,7 +8,7 @@ local Pause = class('Pause', Gamestate)
 function Pause:initialize(name)
   Gamestate.initialize(self, name)
 
-  self.w = 500
+  self.w = 680
   self.h = 500
 
   self.x = 1280 / 2 - self.w / 2
