@@ -46,7 +46,9 @@ function Menu:update(dt)
   local current_entry = self.entries[self.selected]
 
   local m_pos = { love.mouse.getPosition() }
-  if self.last_mouse ~= m_pos or gameWorld.playerInput:pressed('mb1') then
+  local dx = m_pos[1] - self.last_mouse[1]
+  local dy = m_pos[2] - self.last_mouse[2]
+  if math.sqrt(dx*dx+dy*dy) > 2 or gameWorld.playerInput:pressed('mb1') then
     self.last_mouse = m_pos
     self:cursorInside()
   end
