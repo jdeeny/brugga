@@ -68,6 +68,7 @@ function Drink:slideOffBar()
   flux.to(self.rect, .5, { spin = 2 * math.pi }):ease('circin'):oncomplete(function() self.rect.spin = 0 end):oncomplete(
     function()
       self.overlay:addTipFlyer(-0.25, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+      self.overlay:addSmokePuff(self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
     end)
 end
 
