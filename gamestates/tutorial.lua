@@ -120,14 +120,22 @@ function Tutorial:draw()
 
   love.graphics.setColor(gameWorld.colors.white)
   self.snow:draw()
-  -----
-  love.graphics.setFont(self.titlefont)
-  love.graphics.print("TUTORIAL", 575, 25)
+  ----- Animations
   love.graphics.draw(self.pour_image.image[self.pour_image.frame], self.pour_image.x, self.pour_image.y)
   love.graphics.draw(self.mouse_image.pour.image[self.mouse_image.pour.frame], self.mouse_image.pour.x, self.mouse_image.pour.y)
   love.graphics.draw(self.send_image.image[self.send_image.frame], self.send_image.x, self.send_image.y)
   love.graphics.draw(self.mouse_image.send.image[self.mouse_image.send.frame], self.mouse_image.send.x, self.mouse_image.send.y)
-
+  ----- Text
+  love.graphics.setColor(gameWorld.colors.credits_title)
+  love.graphics.setFont(self.titlefont)
+  love.graphics.print("TUTORIAL", 575, 25)
+  love.graphics.setFont(self.textfont)
+  love.graphics.setColor(gameWorld.colors.menu_text)
+  love.graphics.print("Pour - RMB / C / Gamepad B", 80, 100)
+  love.graphics.print("Pour a drink from \nthe tap by pressing \nRMB. Each tap fills \nthe tankard with a \ndifferent drink.", 420, 150)
+  love.graphics.print("Send - LMB / Z / Gamepad A", 840, 100)
+  love.graphics.print("Send out a drink to\nthe patrons at the \nbar by pressing LMB. \nMake sure the drink \nyou send matches\ntheir order!", 680, 350)
+  love.graphics.setColor(gameWorld.colors.white)
   -----
   if self.fade > 0 then
     love.graphics.setColor(0.0, 0.0, 0.0, self.fade) --(0.0, 0.0, 0.0, self.fade)
