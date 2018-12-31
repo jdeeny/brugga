@@ -34,8 +34,10 @@ function Enemy:initialize(data, overlay)
   self.state = "advance"  -- Current operational state
   self.advanceState = "walk"
   self.advanceStateTimer = 2
-  self.hitDelay = 1.5       -- Hit state duration
-  self.drinkDelay = .5    -- Drinking state duration
+  self.hitDelayMax = .75
+  self.hitDelay = self.hitDelayMax       -- Hit state duration
+  self.drinkDelayMax = .75
+  self.drinkDelay = self.drinkDelayMax    -- Drinking state duration
   self.props.isEnemy = true          -- Is an enemy
   self.props.inLine = true  -- Patron is waiting in line (not drinking)
 
@@ -72,7 +74,7 @@ function Enemy:drinkHit(drink)
 end
 
 function Enemy:startDrinking()
-  self.hitDelay = 2         -- Reset hit timer
+  self.hitDelay = self.hitDelayMax         -- Reset hit timer
   self.state = "drink"      -- Set drinking state
   self.props.inLine = false -- Patron no longer considered waiting in line
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
@@ -81,7 +83,7 @@ function Enemy:startDrinking()
 end
 
 function Enemy:stopDrinking()
-  self.drinkDelay = .8      -- Reset drink timer
+  self.drinkDelay = self.drinkDelayMax      -- Reset drink timer
   self.state = "advance"    -- Set advance state
   self.props.inLine = true  -- Patron now considered waiting in line
   self.drink:sendRight(self.rect.x + self.rect.w) -- Slide drink back from end of patron
@@ -178,13 +180,12 @@ function Enemy:update(dt)
       if len > 0 then self:checkEndCollision(cols) end
     -- Fly backwards when hit by drink
     elseif self.state == "hit" then
-      if self.hitDelay > 0 then
+      if self.hitDelay >= 0 then
         self.hitDelay = self.hitDelay - dt            -- Advance hold timer
 
         -- Move backwards
-        local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (125 * dt), self.rect.y, self:collisionFilter())
+        local actualX, actualY, cols, len = self.bumpWorld:move(self.rect, self.rect.x - (250 * dt), self.rect.y, self:collisionFilter())
         self.rect.x = actualX
-        self.bumpWorld:update(self.rect, self.rect.x, self.rect.y)
 
         -- Set held drink position
         self.drink.rect:setPos(self.rect.x + self.drinkHoldOffset.x, self.rect.y + self.drinkHoldOffset.y) -- Set drink position
