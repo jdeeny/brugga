@@ -36,6 +36,7 @@ end
 
 -- Send drink to the left on the bar
 function Drink:sendLeft()
+  gameWorld.sound:playSfx('drinkSend')
   self.props.state = "toCustomer" -- Set toCustomer state
   self.rect:setPos(780 + (self.row * 20), (self.row * 185) - 30)  -- Set position on row
   self.bumpWorld:update(self.rect, self.rect.x, self.rect.y, self.rect.w, self.rect.h)
@@ -68,6 +69,7 @@ end
 function Drink:caught()
   if self.props.state == "falling" then self:stopFall() end -- Stop fall tweens
   self.overlay:addTipFlyer(.5, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+  gameWorld.sound:playSfx('drinkSwap')
   self.trail:stop()
   self:deactivate()
 end
@@ -78,6 +80,7 @@ function Drink:slideOffBar()
     self.trail:stop()
     self.overlay:addTipFlyer(-0.25, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
     self.overlay:addSmokePuff(self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+    gameWorld.sound:playSfx('drinkFall')
     self:deactivate()
   end)
   self.tween.fallSpin = flux.to(self.rect, .5, { spin = 2 * math.pi }):ease('circin'):oncomplete(function() self.rect.spin = 0 end)

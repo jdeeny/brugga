@@ -65,11 +65,14 @@ function Dude:updateHeldDrinks()
 end
 
 function Dude:swapDrinks()
-  local prevSend, prevPour = self.drinkSend, self.drinkPour
-  self.drinkSend = prevPour
-  self.drinkPour = prevSend
-  self:updateHeldDrinks()
-  self:haltTempAnim()
+  if self.drinkSend or self.drinkPour then
+    local prevSend, prevPour = self.drinkSend, self.drinkPour
+    gameWorld.sound:playSfx('drinkSwap')
+    self.drinkSend = prevPour
+    self.drinkPour = prevSend
+    self:updateHeldDrinks()
+    self:haltTempAnim()
+  end
 end
 
 function Dude:pour()
@@ -85,6 +88,7 @@ function Dude:pour()
     elseif self.row == 3 and self.drinkPour.props.drinkMix['c'] == nil then
       self.drinkPour.props.drinkMix['c'] = true
     end
+    gameWorld.sound:playSfx('drinkPour')
   end
 
   self.tempAnim = 'pour'
