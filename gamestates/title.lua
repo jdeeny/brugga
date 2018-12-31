@@ -32,7 +32,7 @@ function Title:initialize(name)
 
     { kind='text', label='Play Game', func=function()
       gameWorld.playerData:reset()
-      gameWorld.gameState:setState('gameplay')
+      gameWorld.gameState:setState('tutorial')
     end },
     { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound:setSfxVolume(value) end },
     { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound:setMusicVolume(value) end },

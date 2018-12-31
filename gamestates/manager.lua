@@ -7,6 +7,7 @@ local gameplay = require 'gamestates.gameplay'
 local ending = require 'gamestates.ending'
 local credits = require 'gamestates.credits'
 local pause = require 'gamestates.pause'
+local tutorial = require 'gamestates.tutorial'
 
 local GamestateManager = class('GamestateManager')
 
@@ -18,6 +19,7 @@ function GamestateManager:initialize()
     ending = ending:new('ending'),
     credits = credits:new('credits'),
     pause = pause:new('pause'),
+    tutorial = tutorial:new('tutorial')
   }
   self.current = { }
   self:setState('splash')
