@@ -140,13 +140,13 @@ function Enemy:exited()
   self.drink:deactivate() -- Drink is no longer active
   self:deactivate()
   -- Add tip flyer
-  local endtime = love.timer.getTime()
-  local delta = endtime - self.starttime
-  local reward = self.reward * (1 + math.floor(gameWorld.playerData.wave / 5))
-  reward = reward / (delta * .01)
-  if delta <= 0.05 then delta = 0.05 end
-  if delta >= 2 then delta = 2 end
-  reward = math.floor(reward * 100 * delta) / 100
+  --local endtime = love.timer.getTime()
+  --local delta = endtime - self.starttime
+  local reward = self.reward * (1 + math.floor(gameWorld.playerData.wave / 2))
+  --reward = reward / (delta * .5)
+  --if delta <= 1 then delta = 1 end
+  --if delta >= 2 then delta = 2 end
+  --reward = math.floor(reward * 100 * delta) / 100
   self.overlay:addTipFlyer(reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
 
 end
