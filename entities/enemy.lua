@@ -143,7 +143,7 @@ function Enemy:exited()
   local endtime = love.timer.getTime()
   local delta = endtime - self.starttime
   local reward = self.reward * (1 + math.floor(gameWorld.playerData.wave / 5))
-  reward = reward / (delta * .1)
+  reward = reward / (delta * .01)
   if delta <= 0.05 then delta = 0.05 end
   if delta >= 2 then delta = 2 end
   reward = math.floor(reward * 100 * delta) / 100
@@ -181,6 +181,16 @@ function Enemy:update(dt)
         -- Change state if timer up or patron detected
         if self.advanceStateTimer <= 0 or patronsAhead then
           self.advanceState = "stand"
+
+          if gameWorld.random:randomNormal(200, 1500) < (love.timer.getTime() - self.last_yuck) then
+            if gameWorld.random:random(1,5) < 3 then
+              gameWorld.sound:playVoice(self.yucktags)
+            else
+              gameWorld.sound:playVoice(self.ordertags)
+            end
+            self.last_yuck = love.timer.getTimer()
+          end
+          gameWorld.sound:playVoice(self.yucktags)
           if patronsAhead then
             self.advanceStateTimer = .1
           else
