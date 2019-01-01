@@ -81,6 +81,7 @@ function Enemy:initialize(data, overlay)
   else
     gameWorld.sound:playVoice(self.ordertags)
   end
+
   self.starttime = love.timer.getTime()
   self.last_yuck = self.starttime
 
@@ -184,7 +185,7 @@ function Enemy:update(dt)
         if self.advanceStateTimer <= 0 or patronsAhead then
           self.advanceState = "stand"
 
-          local r = gameWorld.random:random(1, 200)
+          local r = gameWorld.random:random(1, 400)
           local d = (love.timer.getTime() - self.last_yuck)
           print(r .. " " .. d)
           if r < d then
