@@ -127,7 +127,7 @@ function SoundManager:scanVoices()
 --  pretty.dump(self.tags)
 
 
-  self:playVoice({ { 'mole', 'anygender' }, {'anykind'},})
+--  self:playVoice({ { 'mole', 'anygender' }, {'anykind'},})
 
   return
 --
