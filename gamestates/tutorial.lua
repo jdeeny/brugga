@@ -139,7 +139,7 @@ function Tutorial:update(dt)
     self:updateImage(self.mouse_image.pour, dt)
     self:updateImage(self.send_image, dt)
     self:updateImage(self.mouse_image.send, dt)
-    if gameWorld.playerInput:pressed('action') then
+    if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pause') then
       self.page = 2
     end
   elseif self.page == 2 then
@@ -147,7 +147,7 @@ function Tutorial:update(dt)
     self:updateImage(self.mouse_image.swap, dt)
     self:updateImage(self.move_image, dt)
     self:updateImage(self.key_image.move, dt)
-    if gameWorld.playerInput:pressed('action') then
+    if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pause') then
       flux.to(self, 0.2, { fade = 1.0 }):oncomplete(function() gameWorld.gameState:setState('gameplay') end)
     end
   end
