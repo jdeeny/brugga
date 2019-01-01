@@ -79,8 +79,9 @@ function Credits:draw()
   love.graphics.draw(gameWorld.assets.backdrops.title_background, 0, 0)
 
   self.backsnow:draw()
-  love.graphics.setColor(gameWorld.colors.credits_title)
-  love.graphics.draw(self.title, 1280 / 2 - self.title:getWidth() / 2, 50)
+  love.graphics.draw(gameWorld.assets.backdrops.TITLE_Layer3, 0, 0)
+  --love.graphics.setColor(gameWorld.colors.credits_title)
+  --love.graphics.draw(self.title, 1280 / 2 - self.title:getWidth() / 2, 50)
   local x = 0
   love.graphics.setColor(gameWorld.colors.credits_text)
   for i, contrib in ipairs(self.contributors) do

@@ -14,6 +14,7 @@ function Title:initialize(name)
   self.menuHeight = 340
   self.brugga_x = 900
   self.brugga_y = 200
+  self.lightAlpha = 0
 
   self.animations = {}
   self.images = {}
@@ -47,21 +48,26 @@ function Title:enter()
   self.snow = require('ui.snow'):new()
   self.fade = 1.0
   flux.to(self, 1, { fade = 0.0 }):ease("quadinout")
-
+  self.lightTween = flux.to(self, 1, { lightAlpha = 1 }):ease('elasticin'):after(self, .5, { lightAlpha = .5 }):ease('elasticout'):after(self, .5, { lightAlpha = 1 }):ease('elasticin')
   gameWorld.sound:playMusic('title')
 end
 
 function Title:draw()
+  --- BG
   love.graphics.setColor(gameWorld.colors.white)
   love.graphics.clear(gameWorld.colors.title_background)
-  love.graphics.draw(gameWorld.assets.backdrops.title_background, 0, 0)
+  love.graphics.draw(gameWorld.assets.backdrops.TITLE_Layer1, 0, 0)
   self.backsnow:draw()
-  love.graphics.setColor(0.0,0.0,0.0,1.0)
-  love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
+  love.graphics.draw(gameWorld.assets.backdrops.TITLE_Layer2, 0, 0)
+  love.graphics.draw(gameWorld.assets.backdrops.TITLE_Layer3_LIGHTSOFF, 0, 0)
+  love.graphics.setColor(1.0,1.0,1.0,self.lightAlpha)
+  love.graphics.draw(gameWorld.assets.backdrops.TITLE_Layer3, 0, 0)
   love.graphics.setColor(1.0,1.0,1.0,1.0)
-
-  self.animations[self.anim]:draw(self.images[self.anim], self.brugga_x, self.brugga_y)
-
+  --love.graphics.setColor(0.0,0.0,0.0,1.0)
+  --love.graphics.draw(self.title, (1280 - self.title:getWidth()) / 2, 100)
+  --love.graphics.setColor(1.0,1.0,1.0,1.0)
+  ----- Brugga
+  --self.animations[self.anim]:draw(self.images[self.anim], self.brugga_x, self.brugga_y)
 
   self.menu:draw((1280 - self.menuWidth) / 2, 720 - self.menuHeight - 100 )
   self.snow:draw()
