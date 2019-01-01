@@ -36,7 +36,7 @@ function SoundManager:initialize()
   }
 
 
-  self.tags.voice.volume = 0.7 --tone down voice vol
+  self.tags.voice.volume = 0.9 --tone down voice vol
 
   --self.ui.assets = cargo.init('assets')
 
