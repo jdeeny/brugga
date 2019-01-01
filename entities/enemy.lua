@@ -142,7 +142,7 @@ function Enemy:exited()
   -- Add tip flyer
   --local endtime = love.timer.getTime()
   --local delta = endtime - self.starttime
-  local reward = self.reward * (1 + math.floor(gameWorld.playerData.wave / 2))
+  local reward = self.reward * (1 + math.floor(gameWorld.playerData.wave / 3))
   --reward = reward / (delta * .5)
   --if delta <= 1 then delta = 1 end
   --if delta >= 2 then delta = 2 end

@@ -57,6 +57,8 @@ function Gameplay:enter()
   self.font = gameWorld.assets.fonts.score(50)
   self.outline = require('ui.outline'):new(self.font, 3)
   self.waveText = ("Wave %d"):format(gameWorld.playerData.wave)
+  self.waveEndTimer = 3
+  self.waveOver = false
 
   self.generator:start(gameWorld.playerData.initial_patrons, gameWorld.playerData.initial_threat)
 
@@ -64,6 +66,16 @@ function Gameplay:enter()
 end
 
 function  Gameplay:update(dt)
+  -- Skip game updates if wave is over
+  if self.waveOver then
+    self.waveEndTimer = self.waveEndTimer - dt
+    if self.waveEndTimer <= 0 then
+      self:nextWave()
+    end
+    self.overlay:update(dt)
+    do return end
+  end
+
   -- Generate new patrons
 
   self:checkFrenzy()
@@ -140,6 +152,10 @@ function  Gameplay:update(dt)
 end
 
 function Gameplay:endWave()
+  self.waveOver = true
+end
+
+function Gameplay:nextWave()
   -- Increase player wave properties
   gameWorld.playerData:waveIncrease()
 
