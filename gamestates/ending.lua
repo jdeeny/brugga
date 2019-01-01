@@ -63,7 +63,7 @@ end
 
 function Ending:enter()
   self.fade = 1.0
-  flux.to(self, 2, { fade = 0.0 }):ease("quadinout")
+  flux.to(self, 2, { fade = 0.0 }):ease("quadinout"):oncomplete(function() gameWorld.sound:playSfx('gameover') end)
 
   self.backsnow = require('ui.snow'):new()
   self.snow = require('ui.snow'):new()
