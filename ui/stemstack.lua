@@ -48,6 +48,8 @@ function StemStack:update(dt)
 
   if not self.playing then self.queue:stop() end
 
+  if self.queue then self.queue:setVolume(gameWorld.settings.config.music_volume or 0.5) end
+  
   if self.playing and not self.queue:isPlaying() then
     --print("new q")
     self.queue = self:newQueue()
@@ -61,6 +63,7 @@ function StemStack:update(dt)
     self:loadstem()
     self.queue:play()
   end
+
 end
 
 function StemStack:loadstem()

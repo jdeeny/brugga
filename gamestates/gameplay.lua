@@ -193,12 +193,12 @@ function Gameplay:checkFrenzy()
 
   local n = math.floor(patrons * life_factor)
   if n < 1 then n = 1 end
-  if n > 10 then n = 10 end
+  if n > 6 then n = 6 end
 
   --print("check: ".. patrons .. " "..life_factor.. " " ..n)
 
   local n = #self.patrons / 3 + 1
-  if n > 10 then n = 10 end
+  if n > 6 then n = 6 end
   gameWorld.sound:playStacked(n)
 
 end
