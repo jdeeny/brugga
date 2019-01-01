@@ -152,6 +152,7 @@ function  Gameplay:update(dt)
 end
 
 function Gameplay:endWave()
+  gameWorld.sound:playSfx('waveEnd')
   self.waveOver = true
 end
 
