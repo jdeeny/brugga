@@ -135,6 +135,8 @@ function Enemy:matchDrink(drinkMix)
 end
 
 function Enemy:reachedEnd()
+  self.overlay:addSmokePuff(self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+  gameWorld.sound:playVoice(self.yucktags)
   self:deactivate()
   if gameWorld.playerData:livesDecrease(1) then gameWorld.gameState:setState('ending') end
 end
