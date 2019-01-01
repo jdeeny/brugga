@@ -78,7 +78,7 @@ end
 function Drink:caught()
   if self.props.state == "falling" then self:stopFall() end -- Stop fall tweens
   self.overlay:addTipFlyer(.5, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
-  gameWorld.sound:playSfx('drinkSwap')
+  gameWorld.sound:playSfx('drinkCatch')
   self.trail:stop()
   self:deactivate()
 end
