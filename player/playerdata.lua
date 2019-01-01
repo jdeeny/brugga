@@ -30,7 +30,7 @@ end
 function PlayerData:waveIncrease()
   -- Increase initial patron/threat counts
   self.initial_patrons = self.initial_patrons + 1
-  self.initial_threat = self.initial_threat + 3
+  self.initial_threat = self.initial_threat + 3 + math.floor(self.wave / 2)
   self.wave = self.wave + 1
 end
 
