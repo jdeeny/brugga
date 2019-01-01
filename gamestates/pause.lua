@@ -38,7 +38,6 @@ end
 function Pause:update(dt)
   self.menu:update(dt)
   if gameWorld.playerInput:pressed('pause') then
-    print("exit pause")
     gameWorld.gameState:exitState()
   end
 end

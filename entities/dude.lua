@@ -190,7 +190,6 @@ end
 function Dude:collisionFilter()
   local filter = function(item, other)
     if (other.props.isEnemy) then
-      print("ow")
       return 'slide'
     end
 

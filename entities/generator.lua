@@ -50,12 +50,10 @@ function Generator:generate()
   local images = {}
 
   for name, anim in pairs(archetype.animations) do
-    print("archs: "..name)
     animations[name] = anim8.newAnimation(anim.grid, anim.rate)
     images[name] = anim.image
   end
 
-  print("endarchs")
   local drink_complexity = 1
   if gameWorld.random:random(50) < self.threat then drink_complexity = drink_complexity + 1 end
   if gameWorld.random:random(100) < self.threat then drink_complexity = drink_complexity + 1 end
@@ -69,13 +67,11 @@ function Generator:generate()
 
   local speed = 1 + math.random(self.threat) / 100
 
-  print(speed)
 
   local threat = speed * drink_complexity
 
   self.threat = self.threat - threat
 
-  print("Threat: " .. threat .. " " .. self.threat)
 
   return { animations = animations, images=images, drink=drink, speed=speed, row=gameWorld.random:random(3), threat = threat, speech_offset = archetype.speech_offset, swaps_in = archetype.swaps_in, tagsets = archetype.tagsets }
 end
@@ -97,8 +93,6 @@ function Generator:update(dt)
 
     -- Capping out threat at 33
     if self.threat > 33 then self.threat = 33 end
-    --print("Threat: " .. self._threatRate .. " " .. self.threat)
-    --print("Patrons: " .. self.patronsGenerated .. " " .. self.attempsRemaining)
   end
 end
 

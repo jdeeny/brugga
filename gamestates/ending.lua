@@ -92,11 +92,6 @@ function Ending:update(dt)
   self.animation:update(dt)
   self.backsnow:update(dt*0.9)
   self.snow:update(dt)
---[[  if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pour') then
-    print("exit ending")
-    gameWorld.gameState:setState('credits')
-  end
-  --]]
 end
 
 function Ending:draw()

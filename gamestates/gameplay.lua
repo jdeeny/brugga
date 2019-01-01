@@ -92,7 +92,6 @@ function  Gameplay:update(dt)
   if gameWorld.playerInput:pressed('pause') then
     gameWorld.gameState:pushState('pause')
   elseif gameWorld.playerInput:pressed 'jumptoend' then  -- TODO: Quit on death or through menu only
-    print("exit gameplay")
     gameWorld.gameState:setState('ending')
   end
 

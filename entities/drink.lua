@@ -53,14 +53,12 @@ end
 
 -- Set drinking state when hitting patron
 function Drink:patronHold()
-  print("[drink] held, changing to drinking state")
   self.props.state = "drinking"
   self.trail:stop()
 end
 
 -- Set position while customer drinks
 function Drink:startDrinking(x, y)
-  print("[drink] starting drinking")
   self.rect:setPos(x, y)
   self.trail:stop()
 end
@@ -254,7 +252,6 @@ function Drink:startCollision(cols)
   for i,col in ipairs(cols) do
     local other = col.other
     if other.props.isStart and self.props.state == "toCustomer" then
-      print("this is the end")
       self:slideOffBar()
       do return end
     end

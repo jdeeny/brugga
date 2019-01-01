@@ -21,13 +21,11 @@ end
 
 function Archetypes:getRandom()
   local pick = gameWorld.random:random(self.rarity_total)
-  print("random: " .. self.rarity_total .. " " .. pick)
   while true do
-  for i, arch in ipairs(self.kinds) do
-    pick = pick - arch.rarity
-    if pick <= 0.0 then return arch end
-  end
-  print("Pick didn't find something!?")
+    for i, arch in ipairs(self.kinds) do
+      pick = pick - arch.rarity
+      if pick <= 0.0 then return arch end
+    end
   end
   return nil
 end

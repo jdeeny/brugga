@@ -79,7 +79,6 @@ function Overlay:addSmokePuff(x, y)
 end
 
 function Overlay:addTipFlyer(amount, x, y)
-  print("Tip: " .. amount)
   local score = Score:new(amount, 64, 0)
   local new_flyer = Flyer:new(score:getDrawable(), x, y, self.target_x, self.target_y)
   local dist = math.sqrt((self.target_x - x) * (self.target_x - x) + (self.target_y - y) * (self.target_y- y))

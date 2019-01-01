@@ -32,7 +32,6 @@ end
 
 
 function SmokePuff:makeSmoke(r, g, b)
-  print("smoke")
   local suds = love.graphics.newParticleSystem(gameWorld.assets.sprites.ui.puff, 5)
   suds:setParticleLifetime(0.7, 1.5)
   suds:setSizeVariation(1)

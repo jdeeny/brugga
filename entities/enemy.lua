@@ -99,7 +99,6 @@ function Enemy:drinkHit(drink)
     self.drink = drink        -- Store drink that collided
     self.state = "hit"        -- Set hit state
     self.props.inLine = false -- Patron no longer considered waiting in line
-    print("[enemy] now in hit state")
     self.drink:patronHold()   -- Set drink's drinking state
     self.drinkOffset = self.drinkHoldOffset -- Set the drink position offset
 end
@@ -129,10 +128,8 @@ function Enemy:matchDrink(drinkMix)
   if self.drinkMix['a'] == drinkMix['a']
   and self.drinkMix['b'] == drinkMix['b']
   and self.drinkMix['c'] == drinkMix['c'] then
-    print("match")
     return true
   else
-    print("no match")
     return false
   end
 end
