@@ -20,7 +20,7 @@ end
 function PlayerData:scoreIncrease(i)
   if i >= 0 then
     gameWorld.sound:playSfx('coin')
-    if gameWorld.random:random(1, 5) == 1 then gameWorld.sound:playVoice({{'brugga'}, {'thanks'}}) end
+    if gameWorld.random:random(1, 4) == 1 then gameWorld.sound:playVoice({{'brugga'}, {'thanks'}}) end
   else
     gameWorld.sound:playSfx('coindown')
   end
@@ -30,7 +30,7 @@ end
 function PlayerData:waveIncrease()
   -- Increase initial patron/threat counts
   self.initial_patrons = self.initial_patrons + 1
-  self.initial_threat = self.initial_threat + 2
+  self.initial_threat = self.initial_threat + 3
   self.wave = self.wave + 1
 end
 

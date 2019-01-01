@@ -110,7 +110,7 @@ function Dude:send()
     self.tempAnim = 'throw'
     self.tempAnimTimer = .5
   end
-  if gameWorld.random:random(1, 5) == 1 then gameWorld.sound:playVoice(self.servetags) end
+  if gameWorld.random:random(1, 4) == 1 then gameWorld.sound:playVoice(self.servetags) end
 end
 
 ---- UPDATE ----
