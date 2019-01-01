@@ -92,7 +92,7 @@ function Generator:update(dt)
     self.attempsRemaining = self.attempsRemaining + self.attemptsPerThreatPerSecond * self.threat * dt
 
     -- Capping out threat at 33
-    if self.threat > 33 then self.threat = 33 end
+    if self.threat > 43 then self.threat = 43 end
   end
 end
 
