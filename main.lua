@@ -24,7 +24,7 @@ function love.load()
   gameWorld.paletteswap = require('ui.paletteswap'):new()
 
   -- Comment this out to disable debug print
-  gameWorld.debug = require('ui.debug'):new()
+  --gameWorld.debug = require('ui.debug'):new()
 
   gameWorld.playerInput = require('player.controls')
 

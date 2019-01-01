@@ -74,7 +74,7 @@ function Ending:enter()
     gameWorld.settings:save()
   end
 
-  if gameWorld.playerData.score <= 0 then
+  if gameWorld.playerData.score < 0 then
     gameWorld.sound:playVoice(self.losstags)
   else
     gameWorld.sound:playVoice(self.endingtags)

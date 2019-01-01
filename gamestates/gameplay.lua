@@ -192,6 +192,10 @@ function Gameplay:draw()
   -- BG
   love.graphics.draw(gameWorld.assets.sprites.environment.BKG_Baselayer)
 
+  love.graphics.draw(gameWorld.assets.sprites.game.gem_PURPLE, 1081-10, 182-37)
+  love.graphics.draw(gameWorld.assets.sprites.game.gem_GREEN, 1159-11, 356-34)
+  love.graphics.draw(gameWorld.assets.sprites.game.gem_CYAN, 1235-10, 540-34)
+
   for i=1,self.rows do
     -- Draw Brugga
     if self.brugga.row == i then self.brugga:draw() end
