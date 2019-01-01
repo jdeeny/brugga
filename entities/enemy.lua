@@ -182,15 +182,17 @@ function Enemy:update(dt)
         if self.advanceStateTimer <= 0 or patronsAhead then
           self.advanceState = "stand"
 
-          if gameWorld.random:randomNormal(200, 1500) < (love.timer.getTime() - self.last_yuck) then
+          local r = gameWorld.random:random(1, 200)
+          local d = (love.timer.getTime() - self.last_yuck)
+          print(r .. " " .. d)
+          if r < d then
             if gameWorld.random:random(1,5) < 3 then
               gameWorld.sound:playVoice(self.yucktags)
             else
               gameWorld.sound:playVoice(self.ordertags)
             end
-            self.last_yuck = love.timer.getTimer()
+            self.last_yuck = love.timer.getTime()
           end
-          gameWorld.sound:playVoice(self.yucktags)
           if patronsAhead then
             self.advanceStateTimer = .1
           else
