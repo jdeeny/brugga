@@ -76,7 +76,13 @@ function Enemy:initialize(data, overlay)
 
   self.rect:setPos(220 - (75 * self.row), 17 + (183 * self.row) - self.rect.h) -- set at start of specific row
 
-  gameWorld.sound:playVoice(self.entertags)
+  if gameWorld.random:random(1,2) == 1 then
+    gameWorld.sound:playVoice(self.entertags)
+  else
+    gameWorld.sound:playVoice(self.ordertags)
+  end
+
+
 
 end
 

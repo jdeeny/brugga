@@ -224,8 +224,11 @@ end
 
 
 function SoundManager:playMusic(name)
+  self.stemstack:stop()
   self.tags.music:stop()
-  --self.music[name]:play()
+  self.music[name]:play()
+  self.musicStacked = false
+  self.musicPlaying = true
 end
 
 function SoundManager:setMusicVolume(vol)
@@ -246,11 +249,14 @@ function SoundManager:stopMusic()
 end
 
 function SoundManager:isMusicPlaying()
-  return self.musicPlaying
+  return self.musicPlaying or self.musicStacked
 end
 
 function SoundManager:playStacked(level)
+  self.tags.music:stop()
   self.stemstack:setLevel(level)
+  self.musicStacked = true
+  self.musicPlaying = false
 end
 
 
