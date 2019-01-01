@@ -53,7 +53,7 @@ function SoundManager:initialize()
 
 
   self.sfx['coin'] = ripple.newSound({source = gameWorld.assets.audio.sfx.money1, tags = { self.tags.sfx, }})
-  self.sfx['coindown'] = ripple.newSound({source = gameWorld.assets.audio.sfx.money2, tags = { self.tags.sfx, }})
+  self.sfx['coindown'] = ripple.newSound({source = gameWorld.assets.audio.sfx.coindown, tags = { self.tags.sfx, }})
   self.sfx['drinkCatch'] = ripple.newSound({source = gameWorld.assets.audio.sfx.glass_slide2, tags = { self.tags.sfx, }})
   self.sfx['drinkSwap'] = ripple.newSound({source = gameWorld.assets.audio.ui.handSwap, tags = { self.tags.sfx, }})
   self.sfx['drinkPour'] = ripple.newSound({source = gameWorld.assets.audio.sfx.drink_fill2, tags = { self.tags.sfx, }})

@@ -82,6 +82,7 @@ function Enemy:initialize(data, overlay)
     gameWorld.sound:playVoice(self.ordertags)
   end
   self.starttime = love.timer.getTime()
+  self.last_yuck = self.starttime
 
 
 end
@@ -141,7 +142,7 @@ function Enemy:exited()
   -- Add tip flyer
   local endtime = love.timer.getTime()
   local delta = endtime - self.starttime
-  local reward = self.reward * gameWorld.playerData.wave
+  local reward = self.reward * (1 + math.floor(gameWorld.playerData.wave / 5))
   reward = reward / (delta * .1)
   if delta <= 0.05 then delta = 0.05 end
   if delta >= 2 then delta = 2 end
