@@ -39,7 +39,7 @@ function Credits:initialize(name)
     Contributor:new('John Deeny', 'jdeeny@gmail.com', 'code', self.textfont),
     Contributor:new('Dieting Hippo', '@DietingHippo', 'code', self.textfont),
     Contributor:new('Drauc', 'soundcloud.com/drauc', 'audio', self.textfont),
-    Contributor:new('raujinn', '@raujinn', 'art', self.textfont),
+    Contributor:new('Raujinn', '@raujinn', 'art', self.textfont),
     Contributor:new('Ashe Thurman', 'pixelsandpins.com/voice', 'voice', self.textfont),
     Contributor:new('Michael A. Zekas', 'MichaelAZekas.com', 'voice', self.textfont),
 
