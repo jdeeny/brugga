@@ -26,6 +26,8 @@ end
 function Gameplay:enter()
   self.overlay = require('ui.overlay'):new()
 
+  if gameWorld.playerData.wave == 1 then XXX.goingup = false end
+
   self.wavescale_x = 1
   self.wavescale_y = 1
 
@@ -158,8 +160,10 @@ end
 function Gameplay:endWave()
   gameWorld.sound:playSfx('waveEnd')
   gameWorld.playerData.row = self.brugga.row
-  XXX.goingup = true
-  self:pulseWave()
+  if gameWorld.playerData.wave < 10 then
+    XXX.goingup = true
+    self:pulseWave()
+  end
   self.waveOver = true
 
 end
