@@ -188,7 +188,6 @@ function Enemy:update(dt)
 
           local r = gameWorld.random:random(1, 400)
           local d = (love.timer.getTime() - self.last_yuck)
-          print(r .. " " .. d)
           if r < d then
             if gameWorld.random:random(1,5) < 3 then
               gameWorld.sound:playVoice(self.yucktags)
