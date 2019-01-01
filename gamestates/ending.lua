@@ -27,7 +27,10 @@ function Ending:initialize(name)
   self.menu_y = 580
 
   self.menu = Menu:new({
-    { kind='text', label='Play Again', func=function() gameWorld.gameState:setState('gameplay') end },
+    { kind='text', label='Play Again', func=function()
+      gameWorld.playerData:reset()
+      gameWorld.gameState:setState('gameplay')
+    end },
     { kind='text', label='Return to Menu', func=function() gameWorld.gameState:setState('title') end },
   }, self.menu_width, self.menu_height)
 
