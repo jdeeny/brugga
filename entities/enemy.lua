@@ -81,7 +81,7 @@ function Enemy:initialize(data, overlay)
   else
     gameWorld.sound:playVoice(self.ordertags)
   end
-
+  self.starttime = love.timer.getTime()
 
 
 end
@@ -139,7 +139,14 @@ function Enemy:exited()
   self.drink:deactivate() -- Drink is no longer active
   self:deactivate()
   -- Add tip flyer
-  self.overlay:addTipFlyer(self.reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
+  local endtime = love.timer.getTime()
+  local delta = endtime - self.starttime
+  local reward = self.reward * gameWorld.playerData.wave
+  reward = reward / (delta * .1)
+  if delta <= 0.05 then delta = 0.05 end
+  if delta >= 2 then delta = 2 end
+  reward = math.floor(reward * 100 * delta) / 100
+  self.overlay:addTipFlyer(reward, self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
 
 end
 
