@@ -6,6 +6,7 @@ local Tutorial = class('Tutorial', Gamestate)
 function Tutorial:initialize(name)
   Gamestate.initialize(self, name)
   self.fade = 0.0
+  self.yOffset = -45
 
   self.titlefont = gameWorld.assets.fonts.title(48)
   self.textfont = gameWorld.assets.fonts.generic(32)
@@ -62,19 +63,19 @@ function Tutorial:enter()
 
   self.pour_image = {
     image = self.pourImages,
-    x = 40, y = 75,
+    x = 40, y = 100 + self.yOffset,
     frame = 1, frames = 3, duration = 1, timer = 1 }
   self.send_image = {
     image = self.sendImages,
-    x = 840, y = 100,
+    x = 840, y = 125 + self.yOffset,
     frame = 1, frames = 3, duration = 1, timer = 1 }
   self.swap_image = {
     image = self.swapImages,
-    x = 65, y = 100,
+    x = 65, y = 125 + self.yOffset,
     frame = 1, frames = 4, duration = 1, timer = 1 }
   self.move_image = {
     image = self.moveImages,
-    x = 840, y = 100,
+    x = 840, y = 125 + self.yOffset,
     frame = 1, frames = 4, duration = 1, timer = 1 }
   self.mouse_image = {
     pour = {
@@ -83,7 +84,7 @@ function Tutorial:enter()
         self.mouseImages.right,
         self.mouseImages.none,
       },
-      x = 180, y = 500,
+      x = 180, y = 500 + self.yOffset,
       frame = 1, frames = 3, duration = 1, timer = 1
     },
     send = {
@@ -92,7 +93,7 @@ function Tutorial:enter()
         self.mouseImages.left,
         self.mouseImages.none,
       },
-      x = 950, y = 500,
+      x = 950, y = 500 + self.yOffset,
       frame = 1, frames = 3, duration = 1, timer = 1
     },
     swap = {
@@ -102,7 +103,7 @@ function Tutorial:enter()
         self.mouseImages.middle,
         self.mouseImages.none,
       },
-      x = 180, y = 500,
+      x = 180, y = 500 + self.yOffset,
       frame = 1, frames = 4, duration = .5, timer = .5
     }
   }
@@ -118,7 +119,7 @@ function Tutorial:enter()
         self.keyImages.up,
         self.keyImages.none,
       },
-      x = 900, y = 550,
+      x = 900, y = 550 + self.yOffset,
       frame = 1, frames = 8, duration = .5, timer = .5
     }
   }
@@ -138,7 +139,7 @@ function Tutorial:update(dt)
     self:updateImage(self.mouse_image.pour, dt)
     self:updateImage(self.send_image, dt)
     self:updateImage(self.mouse_image.send, dt)
-    if gameWorld.playerInput:pressed('action') then
+    if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pause') then
       self.page = 2
     end
   elseif self.page == 2 then
@@ -146,7 +147,7 @@ function Tutorial:update(dt)
     self:updateImage(self.mouse_image.swap, dt)
     self:updateImage(self.move_image, dt)
     self:updateImage(self.key_image.move, dt)
-    if gameWorld.playerInput:pressed('action') then
+    if gameWorld.playerInput:pressed('action') or gameWorld.playerInput:pressed('pause') then
       flux.to(self, 0.2, { fade = 1.0 }):oncomplete(function() gameWorld.gameState:setState('gameplay') end)
     end
   end
@@ -176,10 +177,10 @@ function Tutorial:draw()
     ----- Text
     love.graphics.setFont(self.textfont)
     love.graphics.setColor(gameWorld.colors.menu_text)
-    love.graphics.print("Pour - RMB / C / Gamepad B", 80, 100)
-    love.graphics.print("Pour a drink from \nthe tap by pressing \nRMB. Each tap fills \nthe tankard with a \ndifferent drink.", 420, 150)
-    love.graphics.print("Send - LMB / Z / Gamepad A", 840, 100)
-    love.graphics.print("Send out a drink to\nthe patrons at the \nbar by pressing LMB. \nMake sure the drink \nyou send matches\ntheir order!", 680, 350)
+    love.graphics.print("Pour - RMB / C / Gamepad B", 80, 100 + self.yOffset)
+    love.graphics.print("Pour a drink from \nthe tap by pressing \nRMB. Each tap fills \nthe tankard with a \ndifferent drink.", 420, 150 + self.yOffset)
+    love.graphics.print("Send - LMB / Z / Gamepad A", 840, 100 + self.yOffset)
+    love.graphics.print("Send out a drink to\nthe patrons at the \nbar by pressing LMB. \nMake sure the drink \nyou send matches\ntheir order!", 680, 350 + self.yOffset)
     love.graphics.setColor(gameWorld.colors.white)
   elseif self.page == 2 then
     ----- Animations
@@ -190,12 +191,12 @@ function Tutorial:draw()
     ----- Text
     love.graphics.setFont(self.textfont)
     love.graphics.setColor(gameWorld.colors.menu_text)
-    love.graphics.print("Swap", 235, 75)
-    love.graphics.print("Scroll or MMB / X / Gamepad X or Y", 35, 110)
-    love.graphics.print("Hold two drinks at\nonce by swapping hands\nwith MMB. If your left\nhand is empty, you can\npour a second drink!\n\nYou can also send both\ndrinks out by pressing\nLMB twice.", 420, 320)
-    love.graphics.print("Move", 1000, 75)
-    love.graphics.print("WASD / Arrow Keys / Control Pad", 820, 110)
-    love.graphics.print("Pick up empty tankards\nto collect an extra tip!", 580, 160)
+    love.graphics.print("Swap", 235, 75 + self.yOffset)
+    love.graphics.print("Scroll or MMB / X / Gamepad X or Y", 35, 110 + self.yOffset)
+    love.graphics.print("Hold two drinks at\nonce by swapping hands\nwith MMB. If your left\nhand is empty, you can\npour a second drink!\n\nYou can also send both\ndrinks out by pressing\nLMB twice.", 420, 320 + self.yOffset)
+    love.graphics.print("Move", 1000, 75 + self.yOffset)
+    love.graphics.print("WASD / Arrow Keys / Control Pad", 820, 110 + self.yOffset)
+    love.graphics.print("Pick up empty tankards\nto collect an extra tip!", 580, 170 + self.yOffset)
     love.graphics.setColor(gameWorld.colors.white)
   end
   ----- Title
