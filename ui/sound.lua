@@ -36,8 +36,6 @@ function SoundManager:initialize()
   }
 
 
-  self.tags.voice.volume = 0.9 --tone down voice vol
-
   --self.ui.assets = cargo.init('assets')
 
 --  for name, sound in pairs(gameWorld.assets.audio.ui) do
