@@ -63,15 +63,15 @@ function SoundManager:initialize()
   --for m in gameWorld.assets.music do
   --  self.music[m] = ripple.newSound({source = m, volume = gameWorld.options.musicVolume, tags = { 'music' }})
   --end
-  self.music['test'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['test'] = ripple.newSound({source = gameWorld.assets.audio.music.winterstouchloop, tags = { self.tags.music, }})
   self.music['test']:setLooping(true)
-  self.music['title'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['title'] = ripple.newSound({source = gameWorld.assets.audio.music.winterstouchloop, tags = { self.tags.music, }})
   self.music['title']:setLooping(true)
-  self.music['gameplay'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['gameplay'] = ripple.newSound({source = gameWorld.assets.audio.music.winterstouchloop, tags = { self.tags.music, }})
   self.music['gameplay']:setLooping(true)
-  self.music['credits'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['credits'] = ripple.newSound({source = gameWorld.assets.audio.music.winterstouchloop, tags = { self.tags.music, }})
   self.music['credits']:setLooping(true)
-  self.music['ending'] = ripple.newSound({source = gameWorld.assets.audio.music.wintersTouch, tags = { self.tags.music, }})
+  self.music['ending'] = ripple.newSound({source = gameWorld.assets.audio.music.winterstouchloop, tags = { self.tags.music, }})
   self.music['ending']:setLooping(true)
 
   self.music.stacked = {}
