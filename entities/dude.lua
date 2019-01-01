@@ -16,6 +16,8 @@ function Dude:initialize()
     self.images[name] = anim.image
   end
 
+  self.servetags = {{'brugga'}, {'serve'}}
+
   self.tempAnim = 'none'
   self.tempAnimTimer = 0
   self.scale = { x = 1, y = 1 }
@@ -107,6 +109,7 @@ function Dude:send()
     self.tempAnim = 'throw'
     self.tempAnimTimer = .5
   end
+  if gameWorld.random:random(1, 5) == 1 then gameWorld.sound:playVoice(self.servetags) end
 end
 
 ---- UPDATE ----
