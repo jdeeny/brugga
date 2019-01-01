@@ -77,7 +77,7 @@ function Generator:generate()
 
   print("Threat: " .. threat .. " " .. self.threat)
 
-  return { animations = animations, images=images, drink=drink, speed=speed, row=gameWorld.random:random(3), threat = threat, speech_offset = archetype.speech_offset, swaps_in = archetype.swaps_in }
+  return { animations = animations, images=images, drink=drink, speed=speed, row=gameWorld.random:random(3), threat = threat, speech_offset = archetype.speech_offset, swaps_in = archetype.swaps_in, tagsets = archetype.tagsets }
 end
 
 function Generator:update(dt)

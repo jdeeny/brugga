@@ -23,6 +23,21 @@ function Enemy:initialize(data, overlay)
   self.animations = data.animations
   self.images = data.images
 
+  self.tagsets = data.tagsets or {}
+  self.drinktags = tablex.copy(self.tagsets)
+  table.insert(self.drinktags, { 'drink' })
+
+  self.ordertags = tablex.copy(self.tagsets)
+  table.insert(self.ordertags, { 'order' })
+
+  self.entertags = tablex.copy(self.tagsets)
+  table.insert(self.entertags, { 'enter' })
+
+  self.yucktags = tablex.copy(self.tagsets)
+  table.insert(self.yucktags, { 'yuck' })
+
+
+
   self.swaps_in  = data.swaps_in or {} -- { 0, 0, 0, 1}, {1,0,0,1} }
   --pretty.dump(self.swaps_in)
 
@@ -60,6 +75,9 @@ function Enemy:initialize(data, overlay)
   self.drinkfoam = require('ui.drinkfoam'):new()
 
   self.rect:setPos(220 - (75 * self.row), 17 + (183 * self.row) - self.rect.h) -- set at start of specific row
+
+  gameWorld.sound:playVoice(self.entertags)
+
 end
 
 ---- DRINK ACTIONS ----
@@ -80,6 +98,7 @@ function Enemy:startDrinking()
   self.drinkOffset = self.drinkDrinkingOffset   -- Set drinking drink offset
   self.drink:startDrinking(self.rect.x + self.drinkDrinkingOffset.x, self.rect.y + self.drinkDrinkingOffset.y)    -- Apply drinking position to drink
   self.drinkfoam:createFoam(self.rect.x + self.drinkOffset.x, self.rect.y + self.drinkOffset.y, self.drinkMix)
+  gameWorld.sound:playVoice(self.drinktags)
 end
 
 function Enemy:stopDrinking()

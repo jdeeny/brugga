@@ -9,7 +9,7 @@ arch:addAnimation('drink', { image = arch.images.main, grid = arch.grids.main(1,
 arch:addAnimation('hit', { image = arch.images.main, grid = arch.grids.main(3, 1), rate = 0.1 } )
 
 
-arch:addTagset({ 'male', 'female', 'anygender' })
+arch:addTagset({ 'mole', 'female', 'anygender' })
 arch:addTagset({ 'reindeer', 'anykind' })
 arch:setRarity(90)
 arch:setSpeed(1.0)

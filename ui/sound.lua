@@ -8,6 +8,7 @@ function SoundManager:initialize()
   self.music = {}
   self.ui = {}
   self.sfx = {}
+  self.voice = {}
 
   -- Some tags are used to control volume (music)
   -- Some tags are used to categorize sounds (male)
@@ -17,7 +18,16 @@ function SoundManager:initialize()
     sfx = ripple.newTag(),
     drink = ripple.newTag(),
     angry = ripple.newTag(),
-    male = ripple.newTag(),
+    mole = ripple.newTag(),
+    female = ripple.newTag(),
+    anykind = ripple.newTag(),
+    anygender = ripple.newTag(),
+    thanks = ripple.newTag(),
+    enter = ripple.newTag(),
+    yuck = ripple.newTag(),
+    order = ripple.newTag(),
+    swole = ripple.newTag(),
+    elf = ripple.newTag(),
   }
 
   --self.ui.assets = cargo.init('assets')
@@ -76,8 +86,63 @@ function SoundManager:initialize()
 
   self.musicPlaying = false
 
-  if gameWorld.settings.config.sfx_volume then self:setSfxVolume(gameWorld.settings.config.sfx_volume) print("1") end
-  if gameWorld.settings.config.music_volume then self:setMusicVolume(gameWorld.settings.config.music_volume) print("2") end
+  if gameWorld.settings.config.sfx_volume then self:setSfxVolume(gameWorld.settings.config.sfx_volume) end
+  if gameWorld.settings.config.music_volume then self:setMusicVolume(gameWorld.settings.config.music_volume) end
+
+  self:scanVoices()
+end
+
+
+function SoundManager:scanVoicePath(path)
+  local lf = love.filesystem
+  --print("Path: "..path)
+  local info = lf.getInfo(path, 'directory')
+
+  if not info or info.type == 'file' then
+    local src  = ripple.newSound( { source = love.audio.newSource(path, 'static'), } )
+    local tags = self:scanTags(path)
+    for _, tag in ipairs(tags) do
+      src:tag(self.tags[tag])
+    end
+    self.voice[path] = src
+    return
+  elseif info.type == 'directory' then
+    local items = lf.getDirectoryItems(path)
+    --print("dir " .. path)
+    for _, item in ipairs(items) do
+      --print("  -- ")
+      self:scanVoicePath(path.."/"..item)
+    end
+  end
+
+end
+
+function SoundManager:scanVoices()
+  print("scanvoices!")
+
+  local path = 'assets/audio/voice'
+  self:scanVoicePath(path)
+
+--  pretty.dump(self.voice)
+--  pretty.dump(self.tags)
+
+
+  self:playVoice({ { 'mole', 'anygender' }, {'anykind'},})
+
+  return
+--
+  --self.voice = cargo.init({
+    --dir = 'assets/audio/',
+    --loaders = { ogg, love.sound.newSource, },
+    --processors = {
+      --['.*%.ogg'] = function(asset, filename)
+        --print(asset)
+        --print(filename)
+        ----assetimage:setFilter('nearest', 'nearest')
+      --end
+    --}
+  --})
+  --pretty.dump(self.voice)
 end
 
 function SoundManager:scanTags(path)
@@ -100,6 +165,63 @@ end
 
 function SoundManager:playSfx(name)
   if self.sfx[name] then self.sfx[name]:play() end
+end
+
+
+function SoundManager:playRandomFrom(possibles)
+  local n = gameWorld.random:random(1, tablex.size(possibles))
+  for src, _ in pairs(possibles) do
+    n = n - 1
+    if n == 0 then
+      src:play()
+      return
+    end
+  end
+end
+
+
+function SoundManager:collectSources(tags)
+  local set_possibles = {}
+    for _, t in ipairs(tags) do
+      print("Tag: " .. t)
+      if self.tags[t] then
+        print("found")
+        for s, _ in pairs(self.tags[t]._sounds) do
+          set_possibles[s] = true
+        end
+      else
+        print("not found")
+      end
+    end
+  return set_possibles
+end
+
+function SoundManager:playVoice(tagsets)
+
+  local possibles = {}
+
+  for i, s in ipairs(tagsets) do
+    possibles[i] = self:collectSources(s)
+  end
+
+  if #possibles < 1 then print("No tagsets match") return end
+
+  local final_possibilities = tablex.copy(possibles[1])
+
+  for i, p in ipairs(possibles) do
+    print("possible " .. i)
+    print(tablex.size(p))
+    print("")
+    if i > 1 then
+      final_possibilities = tablex.intersection(final_possibilities, p)
+    end
+  end
+
+  print("final: ", tablex.size(final_possibilities))
+
+  if tablex.size(final_possibilities) < 1 then print "no match after intersection" return end
+
+  self:playRandomFrom(final_possibilities)
 end
 
 
