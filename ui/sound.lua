@@ -59,6 +59,7 @@ function SoundManager:initialize()
   self.sfx['drinkPour'] = ripple.newSound({source = gameWorld.assets.audio.sfx.drink_fill2, tags = { self.tags.sfx, }})
   self.sfx['drinkSend'] = ripple.newSound({source = gameWorld.assets.audio.sfx.glass_slide4, tags = { self.tags.sfx, }})
   self.sfx['drinkFall'] = ripple.newSound({source = gameWorld.assets.audio.sfx.drinkFall, tags = { self.tags.sfx, }})
+  self.sfx['gameover'] = ripple.newSound({source = gameWorld.assets.audio.sfx.game_over3, tags = { self.tags.sfx, }})
 
   --for m in gameWorld.assets.music do
   --  self.music[m] = ripple.newSound({source = m, volume = gameWorld.options.musicVolume, tags = { 'music' }})

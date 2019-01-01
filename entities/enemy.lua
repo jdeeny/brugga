@@ -84,6 +84,8 @@ function Enemy:initialize(data, overlay)
   self.starttime = love.timer.getTime()
   self.last_yuck = self.starttime
 
+  self.speechscale_x = 1.0
+  self.speechscale_y = 1.0
 
 end
 
@@ -274,7 +276,10 @@ function Enemy:draw()
       local speechOffset = { x = self.speech_offset.x + self.rect.x, y = self.speech_offset.y + self.rect.y }
       local drinkOffset = { x = speechOffset.x + 20, y = speechOffset.y + 18 }
 
-      love.graphics.draw(gameWorld.assets.sprites.game.speechbubble, speechOffset.x, speechOffset.y)
+      local w = gameWorld.assets.sprites.game.speechbubble:getWidth()
+      local h = gameWorld.assets.sprites.game.speechbubble:getHeight()
+
+      love.graphics.draw(gameWorld.assets.sprites.game.speechbubble, speechOffset.x + w/2, speechOffset.y + h/2, 0, self.speechscale_x, self.speechscale_y, w/2, h/2)
 
       if self.drinkMix['a'] then
         love.graphics.draw(gameWorld.assets.sprites.game.gem_PURPLE, drinkOffset.x, drinkOffset.y)
