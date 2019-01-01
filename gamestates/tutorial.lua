@@ -199,9 +199,9 @@ function Tutorial:draw()
     love.graphics.setColor(gameWorld.colors.white)
   end
   ----- Title
-  love.graphics.setFont(self.titlefont)
-  love.graphics.setColor(gameWorld.colors.credits_title)
-  love.graphics.print("TUTORIAL", 575, 25)
+  --love.graphics.setFont(self.titlefont)
+  --love.graphics.setColor(gameWorld.colors.credits_title)
+  --love.graphics.print("TUTORIAL", 575, 25)
   love.graphics.setColor(gameWorld.colors.white)
   ----- Frontsnow
   love.graphics.setColor(gameWorld.colors.white)
