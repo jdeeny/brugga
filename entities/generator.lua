@@ -55,7 +55,7 @@ function Generator:generate()
   end
 
   local drink_complexity = 1
-  if gameWorld.random:random(50) < self.threat then drink_complexity = drink_complexity + 1 end
+  if gameWorld.random:random(30) < self.threat then drink_complexity = drink_complexity + 1 end
   if gameWorld.random:random(100) < self.threat then drink_complexity = drink_complexity + 1 end
 
   local ingredients = { 'a', 'b', 'c' }
@@ -65,7 +65,7 @@ function Generator:generate()
     drink[ingredients[i]] = true
   end
 
-  local speed = 1 + math.random(self.threat) / 100
+  local speed = 1 + math.random(self.threat) / 80
 
 
   local threat = speed * drink_complexity
