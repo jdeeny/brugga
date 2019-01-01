@@ -36,8 +36,8 @@ return baton.new {
     pause = { 'key:escape', 'button:start' },
 
     -- Special for debugging
-    --jumptoend = { 'key:0' },
-    --skipwave = { 'key:9'},
+    jumptoend = { 'key:0' },
+    skipwave = { 'key:9'},
 
     mb1 = { 'mouse:1' },
   },

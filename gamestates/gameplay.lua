@@ -13,6 +13,8 @@ local colors = require 'ui.colors'
 local Gameplay = class('Gameplay', Gamestate)
 local wheelSwap = false
 
+local XXX = { wavecenter = 0, goingup = false }
+
 function Gameplay:initialize(name)
   Gamestate.initialize(self, name)
 
@@ -24,7 +26,6 @@ end
 function Gameplay:enter()
   self.overlay = require('ui.overlay'):new()
 
-  self.wavecenter = 0
   self.wavescale_x = 1
   self.wavescale_y = 1
 
@@ -157,16 +158,18 @@ end
 function Gameplay:endWave()
   gameWorld.sound:playSfx('waveEnd')
   gameWorld.playerData.row = self.brugga.row
+  XXX.goingup = true
   self:pulseWave()
   self.waveOver = true
+
 end
 
 function Gameplay:nextWave()
   -- Increase player wave properties
   gameWorld.playerData:waveIncrease()
-
+  XXX.goingup = false
   -- return wave #
-  flux.to(self, 0.5, { wavecenter = 0 }):ease('cubicout')
+  flux.to(XXX, 0.5, { wavecenter = 0 }):ease('cubicout')
 
   -- Go to ending after 10 waves
   if gameWorld.playerData.wave > 10 then
@@ -180,7 +183,7 @@ end
 
 
 function Gameplay:pulseWave()
-  flux.to(self, 0.3, { wavecenter = 1.0 }):after(self, 0.3, { wavescale_x = 1.2, wavescale_y = 1.4 }):ease('cubicout'):after(self, 0.4, { wavescale_x = 1.0, wavescale_y = 1.0 } ):ease('elasticout')
+  flux.to(XXX, 0.3, { wavecenter = 1.0 }):after(self, 0.3, { wavescale_x = 1.2, wavescale_y = 1.4 }):ease('cubicout'):after(self, 0.4, { wavescale_x = 1.0, wavescale_y = 1.0 } ):ease('elasticout')
 end
 
 
@@ -255,14 +258,19 @@ function Gameplay:draw()
 
   self.overlay:draw()
 
+  local drawable
 
-  local drawable = self.outline:getOutline(self.waveText, colors.wave, colors.wave_back)
+  if XXX.goingup then
+    drawable = self.outline:getOutline("Wave " .. gameWorld.playerData.wave + 1, colors.wave, colors.wave_back)
+  else
+    drawable = self.outline:getOutline(self.waveText, colors.wave, colors.wave_back)
+  end
   local w = drawable:getWidth()
   local h = drawable:getHeight()
   local normalx = 1050 + w/2
   local normaly = 720-90 +h/2
-  local newx = normalx * (1-self.wavecenter) + self.wavecenter * (1280/2)
-  local newy = normaly * (1-self.wavecenter) + self.wavecenter * (720/2)
+  local newx = normalx * (1-XXX.wavecenter) + XXX.wavecenter * (1280/2)
+  local newy = normaly * (1-XXX.wavecenter) + XXX.wavecenter * (720/2)
 
   love.graphics.draw(drawable, newx, newy, 0, self.wavescale_x, self.wavescale_y, w/2, h/2)
 end
