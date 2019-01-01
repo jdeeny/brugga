@@ -14,7 +14,6 @@ function Title:initialize(name)
   self.menuHeight = 340
   self.brugga_x = 900
   self.brugga_y = 200
-  self.lightAlpha = 0
 
   self.animations = {}
   self.images = {}
@@ -48,6 +47,7 @@ function Title:enter()
   self.snow = require('ui.snow'):new()
   self.fade = 1.0
   flux.to(self, 1, { fade = 0.0 }):ease("quadinout")
+  self.lightAlpha = 0
   self.lightTween = flux.to(self, 1, { lightAlpha = 1 }):ease('elasticin'):after(self, .5, { lightAlpha = .5 }):ease('elasticout'):after(self, .5, { lightAlpha = 1 }):ease('elasticin')
   gameWorld.sound:playMusic('title')
 end
