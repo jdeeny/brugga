@@ -9,6 +9,7 @@ end
 function PlayerData:reset()
   self.score = 0
   self.wave = 1
+  self.row = 2
   self.lives = 5
   self.initial_patrons = 8
   self.initial_threat = 2

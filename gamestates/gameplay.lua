@@ -152,6 +152,7 @@ end
 
 function Gameplay:endWave()
   gameWorld.sound:playSfx('waveEnd')
+  gameWorld.playerData.row = self.brugga.row
   self.waveOver = true
 end
 

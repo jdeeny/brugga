@@ -41,10 +41,10 @@ end
 
 ---- SPAWN ----
 function Dude:spawn(drinkPool)
+  self.row = gameWorld.playerData.row
   self.drinkPool = drinkPool
   self.isActive = true
-  self.rect.x = 750 + (self.row * 40)
-  self.rect.y = 15 + (self.row * 185)
+  self:updateRowPosition()
 end
 
 ---- DRINK ACTIONS ----
@@ -164,13 +164,17 @@ function Dude:changeRow(dt)
   end
 
   self.moveDelay = 1/6
-  self.rect.x = 750 + (self.row * 40)
-  self.rect.y = 15 + (self.row * 185)
+  self:updateRowPosition()
 
   self.bumpWorld:move(self.rect, self.rect.x, self.rect.y, function() return 'cross' end)
 
   self:updateHeldDrinks()
   self:haltTempAnim()
+end
+
+function Dude:updateRowPosition()
+  self.rect.x = 750 + (self.row * 40)
+  self.rect.y = 15 + (self.row * 185)
 end
 
 function Dude:moveUp()
