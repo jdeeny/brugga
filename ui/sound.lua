@@ -16,6 +16,7 @@ function SoundManager:initialize()
     ui = ripple.newTag(),
     music = ripple.newTag(),
     sfx = ripple.newTag(),
+    voice = ripple.newTag(),
     drink = ripple.newTag(),
     angry = ripple.newTag(),
     mole = ripple.newTag(),
@@ -28,7 +29,14 @@ function SoundManager:initialize()
     order = ripple.newTag(),
     swole = ripple.newTag(),
     elf = ripple.newTag(),
+    ending = ripple.newTag(),
+    loss = ripple.newTag(),
+    serve = ripple.newTag(),
+    brugga = ripple.newTag(),
   }
+
+
+  self.tags.voice.volume = 0.7 --tone down voice vol
 
   --self.ui.assets = cargo.init('assets')
 
@@ -95,12 +103,13 @@ end
 
 function SoundManager:scanVoicePath(path)
   local lf = love.filesystem
-  --print("Path: "..path)
   local info = lf.getInfo(path, 'directory')
 
   if not info or info.type == 'file' then
     local src  = ripple.newSound( { source = love.audio.newSource(path, 'static'), } )
     local tags = self:scanTags(path)
+    table.insert(tags, 'voice')
+    table.insert(tags, 'sfx')
     for _, tag in ipairs(tags) do
       src:tag(self.tags[tag])
     end
@@ -108,9 +117,7 @@ function SoundManager:scanVoicePath(path)
     return
   elseif info.type == 'directory' then
     local items = lf.getDirectoryItems(path)
-    --print("dir " .. path)
     for _, item in ipairs(items) do
-      --print("  -- ")
       self:scanVoicePath(path.."/"..item)
     end
   end
@@ -118,7 +125,6 @@ function SoundManager:scanVoicePath(path)
 end
 
 function SoundManager:scanVoices()
-  print("scanvoices!")
 
   local path = 'assets/audio/voice'
   self:scanVoicePath(path)
@@ -183,14 +189,11 @@ end
 function SoundManager:collectSources(tags)
   local set_possibles = {}
     for _, t in ipairs(tags) do
-      print("Tag: " .. t)
       if self.tags[t] then
-        print("found")
         for s, _ in pairs(self.tags[t]._sounds) do
           set_possibles[s] = true
         end
       else
-        print("not found")
       end
     end
   return set_possibles
@@ -209,15 +212,10 @@ function SoundManager:playVoice(tagsets)
   local final_possibilities = tablex.copy(possibles[1])
 
   for i, p in ipairs(possibles) do
-    print("possible " .. i)
-    print(tablex.size(p))
-    print("")
     if i > 1 then
       final_possibilities = tablex.intersection(final_possibilities, p)
     end
   end
-
-  print("final: ", tablex.size(final_possibilities))
 
   if tablex.size(final_possibilities) < 1 then print "no match after intersection" return end
 
@@ -226,8 +224,11 @@ end
 
 
 function SoundManager:playMusic(name)
+  self.stemstack:stop()
   self.tags.music:stop()
-  --self.music[name]:play()
+  self.music[name]:play()
+  self.musicStacked = false
+  self.musicPlaying = true
 end
 
 function SoundManager:setMusicVolume(vol)
@@ -248,11 +249,14 @@ function SoundManager:stopMusic()
 end
 
 function SoundManager:isMusicPlaying()
-  return self.musicPlaying
+  return self.musicPlaying or self.musicStacked
 end
 
 function SoundManager:playStacked(level)
+  self.tags.music:stop()
   self.stemstack:setLevel(level)
+  self.musicStacked = true
+  self.musicPlaying = false
 end
 
 

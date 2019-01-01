@@ -31,6 +31,9 @@ function Ending:initialize(name)
     { kind='text', label='Return to Menu', func=function() gameWorld.gameState:setState('title') end },
   }, self.menu_width, self.menu_height)
 
+  self.losstags = {{'brugga'}, {'loss'}}
+  self.endingtags = {{'brugga'}, {'ending'}}
+
 
   self.font_banner = gameWorld.assets.fonts.generic(90)
   self.font_heading = gameWorld.assets.fonts.generic(60)
@@ -71,6 +74,11 @@ function Ending:enter()
     gameWorld.settings:save()
   end
 
+  if gameWorld.playerData.score <= 0 then
+    gameWorld.sound:playVoice(self.losstags)
+  else
+    gameWorld.sound:playVoice(self.endingtags)
+  end
   self.score = Score:new(gameWorld.playerData.score, 80, 0):getDrawable()
   self.high_score = Score:new(gameWorld.settings.config.high_score, 80, 0):getDrawable()
 

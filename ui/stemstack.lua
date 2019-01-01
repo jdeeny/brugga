@@ -3,7 +3,7 @@ local class = require 'lib.middleclass'
 local StemStack = class('StemStack')
 
 function StemStack:initialize(sources)
-  self.buffers = 8
+  self.buffers = 16
   self.loops = sources or {}
   self.sources = {}
   for i, k in ipairs(self.loops) do
@@ -21,15 +21,25 @@ function StemStack:initialize(sources)
   self.loc = 0
 end
 
+function StemStack:stop()
+  self.playing = false
+  self.target = false
+end
+
+function StemStack:play()
+  self.target = 1
+end
+
 
 function StemStack:setLevel(level)
+  local level = math.floor(level)
   if self.playing == level then return end
   if level >= 1 and level <= 10 then
     self.target = level
   else
-    self.target = nil
-    self.playing = self.target
-    self.queue:stop()
+--    self.target = nil
+    --self.playing = self.target
+    --self.queue:stop()
   end
 end
 
