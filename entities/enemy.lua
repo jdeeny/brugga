@@ -49,7 +49,7 @@ function Enemy:initialize(data, overlay)
   self.state = "advance"  -- Current operational state
   self.advanceState = "walk"
   self.advanceStateTimer = 2
-  self.hitDelayMax = .75
+  self.hitDelayMax = 1
   self.hitDelay = self.hitDelayMax       -- Hit state duration
   self.drinkDelayMax = .75
   self.drinkDelay = self.drinkDelayMax    -- Drinking state duration
