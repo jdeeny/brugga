@@ -24,6 +24,10 @@ end
 function Gameplay:enter()
   self.overlay = require('ui.overlay'):new()
 
+  self.wavecenter = 0
+  self.wavescale_x = 1
+  self.wavescale_y = 1
+
   -- Graphics
   self.assets = cargo.init('assets')
   self.BG = {
@@ -153,12 +157,16 @@ end
 function Gameplay:endWave()
   gameWorld.sound:playSfx('waveEnd')
   gameWorld.playerData.row = self.brugga.row
+  self:pulseWave()
   self.waveOver = true
 end
 
 function Gameplay:nextWave()
   -- Increase player wave properties
   gameWorld.playerData:waveIncrease()
+
+  -- return wave #
+  flux.to(self, 0.5, { wavecenter = 0 }):ease('cubicout')
 
   -- Go to ending after 10 waves
   if gameWorld.playerData.wave > 10 then
@@ -169,9 +177,21 @@ function Gameplay:nextWave()
   end
 end
 
+
+
+function Gameplay:pulseWave()
+  flux.to(self, 0.3, { wavecenter = 1.0 }):after(self, 0.3, { wavescale_x = 1.2, wavescale_y = 1.4 }):ease('cubicout'):after(self, 0.4, { wavescale_x = 1.0, wavescale_y = 1.0 } ):ease('elasticout')
+end
+
+
+
+
 function love.wheelmoved(x, y)
   if y < 0 or y > 0 then wheelSwap = true end
 end
+
+
+
 
 
 function Gameplay:checkFrenzy()
@@ -234,8 +254,17 @@ function Gameplay:draw()
   end
 
   self.overlay:draw()
-  love.graphics.draw(self.outline:getOutline(self.waveText, colors.wave, colors.wave_back), 1050, 720-90)
 
+
+  local drawable = self.outline:getOutline(self.waveText, colors.wave, colors.wave_back)
+  local w = drawable:getWidth()
+  local h = drawable:getHeight()
+  local normalx = 1050 + w/2
+  local normaly = 720-90 +h/2
+  local newx = normalx * (1-self.wavecenter) + self.wavecenter * (1280/2)
+  local newy = normaly * (1-self.wavecenter) + self.wavecenter * (720/2)
+
+  love.graphics.draw(drawable, newx, newy, 0, self.wavescale_x, self.wavescale_y, w/2, h/2)
 end
 
 return Gameplay
