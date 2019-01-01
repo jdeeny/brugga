@@ -63,8 +63,8 @@ function GamestateManager:draw()
     self.states[state]:draw()
   end
 
-  love.graphics.setColor(0.0,1.0,0.0,0.8)
-  love.graphics.draw(love.graphics.newText(gameWorld.assets.fonts.generic(16), self:getCurrent()), 1280 - 150, 10)
+  --love.graphics.setColor(0.0,1.0,0.0,0.8)
+  --love.graphics.draw(love.graphics.newText(gameWorld.assets.fonts.generic(16), self:getCurrent()), 1280 - 150, 10)
 end
 
 return GamestateManager
