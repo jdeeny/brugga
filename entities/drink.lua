@@ -11,6 +11,13 @@ function Drink:initialize(overlay)
 
   self.overlay = overlay
 
+  self.image = {
+    empty_handle = gameWorld.assets.sprites.game.tankard_eh,
+    full = gameWorld.assets.sprites.game.tankard_f,
+    full_handle = gameWorld.assets.sprites.game.tankard_fh
+  }
+  self.currentImage = self.image['full']
+
   -- Set properties
   self.props.isDrink = true;          -- Is a drink
   self.props.drinkMix = self.drinkMix
@@ -37,6 +44,7 @@ end
 -- Send drink to the left on the bar
 function Drink:sendLeft()
   gameWorld.sound:playSfx('drinkSend')
+  self.currentImage = self.image['full_handle']
   self.props.state = "toCustomer" -- Set toCustomer state
   self.rect:setPos(780 + (self.row * 20), (self.row * 185) - 30)  -- Set position on row
   self.bumpWorld:update(self.rect, self.rect.x, self.rect.y, self.rect.w, self.rect.h)
@@ -59,6 +67,7 @@ end
 
 -- Send drink to the right on the bar
 function Drink:sendRight(x)
+  self.currentImage = self.image['empty_handle']
   self.rect:setPos(x, (self.row * 185) - 30)
   self.props.state = "toBartender"
   self.props.drinkMix = {}
@@ -90,6 +99,7 @@ function Drink:deactivate()
   self.trail:stop()
   self.isActive = false
   self.props.state = "none"
+  self.currentImage = self.image['full']
   self.bumpWorld:remove(self.rect)
 end
 
@@ -137,38 +147,38 @@ function Drink:draw()
     self.trail:draw(self.rect.x + self.rect.w / 2, self.rect.y + self.rect.h / 2)
 
     love.graphics.draw(
-    gameWorld.assets.sprites.game.tankard,
-    self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2 + self.drawOffset.x,
-    self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2 + self.drawOffset.y,
+    self.currentImage,
+    self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+    self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
     self.rect.spin,
     1, 1,
-    gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
+    self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
 
     local drinkOffset = { x = self.rect.x + 30, y = self.rect.y + 15 }
 
     if self.props.drinkMix['a'] then
       love.graphics.draw(gameWorld.assets.sprites.game.tankard_PURPLE,
-      self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2 + self.drawOffset.x,
-      self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2 + self.drawOffset.y,
+      self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+      self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
       self.rect.spin,
       1, 1,
-      gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
+      self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
     end
     if self.props.drinkMix['b'] then
       love.graphics.draw(gameWorld.assets.sprites.game.tankard_GREEN,
-      self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2 + self.drawOffset.x,
-      self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2 + self.drawOffset.y,
+      self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+      self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
       self.rect.spin,
       1, 1,
-      gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
+      self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
     end
     if self.props.drinkMix['c'] then
       love.graphics.draw(gameWorld.assets.sprites.game.tankard_CYAN,
-      self.rect.x + gameWorld.assets.sprites.game.tankard:getWidth() / 2 + self.drawOffset.x,
-      self.rect.y + gameWorld.assets.sprites.game.tankard:getHeight() / 2 + self.drawOffset.y,
+      self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+      self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
       self.rect.spin,
       1, 1,
-      gameWorld.assets.sprites.game.tankard:getWidth() / 2, gameWorld.assets.sprites.game.tankard:getHeight() / 2)
+      self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
     end
   end
 end
