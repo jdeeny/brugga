@@ -40,7 +40,9 @@ function Credits:initialize(name)
     Contributor:new('Dieting Hippo', '@DietingHippo', 'code', self.textfont),
     Contributor:new('Drauc', 'soundcloud.com/drauc', 'audio', self.textfont),
     Contributor:new('raujinn', '@raujinn', 'art', self.textfont),
-    Contributor:new('Ashe', '@', 'voice', self.textfont),
+    Contributor:new('Ashe Thurman', 'pixelsandpins.com/voice', 'voice', self.textfont),
+    Contributor:new('Michael A. Zekas', 'MichaelAZekas.com', 'voice', self.textfont),
+
   }
 
   self.title = love.graphics.newText(gameWorld.assets.fonts.title(120), 'Brugga the Brewer')
