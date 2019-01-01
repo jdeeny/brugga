@@ -19,6 +19,7 @@ end
 function PlayerData:scoreIncrease(i)
   if i >= 0 then
     gameWorld.sound:playSfx('coin')
+    if gameWorld.random:random(1, 5) == 1 then gameWorld.sound:playVoice({{'brugga'}, {'thanks'}}) end
   else
     gameWorld.sound:playSfx('coindown')
   end

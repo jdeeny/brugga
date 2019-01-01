@@ -36,6 +36,9 @@ function Enemy:initialize(data, overlay)
   self.yucktags = tablex.copy(self.tagsets)
   table.insert(self.yucktags, { 'yuck' })
 
+  self.thankstags = tablex.copy(self.tagsets)
+  table.insert(self.thankstags, { 'thanks' })
+
 
 
   self.swaps_in  = data.swaps_in or {} -- { 0, 0, 0, 1}, {1,0,0,1} }
@@ -140,6 +143,7 @@ function Enemy:reachedEnd()
 end
 
 function Enemy:exited()
+  gameWorld.sound:playVoice(self.thankstags)
   self.drink:deactivate() -- Drink is no longer active
   self:deactivate()
   -- Add tip flyer

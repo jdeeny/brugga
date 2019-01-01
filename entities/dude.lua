@@ -17,6 +17,7 @@ function Dude:initialize()
   end
 
   self.servetags = {{'brugga'}, {'serve'}}
+  self.thankstags = {{'brugga'}, {'thanks'}}
 
   self.tempAnim = 'none'
   self.tempAnimTimer = 0
