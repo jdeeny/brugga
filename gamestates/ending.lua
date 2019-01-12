@@ -116,11 +116,11 @@ function Ending:enter()
 
     local target_x = 0
     if start_x < 1280 /2 then
-      target_x = gameWorld.random:random(1280-(1280/4), 1280 - (1280/16))
+      target_x = gameWorld.random:random(1280-(1280/4), 1280 - (1280/32))
     else
-      target_x = gameWorld.random:random((1280/16), (1280/4))
+      target_x = gameWorld.random:random((1280/32), (1280/4))
     end
-    local target_y = (720 - 50) - (gameWorld.random:random(0, 150))
+    local target_y = (720 - 20) - (gameWorld.random:random(0, 150))
 
 
     local new_flyer = Flyer:new(drink:getDrawable(), start_x, start_y, target_x, target_y)
