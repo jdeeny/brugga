@@ -116,18 +116,18 @@ function Ending:enter()
 
     local target_x = 0
     if start_x < 1280 /2 then
-      target_x = gameWorld.random:random(1280-(1280/4), 1280 - (1280/32))
+      target_x = gameWorld.random:random(1280-(1280/3), 1280 - (1280/16))
     else
-      target_x = gameWorld.random:random((1280/32), (1280/4))
+      target_x = gameWorld.random:random((1280/16), (1280/3))
     end
-    local target_y = (720 - 20) - (gameWorld.random:random(0, 150))
+    local target_y = (720 - 40) - (gameWorld.random:random(0, 120))
 
 
     local new_flyer = Flyer:new(drink:getDrawable(), start_x, start_y, target_x, target_y)
     local dist = math.sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y- start_y))
-    local flight_time = gameWorld.random:randomNormal(.3, .5) * (dist / 450)
+    local flight_time = gameWorld.random:randomNormal(.1, .2) * (dist / 450)
     if flight_time <= 0.01 then flight_time = 0.1 end
-    local tween = flux.to(new_flyer, flight_time, { completion = 1.0 }):delay(.8 + i * 0.01):oncomplete(function() --[[ could make a noise here]] end)
+    local tween = flux.to(new_flyer, flight_time, { completion = 1.0 }):delay(.8 + i * 0.05):oncomplete(function() --[[ could make a noise here]] end)
     new_flyer.rotation = gameWorld.random:randomNormal(PI/8, 0)
     table.insert(self.flying, new_flyer )
   end
