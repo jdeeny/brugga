@@ -69,11 +69,23 @@ end
 
 function Dude:swapDrinks()
   if self.drinkSend or self.drinkPour then
+    gameWorld.sound:playSfx('drinkSwap')  -- swip swip swip
+
+    -- Get previous drinks
     local prevSend, prevPour = self.drinkSend, self.drinkPour
-    gameWorld.sound:playSfx('drinkSwap')
+    -- Swap drinks
     self.drinkSend = prevPour
     self.drinkPour = prevSend
-    self:updateHeldDrinks()
+    
+    -- Swap animation
+    if self.drinkSend then
+      flux.to(self.drinkSend.rect, .05, {x = self.rect.x + self.drinkSendOffset.x + (self.row * 20)}):ease('expoin'):oncomplete(function() self:updateHeldDrinks() end)
+      flux.to(self.drinkSend.rect, .025, {y = self.drinkSend.rect.y - 16}):after(self.drinkSend.rect, .025, {y = self.drinkSend.rect.y}):oncomplete(function() self:updateHeldDrinks() end)
+    end
+    if self.drinkPour then
+      flux.to(self.drinkPour.rect, .05, {x = self.rect.x + self.drinkPourOffset.x + (self.row * 20)}):ease('expoin'):oncomplete(function() self:updateHeldDrinks() end)
+      flux.to(self.drinkPour.rect, .025, {y = self.drinkPour.rect.y + 16}):after(self.drinkPour.rect, .025, {y = self.drinkPour.rect.y}):oncomplete(function() self:updateHeldDrinks() end)
+    end
     self:haltTempAnim()
     flux.to(self.scale, .05, {y = 1.02}):after(self.scale, .1, {y = 1})
   end
