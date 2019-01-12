@@ -75,6 +75,7 @@ function Dude:swapDrinks()
     self.drinkPour = prevSend
     self:updateHeldDrinks()
     self:haltTempAnim()
+    flux.to(self.scale, .05, {y = 1.02}):after(self.scale, .1, {y = 1})
   end
 end
 
@@ -91,6 +92,7 @@ function Dude:pour()
     elseif self.row == 3 and self.drinkPour.props.drinkMix['c'] == nil then
       self.drinkPour.props.drinkMix['c'] = true
     end
+    flux.to(self.scale, .05, {x = 1.02}):after(self.scale, .1, {x = 1})
     gameWorld.sound:playSfx('drinkPour')
   end
 
@@ -104,11 +106,13 @@ function Dude:send()
     self.drinkSend = nil
     self.tempAnim = 'throw'
     self.tempAnimTimer = .5
+    flux.to(self.scale, .05, {x = .98}):after(self.scale, .1, {x = 1})
   elseif self.drinkPour ~= nil then -- Send drink in pouring hand
     self.drinkPour:sendLeft()
     self.drinkPour = nil
     self.tempAnim = 'throw'
     self.tempAnimTimer = .5
+    flux.to(self.scale, .05, {x = .98}):after(self.scale, .1, {x = 1})
   end
   if gameWorld.random:random(1, 4) == 1 then gameWorld.sound:playVoice(self.servetags) end
 end
