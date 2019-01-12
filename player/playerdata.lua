@@ -13,6 +13,7 @@ function PlayerData:reset()
   self.lives = 5
   self.initial_patrons = 8
   self.initial_threat = 2
+  self.endless = false
   self.patron_history = {}
   self.drink_history = {}
 end

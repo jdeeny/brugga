@@ -34,6 +34,11 @@ function Title:initialize(name)
       gameWorld.playerData:reset()
       gameWorld.gameState:setState('tutorial')
     end },
+    { kind='text', label='Endless Mode', func=function()
+      gameWorld.playerData:reset()
+      gameWorld.playerData.endless = true
+      gameWorld.gameState:setState('tutorial')
+    end },
     { kind='slider', label='SFX', get=function() return gameWorld.sound.tags.sfx.volume end, set=function(value) gameWorld.sound:setSfxVolume(value) end },
     { kind='slider', label='Music', get=function() return gameWorld.sound.tags.music.volume end, set=function(value) gameWorld.sound:setMusicVolume(value) end },
     { kind='text', label='Exit to Desktop', func=function() gameWorld.settings:save() love.event.push('quit') end },

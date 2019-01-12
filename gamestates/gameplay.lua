@@ -160,7 +160,7 @@ end
 function Gameplay:endWave()
   gameWorld.sound:playSfx('waveEnd')
   gameWorld.playerData.row = self.brugga.row
-  if gameWorld.playerData.wave < 10 then
+  if gameWorld.endless or gameWorld.playerData.wave < 10 then
     XXX.goingup = true
     self:pulseWave()
   end
@@ -176,7 +176,7 @@ function Gameplay:nextWave()
   flux.to(XXX, 0.5, { wavecenter = 0 }):ease('cubicout')
 
   -- Go to ending after 10 waves
-  if gameWorld.playerData.wave > 10 then
+  if not gameWorld.playerData.endless and gameWorld.playerData.wave > 10 then
     gameWorld.gameState:setState('ending')
   -- Start next wave
   else

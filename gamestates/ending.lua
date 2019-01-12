@@ -72,10 +72,21 @@ function Ending:enter()
   self.snow = require('ui.snow'):new()
   gameWorld.sound:playMusic('ending')
 
-  if gameWorld.playerData.score > gameWorld.settings.config.high_score then
-    gameWorld.settings.config.high_score = gameWorld.playerData.score
-    gameWorld.settings:save()
+  local high_score = 0
+  if gameWorld.playerData.endless then
+    high_score = gameWorld.settings.config.endless_high_score
+    if gameWorld.playerData.score > high_score then
+      gameWorld.settings.config.endless_high_score = gameWorld.playerData.score
+      gameWorld.settings:save()
+    end
+  else
+    high_score = gameWorld.settings.config.high_score
+    if gameWorld.playerData.score > high_score then
+      gameWorld.settings.config.high_score = gameWorld.playerData.score
+      gameWorld.settings:save()
+    end
   end
+
 
   if gameWorld.playerData.score < 0 then
     gameWorld.sound:playVoice(self.losstags)
@@ -83,7 +94,7 @@ function Ending:enter()
     gameWorld.sound:playVoice(self.endingtags)
   end
   self.score = Score:new(gameWorld.playerData.score, 80, 0):getDrawable()
-  self.high_score = Score:new(gameWorld.settings.config.high_score, 80, 0):getDrawable()
+  self.high_score = Score:new(high_score, 80, 0):getDrawable()
 
 end
 
