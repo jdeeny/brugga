@@ -76,14 +76,14 @@ function Dude:swapDrinks()
     -- Swap drinks
     self.drinkSend = prevPour
     self.drinkPour = prevSend
-    
+
     -- Swap animation
     if self.drinkSend then
-      flux.to(self.drinkSend.rect, .05, {x = self.rect.x + self.drinkSendOffset.x + (self.row * 20)}):ease('expoin'):oncomplete(function() self:updateHeldDrinks() end)
+      flux.to(self.drinkSend.rect, .05, {x = self.rect.x + self.drinkSendOffset.x + (self.row * 20)}):oncomplete(function() self:updateHeldDrinks() end)
       flux.to(self.drinkSend.rect, .025, {y = self.drinkSend.rect.y - 16}):after(self.drinkSend.rect, .025, {y = self.drinkSend.rect.y}):oncomplete(function() self:updateHeldDrinks() end)
     end
     if self.drinkPour then
-      flux.to(self.drinkPour.rect, .05, {x = self.rect.x + self.drinkPourOffset.x + (self.row * 20)}):ease('expoin'):oncomplete(function() self:updateHeldDrinks() end)
+      flux.to(self.drinkPour.rect, .05, {x = self.rect.x + self.drinkPourOffset.x + (self.row * 20)}):oncomplete(function() self:updateHeldDrinks() end)
       flux.to(self.drinkPour.rect, .025, {y = self.drinkPour.rect.y + 16}):after(self.drinkPour.rect, .025, {y = self.drinkPour.rect.y}):oncomplete(function() self:updateHeldDrinks() end)
     end
     self:haltTempAnim()
