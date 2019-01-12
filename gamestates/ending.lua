@@ -3,6 +3,10 @@ local Gamestate = require 'gamestates.gamestate'
 local anim8 = require 'lib.anim8'
 local Menu = require 'ui.menu'
 local Score = require 'ui.score'
+local Flyer = require 'ui.flyer'
+local Drink = require 'entities.drink'
+
+local PI = 3.14159
 
 local Ending = class('Ending', Gamestate)
 
@@ -62,6 +66,7 @@ function Ending:initialize(name)
   self.image = gameWorld.assets.sprites.brugga.BruggaRunningSheet
   local grid = anim8.newGrid(339, 265, self.image:getWidth(), self.image:getHeight(), 0, 0, 0)
   self.animation = anim8.newAnimation(grid('1-8',1), .1)
+  self.flying = {}
 end
 
 function Ending:enter()
@@ -96,6 +101,36 @@ function Ending:enter()
   self.score = Score:new(gameWorld.playerData.score, 80, 0):getDrawable()
   self.high_score = Score:new(high_score, 80, 0):getDrawable()
 
+  for i, d in ipairs(gameWorld.playerData.drink_history) do
+    pretty.dump(d)
+    local drink = Drink:new(self.overlay)
+    drink.props.drinkMix['a'] = d.a or false
+    drink.props.drinkMix['b'] = d.b or false
+    drink.props.drinkMix['c'] = d.c or false
+
+
+
+    local x_possibles = { 0 - 30, 1280 + 30 }
+    local start_x = x_possibles[1 + i % 2]
+    local start_y = gameWorld.random:random(720 / 2, 720)
+
+    local target_x = 0
+    if start_x < 1280 /2 then
+      target_x = gameWorld.random:random(1280-(1280/4), 1280 - (1280/16))
+    else
+      target_x = gameWorld.random:random((1280/16), (1280/4))
+    end
+    local target_y = (720 - 50) - (gameWorld.random:random(0, 150))
+
+
+    local new_flyer = Flyer:new(drink:getDrawable(), start_x, start_y, target_x, target_y)
+    local dist = math.sqrt((target_x - start_x) * (target_x - start_x) + (target_y - start_y) * (target_y- start_y))
+    local flight_time = gameWorld.random:randomNormal(.3, .5) * (dist / 450)
+    if flight_time <= 0.01 then flight_time = 0.1 end
+    local tween = flux.to(new_flyer, flight_time, { completion = 1.0 }):delay(.8 + i * 0.01):oncomplete(function() --[[ could make a noise here]] end)
+    new_flyer.rotation = gameWorld.random:randomNormal(PI/8, 0)
+    table.insert(self.flying, new_flyer )
+  end
 end
 
 function Ending:update(dt)
@@ -134,6 +169,10 @@ function Ending:draw()
   --love.graphics.printf("Served:", self.margin, self.patrons_y, self.print_width, 'left')
   --love.graphics.printf("Drinks:", self.margin, self.drinks_y, self.print_width, 'left')
   self.animation:draw(self.image, self.avatar_x, self.avatar_y)
+
+  for _, f in ipairs(self.flying) do
+    f:draw()
+  end
 
   self.menu:draw(0, self.menu_y)
   ----- Frontsnow

@@ -181,6 +181,52 @@ function Drink:draw()
   end
 end
 
+function Drink:getDrawable()
+  love.graphics.setBackgroundColor(0,0,0,0)
+  love.graphics.setColor(1,1,1,1)
+  self.currentImage = self.image['full_handle']
+  local canvas = love.graphics.newCanvas(self.currentImage:getWidth(), self.currentImage:getHeight())
+  love.graphics.setCanvas(canvas)
+  love.graphics.setColor(1.0,1.0,1.0,1.0)
+  love.graphics.draw(
+  self.currentImage,
+  self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+  self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
+  self.rect.spin,
+  1, 1,
+  self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
+
+  local drinkOffset = { x = self.rect.x + 30, y = self.rect.y + 15 }
+
+  if self.props.drinkMix['a'] then
+    love.graphics.draw(gameWorld.assets.sprites.game.tankard_PURPLE,
+    self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+    self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
+    self.rect.spin,
+    1, 1,
+    self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
+  end
+  if self.props.drinkMix['b'] then
+    love.graphics.draw(gameWorld.assets.sprites.game.tankard_GREEN,
+    self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+    self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
+    self.rect.spin,
+    1, 1,
+    self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
+  end
+  if self.props.drinkMix['c'] then
+    love.graphics.draw(gameWorld.assets.sprites.game.tankard_CYAN,
+    self.rect.x + self.currentImage:getWidth() / 2 + self.drawOffset.x,
+    self.rect.y + self.currentImage:getHeight() / 2 + self.drawOffset.y,
+    self.rect.spin,
+    1, 1,
+    self.currentImage:getWidth() / 2, self.currentImage:getHeight() / 2)
+  end
+
+  love.graphics.setCanvas()
+  return canvas
+end
+
 ---- COLLISION ----
 
 function Drink:collisionFilter()

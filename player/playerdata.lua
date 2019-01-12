@@ -19,7 +19,7 @@ function PlayerData:reset()
 end
 
 function PlayerData:scoreIncrease(i)
-  if i >= 0 then
+  if i and i >= 0 then
     gameWorld.sound:playSfx('coin')
     if gameWorld.random:random(1, 4) == 1 then gameWorld.sound:playVoice({{'brugga'}, {'thanks'}}) end
   else

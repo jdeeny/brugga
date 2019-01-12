@@ -101,6 +101,7 @@ function Enemy:drinkHit(drink)
     self.props.inLine = false -- Patron no longer considered waiting in line
     self.drink:patronHold()   -- Set drink's drinking state
     self.drinkOffset = self.drinkHoldOffset -- Set the drink position offset
+    gameWorld.playerData:recordDrink(self.drinkMix)
 end
 
 function Enemy:startDrinking()
@@ -119,8 +120,6 @@ function Enemy:stopDrinking()
   self.props.inLine = true  -- Patron now considered waiting in line
   self.drink:sendRight(self.rect.x + self.rect.w) -- Slide drink back from end of patron
   self.drink = nil        -- Customer no longer holding drink
-
-
 end
 
 ---- BAR ACTIONS ----
