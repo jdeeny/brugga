@@ -2,8 +2,12 @@ local class = require 'lib.middleclass'
 local bump = require 'lib.bump'
 local rect = require 'physics.rect'
 local cargo = require 'lib.cargo'
+local midicontrol = require 'midicontrol'
 flux = require 'lib.flux'
 require 'lib.pl'    -- provides on-demand lading on the penlight sublibraries
+
+
+
 
 -- Should be the only global
 gameWorld = {}
@@ -12,6 +16,8 @@ function love.load()
   gameWorld.random = love.math.newRandomGenerator()
   gameWorld.random:setSeed(os.time())
   math.randomseed(os.time())
+
+  gameWorld.midicontrol = midicontrol:new(1,1)
 
   gameWorld.settings = require('ui.settings'):new()
   gameWorld.settings:load()
@@ -36,6 +42,7 @@ end
 
 function love.update(dt)
   flux.update(dt)
+  gameWorld.midicontrol:update(dt)
   gameWorld.gameState:update(dt)
   gameWorld.sound:update(dt)
   gameWorld.playerInput:update()  -- update the input immediately so everything else can use the up to date info
@@ -45,6 +52,7 @@ end
 function love.draw()
   gameWorld.gameState:draw()
   if gameWorld.debug then gameWorld.debug:draw() end
+  gameWorld.midicontrol:draw()
 end
 
 function love.quit()
