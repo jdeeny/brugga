@@ -17,7 +17,7 @@ function love.load()
   gameWorld.random:setSeed(os.time())
   math.randomseed(os.time())
 
-  gameWorld.midicontrol = midicontrol:new(1,1)
+  gameWorld.midicontrol = midicontrol:new(1,1, 'xtouch')
 
   gameWorld.settings = require('ui.settings'):new()
   gameWorld.settings:load()

@@ -23,8 +23,26 @@
     Read Value [ Read CC9 (A) CC10 (B)]
 ]]
 
+local Messages = require 'midicontrol.messages'
+local NoteOff = Messages.NoteOff
+local NoteOn = Messages.NoteOn
+local Layout = require 'midicontrol.controls.layout'
+local Button = require 'midicontrol.controls.button'
+local Knob = require 'midicontrol.controls.knob'
+
 local Mini = {
-  knobs = {
+  name = "X-TOUCH MINI",
+  size = { 11, 4 },
+  controls = require('midicontrol.controls.layout'):new()
+              :addControl(Button:new("Button 1", NoteOn(8), NoteOff(8), NoteOn(0)), 2, 1)
+              :addControl(Button:new("Button 2", NoteOn(9), NoteOff(8), NoteOn(1)), 2, 2)
+              :addControl(Button:new("Button 3", NoteOn(10), NoteOff(8), NoteOn(2)), 2, 3),
+
+}
+
+return Mini
+
+--[[  knobs = {
   },
   buttons = {
     { name="Button 1A", in_note=8, led_note=0 },
@@ -62,6 +80,4 @@ local Mini = {
     { name="Button 16B", in_note=47, led_note=31 },
 
   },
-}
-
-return Mini
+]]

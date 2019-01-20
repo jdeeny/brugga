@@ -1,29 +1,47 @@
 local class = require 'lib.middleclass'
 local midi = require('luamidi')
+local bit = require("bit")
 
 local MidiControl = class('MidiControl')
 
+local controllers = {
+  xtouch = require('midicontrol.xtouchmini'),
+}
 
-function MidiControl:initialize(inport, outport)
-  assert(inport and midi.getinportcount() > inport, "Invalid inport")
-  assert(outport and midi.getoutportcount() > outport, "Invalid outport")
-  print("Inport: " .. midi.enumerateinports()[inport])
-  print("Outport: " .. midi.enumerateoutports()[outport])
-  self.inport_n = inport
-  self.outport_n = outport
-  self.inport = midi.openin(inport)
-  self.outport = midi.openout(outport)
+
+function MidiControl:initialize(inport, outport, controller)
+  assert(inport and outport and midi.getinportcount() > inport and midi.getoutportcount() > outport, "Invalid ports")
+  self.inport = inport
+  self.outport = outport
+  self.controller = self:findController()
+  assert(self.controller, "Invalid controller")
+
+  self.handlers = {}
+  self.overlay = require('midicontrol.overlay'):new()
+end
+
+function MidiControl:findController()
+  assert(midi.getInPortName(self.inport) == midi.getOutPortName(self.outport), "In and Out must be same device")
+  local name = midi.getInPortName(self.inport)
+  for n, c in pairs(controllers) do
+    if name:find(c.name) then
+      return c
+    end
+  end
+  return nil
 end
 
 function MidiControl:update(dt)
   repeat
-    local port, control, velocity, _delta = midi.getMessage(self.inport_n)
+    local port, control, velocity, _delta = midi.getMessage(self.inport)
     if port then
+--      local kind = bit.band(bit.rshift(port, 4), 7)
+  --    print(kind .. " - " ..message_kinds[kind])
       print("Port " .. port .. " " .. control .. " " .. velocity)
+
     end
   until not port
 end
-
 
 function MidiControl:ringMode(n, mode)
   self.outport:sendMessage(0x80 + 0x30 + 0, n, mode)
@@ -37,16 +55,8 @@ function MidiControl:addToggle(channel)
 
 end
 
-local function overlay()
-  love.graphics.setColor(0.01, 0.01, 0.01, 0.85)
-  love.graphics.rectangle('fill', 800, 500, 300, 200, 16, 16)
-  love.graphics.setColor(0.9, 0.9, 0.9, 1.0)
-  love.graphics.printf("Text", 800, 540, 300, 'center')
-end
-
 function MidiControl:draw()
-
-  overlay()
+  self.overlay:draw()
 end
 
 
